@@ -150,32 +150,6 @@ const config = defineConfig({
               },
             ],
           },
-          {
-            type: "object",
-            label: "Theme",
-            name: "theme",
-            fields: [
-              {
-                type: "string",
-                name: "font",
-                label: "Font Family",
-                options: [
-                  {
-                    label: "System Sans",
-                    value: "sans",
-                  },
-                  {
-                    label: "Nunito",
-                    value: "nunito",
-                  },
-                  {
-                    label: "Lato",
-                    value: "lato",
-                  },
-                ],
-              },
-            ],
-          },
         ],
       },
       {

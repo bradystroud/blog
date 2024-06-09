@@ -79,7 +79,7 @@ export default function Blog(
 }
 
 export const getStaticProps = async ({ params }) => {
-  const tinaProps = await client.queries.blog({
+  const tinaProps = await client.queries.blogQuery({
     relativePath: `${params.filename}.mdx`,
   });
   return {
