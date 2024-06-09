@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /404
+Disallow: /500
+
+# Host
+Host: https://bradystroud.dev/
+
+# Sitemaps
+Sitemap: https://bradystroud.dev/sitemap.xml

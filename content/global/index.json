@@ -1,0 +1,27 @@
+{
+  "header": {
+    "name": "Brady Stroud",
+    "color": "default",
+    "nav": [
+      {
+        "href": "about",
+        "label": "About"
+      },
+      {
+        "href": "blogs",
+        "label": "Blogs"
+      }
+    ]
+  },
+  "footer": {
+    "color": "default",
+    "social": {
+      "twitter": "/bradystroud_",
+      "instagram": "/bradystroud",
+      "github": "https://github.com/bradystroud/bradystroud.dev"
+    }
+  },
+  "theme": {
+    "font": "sans"
+  }
+}

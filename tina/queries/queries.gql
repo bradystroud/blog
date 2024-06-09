@@ -1,0 +1,28 @@
+query pageQuery {
+  ...LayoutQueryFragment
+}
+
+# TODO: Add sorting options
+query blogPageQuery {
+  ...LayoutQueryFragment
+  blogConnection {
+    edges {
+      node {
+        id
+        title
+        date
+        date
+        _sys {
+          filename
+        }
+      }
+    }
+  }
+}
+
+query contentQuery($relativePath: String!) {
+  ...LayoutQueryFragment
+  page(relativePath: $relativePath) {
+    ...PageParts
+  }
+}
