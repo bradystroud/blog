@@ -4,6 +4,14 @@ import { contentBlockSchema } from "../components/blocks/content";
 import { featureBlockSchema } from "../components/blocks/features";
 import { heroBlockSchema } from "../components/blocks/hero";
 
+// const fetchTags = async () => {
+//   const res = await fetch("/content/tags/tags.json");
+//   const data = await res.json();
+//   const tagOptions = data.tags.map((tag) => ({ value: tag, label: tag }));
+// };
+
+// fetchTags();
+
 const config = defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID!,
   branch:
@@ -57,10 +65,51 @@ const config = defineConfig({
             },
           },
           {
+            type: "object",
+            list: true,
+            label: "Tags",
+            name: "tags",
+            fields: [
+              {
+                type: "string",
+                name: "tag",
+                label: "Tag",
+              },
+            ],
+          },
+          {
             type: "rich-text",
             label: "Body",
             name: "_body",
             isBody: true,
+          },
+        ],
+      },
+      {
+        label: "Tag - List",
+        name: "tag",
+        path: "content/tags",
+        format: "json",
+        fields: [
+          {
+            type: "object",
+            name: "tags",
+            list: true,
+            label: "Tags",
+            ui: {
+              itemProps: (item) => {
+                console.log(item);
+
+                return { label: item?.name };
+              },
+            },
+            fields: [
+              {
+                type: "string",
+                label: "Name",
+                name: "name",
+              },
+            ],
           },
         ],
       },

@@ -2,10 +2,16 @@
 cannonicalUrl: 'https://bradystroud.dev'
 title: Brady Stroud
 blocks:
-  - tagline: ''
+  - tagline: Software Engineer
     headline: Brady Stroud
-    text: |
-      Welcome
+    text: >
+      Welcome.
+
+
+      This isn't your typical dev blog where I just write about the latest React
+      library. \
+
+      I write about stuff that matters.
     actions:
       - label: See Blogs
         type: button
@@ -16,8 +22,8 @@ blocks:
         icon: false
         link: /about
     image:
-      src: /uploads/IMG_8397.jpeg
-      alt: South Bank
+      src: /uploads/IMG_6766.jpeg
+      alt: London
     color: default
     _template: hero
 ---
