@@ -18,6 +18,12 @@ export const BlogCollection: Collection = {
       required: true,
     },
     {
+      type: "image",
+      name: "coverImage",
+      label: "Cover Image",
+      required: false,
+    },
+    {
       type: "string",
       isTitle: true,
       label: "Title",

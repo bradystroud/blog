@@ -6,6 +6,7 @@ import { Section } from "../../components/util/section";
 import { Container } from "../../components/util/container";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
+import Image from "next/image";
 import Head from "next/head";
 
 export default function Blog(
@@ -44,6 +45,18 @@ export default function Blog(
         </Head>
         <Section className="flex-1">
           <Container width="small" className={`flex-1 pb-2`} size="large">
+            {data.blog.coverImage ? (
+              <div className="flex justify-center">
+                <Image
+                  src={data.blog.coverImage}
+                  width={500}
+                  height={500}
+                  alt={data.blog.title}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
             <h1
               className={`w-full relative mb-8 text-6xl tracking-normal text-center title-font`}
             >

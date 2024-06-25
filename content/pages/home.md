@@ -22,8 +22,8 @@ blocks:
         icon: false
         link: /about
     image:
-      src: /uploads/IMG_6766.jpeg
-      alt: London
+      src: /uploads/IMG_3865.jpeg
+      alt: 'Penguin, Tasmania'
     color: default
     _template: hero
 ---

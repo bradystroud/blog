@@ -1,19 +1,29 @@
 ---
 cannonicalUrl: 'https://bradystroud.dev/maui-blazor'
+coverImage: /uploads/header-.net-maui-blazor.webp
 title: .NET MAUI Blazor template — Build your UI once
 date: 2022-07-27T14:30:00.000Z
+tags:
+  - .net-maui
+  - maui-ui-july
+  - cross-platform
+  - mobile
+  - .net
+  - maui
+  - blazor
 ---
 
 Another post for Matt Goldman’s MAUI UI July! [MAUI UI July](https://goforgoldman.com/2022/05/19/maui-ui-july.html)
 
-🙋 **What is MAUI Blazor**
-MAUI Blazor lets you host Blazor components in .NET MAUI apps to build cross-platform native apps using web UI. The components run natively in the .NET process and render web UI to an embedded web view control using a local interop channel. This hybrid approach gives you the best of native and the web.
+## 🙋 **What is MAUI Blazor?**
 
-From [Introduction to .NET MAUI Blazor](https://docs.microsoft.com/en-us/shows/xamarinshow/introduction-to-net-maui-blazor--the-xamarin-show)
+> MAUI Blazor lets you host Blazor components in .NET MAUI apps to build cross-platform native apps using web UI. The components run natively in the .NET process and render web UI to an embedded web view control using a local interop channel. This hybrid approach gives you the best of native and the web.
+
+From [Microsoft Learn | Introduction to .NET MAUI Blazor](https://docs.microsoft.com/en-us/shows/xamarinshow/introduction-to-net-maui-blazor--the-xamarin-show)
 
 When I first read about MAUI Blazor, I was excited at the idea of building my UI just once and being able to run and deploy it everywhere. When I tried it out for the first time, I was disappointed to find the official MAUI Blazor template only had a MAUI app — No Blazor.
 
-I decided I’d build a template with the whole solution in a nice structure so I can start developing fully cross-platform apps quickly.
+I decided I'd build a template with the whole solution in a nice structure so I can start developing fully cross-platform apps quickly.
 
 Here it is!
 
@@ -21,6 +31,7 @@ Here it is!
 
 🏛 **Template Overview**
 
+![](/uploads/filetree.webp)
 **Template file tree**
 
 * **MauiBlazor.UI**
@@ -36,16 +47,20 @@ Here it is!
 * **MauiBlazor.WebApi**
   * ASP.NET Core Web API as a backend for the UI.
 
-🧑‍💻 **Developer Experience**
+### 🧑‍💻 Developer Experience
+
 Running these applications in different environments is easy.
 
 **Recommended environment**: Windows 10/11, VS 2022 Preview (using preview for MAUI support) with MAUI and ASP.NET workloads installed.
 
 To run the Blazor app, open VS 2022 Preview and select `MauiBlazor.UI.Web` as the startup project. Hit F5 and wait for a browser to open.
 
+![](</uploads/Template running on the Web .webp>)
 **Template running on the Web**
 
 To run the MAUI app, open VS 2022 Preview and select `MauiBlazor.UI.Mobile` as the startup project. Pick a target framework (e.g., Android emulator or Windows Machine) and hit F5.
+
+![](/uploads/cross-plat-screenshot.webp)
 
 **Template running MAUI project on Android, iOS, and Windows 🤯**
 
@@ -53,12 +68,12 @@ Tip: You can test out your app on iOS from Windows by pairing a Mac in VS. See [
 
 To run the API as well as one of the UI projects, use the .NET CLI. `cd` into the `MauiBlazor.WebApi` project then `dotnet run`.
 
-🤔 **What if I want to run some different code on each platform?**
+🤔 **What if I want to run some different code on each platform?**\
 You can do this by creating an interface in `UI.Core`, and write unique implementations of it in `UI.Web` and `UI.Mobile`.
 
-Tip: I linked the filename to the file in GitHub
+*Tip: I linked the filename to the file in GitHub*
 
-`UI.Core/Interfaces/IPlatformService.cs`
+[`UI.Core/Interfaces/IPlatformService.cs`](https://github.com/bradystroud/MauiBlazorTemplate/blob/main/src/MauiBlazor.UI/MauiBlazor.UI.Core/Interfaces/IPlatformService.cs)
 
 ```csharp
 namespace MauiBlazor.UI.Core.Interfaces;
@@ -68,7 +83,7 @@ public interface IPlatformService
 }
 ```
 
-`UI.Web/Services/PlatformService.cs`
+[`UI.Web/Services/PlatformService.cs`](https://github.com/bradystroud/MauiBlazorTemplate/blob/main/src/MauiBlazor.UI/MauiBlazor.UI.Web/Services/PlatformService.cs)
 
 ```csharp
 using MauiBlazor.UI.Core.Interfaces;
@@ -79,7 +94,7 @@ public class PlatformService : IPlatformService
 }
 ```
 
-`UI.Mobile/Services/PlatformService.cs`
+[`UI.Mobile/Services/PlatformService.cs`](https://github.com/bradystroud/MauiBlazorTemplate/blob/main/src/MauiBlazor.UI/MauiBlazor.UI.Mobile/Services/PlatformService.cs)
 
 ```csharp
 using MauiBlazor.UI.Core.Interfaces;
@@ -92,13 +107,15 @@ public class PlatformService : IPlatformService
 }
 ```
 
-`UI.Web/Program.cs`
+Once I have both services, I can make them available in UI.Core via dependency injection.
+
+[`UI.Web/Program.cs`](https://github.com/bradystroud/MauiBlazorTemplate/blob/main/src/MauiBlazor.UI/MauiBlazor.UI.Web/Program.cs)
 
 ```csharp
 builder.Services.AddScoped<IPlatformService, PlatformService>();
 ```
 
-`UI.Mobile/MauiProgram.cs`
+[`UI.Mobile/MauiProgram.cs`](https://github.com/bradystroud/MauiBlazorTemplate/blob/main/src/MauiBlazor.UI/MauiBlazor.UI.Mobile/MauiProgram.cs)
 
 ```csharp
 builder.Services.AddScoped<IPlatformService, PlatformService>();
@@ -106,9 +123,9 @@ builder.Services.AddScoped<IPlatformService, PlatformService>();
 
 Now I can inject the method into a component and call GetPlatform()
 
-`UI.Core/Pages/Index.razor`
+[`UI.Core/Pages/Index.razor`](https://github.com/bradystroud/MauiBlazorTemplate/blob/main/src/MauiBlazor.UI/MauiBlazor.UI.Core/Pages/Index.razor)
 
-```csharp
+```razor
 @page "/"
 @inject IPlatformService PlatformService
 
@@ -126,8 +143,9 @@ Running on @Platform
 }
 ```
 
-🚀 Deploying the application
-In the future, I'll set up all the CI/CD stuff needed to build and deploy the application in all supported environments. See GitHub issue: #3
+### 🚀 Deploying the application
+
+In the future, I'll set up all the CI/CD stuff needed to build and deploy the application in all supported environments. See GitHub issue [https://github.com/bradystroud/MauiBlazorTemplate/issues/3](https://github.com/bradystroud/MauiBlazorTemplate/issues/3)
 
 Let me know what you would like to see in this template. If you have any ideas/feedback, please make a PR or issue and I'll take a look.
 
