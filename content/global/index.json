@@ -16,9 +16,10 @@
   "footer": {
     "color": "default",
     "social": {
-      "twitter": "/bradystroud_",
-      "instagram": "/bradystroud",
-      "github": "https://github.com/bradystroud/bradystroud.dev"
+      "twitter": "https://x.com/bradystroud_",
+      "instagram": "https://www.instagram.com/bradystroud",
+      "linkedin": "https://www.linkedin.com/in/bradystroud",
+      "github": "https://github.com/bradystroud"
     }
   },
   "theme": {
