@@ -10,11 +10,7 @@ export const Layout = ({ data = layoutData, children }) => {
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta
-          name="description"
-          content="Brady Stroud"
-          key="desc"
-        />
+        <meta name="description" content="Brady Stroud" key="desc" />
         <meta property="og:site_name" content="Brady Stroud" />
         <meta property="og:url" content="https://bradystroud.dev/" />
         <meta property="og:type" content="website" />
@@ -24,7 +20,7 @@ export const Layout = ({ data = layoutData, children }) => {
         />
         <meta name="robots" content="index, follow" />{" "}
       </Head>
-      <div>
+      <div suppressHydrationWarning>
         <Header data={data?.header} />
         <div className="flex-1 text-gray-80 flex flex-col">
           <NextBreadcrumb />
