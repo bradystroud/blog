@@ -1,7 +1,9 @@
 {
+  "theme": {
+    "font": "sans"
+  },
   "header": {
     "name": "Brady Stroud",
-    "color": "default",
     "nav": [
       {
         "href": "about",
@@ -15,14 +17,16 @@
   },
   "footer": {
     "color": "default",
-    "social": {
-      "twitter": "https://x.com/bradystroud_",
-      "instagram": "https://www.instagram.com/bradystroud",
-      "linkedin": "https://www.linkedin.com/in/bradystroud",
-      "github": "https://github.com/bradystroud"
-    }
-  },
-  "theme": {
-    "font": "sans"
+    "social": [
+      {
+        "url": "https://twitter.com/bradystroud_"
+      },
+      {
+        "url": "https://www.instagram.com/bradystroud"
+      },
+      {
+        "url": "https://www.linkedin.com/in/bradystroud"
+      }
+    ]
   }
 }

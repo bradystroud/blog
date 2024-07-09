@@ -15,6 +15,7 @@ const config = defineConfig({
   token: process.env.TINA_TOKEN!,
   media: {
     tina: {
+      static: false,
       publicFolder: "public",
       mediaRoot: "uploads",
     },
