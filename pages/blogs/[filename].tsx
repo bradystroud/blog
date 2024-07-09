@@ -18,15 +18,17 @@ export default function Blog(
     data: props.data,
   });
 
-  const date = new Date(data.blog.date);
   let formattedDate = "";
+  if (data?.blog?.date) {
+    const date = new Date(data.blog.date);
 
-  if (!isNaN(date.getTime())) {
-    formattedDate = date.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
+    if (!isNaN(date.getTime())) {
+      formattedDate = date.toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+    }
   }
 
   if (data && data.blog) {
@@ -106,8 +108,8 @@ export const getStaticProps = async ({ params }) => {
 export const getStaticPaths = async () => {
   const blogListData = await client.queries.blogConnection();
   return {
-    paths: blogListData.data.blogConnection.edges.map((post) => ({
-      params: { filename: post.node._sys.filename },
+    paths: blogListData?.data?.blogConnection?.edges?.map((post) => ({
+      params: { filename: post?.node?._sys.filename },
     })),
     fallback: "blocking",
   };

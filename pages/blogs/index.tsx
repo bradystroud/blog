@@ -28,7 +28,7 @@ export default function ReviewPage(
           <div className="flex justify-between items-center">
             <h1 className="text-4xl title-font mb-4">Blogs</h1>
           </div>
-          <Blogs data={blogs.sort()} />
+          <Blogs data={blogs?.sort()} />
         </Container>
       </Section>
     </Layout>

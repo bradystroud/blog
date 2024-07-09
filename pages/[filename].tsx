@@ -44,8 +44,8 @@ export const getStaticProps = async ({ params }) => {
 export const getStaticPaths = async () => {
   const pagesListData = await client.queries.pageConnection();
   return {
-    paths: pagesListData.data.pageConnection.edges.map((page) => ({
-      params: { filename: page.node._sys.filename },
+    paths: pagesListData?.data?.pageConnection?.edges?.map((page) => ({
+      params: { filename: page?.node?._sys.filename },
     })),
     fallback: false,
   };

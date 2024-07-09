@@ -7,28 +7,6 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FaHome } from "react-icons/fa";
 
-const replacements: Record<string, string> = {
-  EmbassyBarKitchen: "Embassy Bar & Kitchen",
-  SBBG: "South Bank Beer Garden",
-};
-
-function cleanUpLink(link: string) {
-  if (replacements[link]) {
-    return replacements[link];
-  } else {
-    return link
-      .split("-")
-      .map((word) => {
-        if (word === "and" || word === "or" || word === "the") {
-          return word;
-        } else {
-          return word.charAt(0).toUpperCase() + word.slice(1);
-        }
-      })
-      .join(" ");
-  }
-}
-
 const NextBreadcrumb = () => {
   const paths = usePathname();
   const pathNames = paths.split("/").filter((path) => path);
@@ -53,7 +31,7 @@ const NextBreadcrumb = () => {
               <React.Fragment key={index}>
                 <li className="mx-2">
                   <Link className={itemClasses} href={href}>
-                    {cleanUpLink(link)}
+                    {link}
                   </Link>
                 </li>
                 {pathNames.length !== index + 1 && separator}
