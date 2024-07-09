@@ -7,9 +7,8 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
     <div className={`flex flex-wrap items-center gap-y-4 gap-x-6 ${className}`}>
       {actions &&
         actions.map(function (action, index) {
-          let element = null;
           if (action.type === "button") {
-            element = (
+            return (
               <Link key={index} href={action.link ? action.link : "/"}>
                 <button
                   data-tinafield={`${parentField}.${index}`}
@@ -26,7 +25,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
             );
           }
           if (action.type === "link" || action.type === "linkExternal") {
-            element = (
+            return (
               <Link
                 key={index}
                 href={action.link ? action.link : "/"}
@@ -50,7 +49,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
               </Link>
             );
           }
-          return element;
+          return null;
         })}
     </div>
   );
