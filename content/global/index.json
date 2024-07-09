@@ -19,13 +19,24 @@
     "color": "default",
     "social": [
       {
-        "url": "https://twitter.com/bradystroud_"
+        "url": "https://github.com/bradystroud",
+        "platform": "github"
       },
       {
-        "url": "https://www.instagram.com/bradystroud"
+        "url": "https://www.instagram.com/bradystroud",
+        "platform": "instagram"
       },
       {
-        "url": "https://www.linkedin.com/in/bradystroud"
+        "url": "https://www.youtube.com/@bradystroud",
+        "platform": "youtube"
+      },
+      {
+        "url": "https://twitter.com/bradystroud_",
+        "platform": "twitter"
+      },
+      {
+        "url": "https://www.linkedin.com/in/bradystroud",
+        "platform": "linkedin"
       }
     ]
   }

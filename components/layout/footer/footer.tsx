@@ -1,10 +1,8 @@
 import React from "react";
-import { FaGithub, FaTwitter } from "react-icons/fa";
-import { AiFillInstagram } from "react-icons/ai";
 import { Container } from "../../util/container";
+import { options } from "../../../tina/collections/global";
 
 export const Footer = ({ data }) => {
-  const socialIconClasses = "h-7 w-auto";
 
   const footerColor = {
     default:
@@ -38,36 +36,25 @@ export const Footer = ({ data }) => {
           </p>
 
           <div className="flex gap-4">
-            {data.social && data.social.twitter && (
-              <a
-                className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
-                href={data.social.twitter}
-                target="_blank"
-                aria-label="Twitter"
-              >
-                <FaTwitter className={`${socialIconClasses} primary`} />
-              </a>
-            )}
-            {data.social && data.social.instagram && (
-              <a
-                className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
-                href={data.social.instagram}
-                target="_blank"
-                aria-label="Instagram"
-              >
-                <AiFillInstagram className={`${socialIconClasses} primary`} />
-              </a>
-            )}
-            {data.social && data.social.github && (
-              <a
-                className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
-                href={data.social.github}
-                target="_blank"
-                aria-label="Github"
-              >
-                <FaGithub className={`${socialIconClasses} primary`} />
-              </a>
-            )}
+            {data.social.map((social) => {
+              if (social && social.platform) {
+                return (
+                  <a
+                    className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
+                    href={social.url}
+                    target="_blank"
+                    key={`social-link-${social.platform}`}
+                    aria-label={social.platform}
+                  >
+                    {
+                      options.filter(
+                        (option) => option.value === social.platform
+                      )[0].icon
+                    }
+                  </a>
+                );
+              }
+            })}
           </div>
         </div>
         <div
