@@ -9,7 +9,10 @@ export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
     <>
       {props.blocks
         ? props.blocks.map(function (block, i) {
-            switch (block.__typename) {
+            if (!block) {
+              console.error("Block is undefined, skipping...");
+            }
+            switch (block?.__typename) {
               case "PageBlocksContent":
                 return (
                   <div
