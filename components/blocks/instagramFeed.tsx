@@ -2,6 +2,7 @@ import React from "react";
 import { Section } from "../util/section";
 import type { Template } from "tinacms";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const InstagramFeed = ({ data, parentField = "" }) => {
   return (
     <Section>
