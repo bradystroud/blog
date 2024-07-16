@@ -48,24 +48,24 @@ export const BlogCollection: Collection = {
       list: true,
       ui: {
         component: "tags",
-        validate(value) {
-          const fetchTags = async () => {
-            const res = await fetch("/content/tags/tags.json"); //idk where this is on prod
-            const data = await res.json();
-            const tagOptions = data.tags.map((tag) => ({
-              value: tag,
-              label: tag,
-            }));
+        // validate(value) {
+        //   const fetchTags = async () => {
+        //     const res = await fetch("/content/tags/tags.json"); //idk where this is on prod
+        //     const data = await res.json();
+        //     const tagOptions = data.tags.map((tag) => ({
+        //       value: tag,
+        //       label: tag,
+        //     }));
 
-            console.log(tagOptions);
-          };
+        //     console.log(tagOptions);
+        //   };
 
-          fetchTags();
+        //   fetchTags();
 
-          if (value && value[0] == "test") {
-            return "Please add at least one tag";
-          }
-        },
+        //   if (value && value[0] == "test") {
+        //     return "Please add at least one tag";
+        //   }
+        // },
       },
     },
     {

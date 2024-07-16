@@ -28,6 +28,11 @@ export default function ReviewPage(
           <div className="flex justify-between items-center">
             <h1 className="text-4xl title-font mb-4">Blogs</h1>
           </div>
+          <p className="text-gray-600 text-lg pb-5 italic">
+            "Learning from your mistakes is cool, but if you can learn from
+            other peoples mistakes, that's even cooler"
+          </p>
+          <p className="text-gray-600 text-lg pb-5 font-bold">- Brady Stroud</p>
           <Blogs data={blogs?.sort()} />
         </Container>
       </Section>
