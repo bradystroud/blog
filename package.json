@@ -12,17 +12,17 @@
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.5",
     "@svgr/webpack": "^8.0.1",
-    "@tinacms/cli": "^1.5.47",
+    "@tinacms/cli": "^1.5.52",
     "@types/js-cookie": "^3.0.3",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.12",
     "@types/react": "^18.3.3",
     "@types/styled-components": "^5.1.15",
-    "@typescript-eslint/eslint-plugin": "^7.16.0",
-    "@typescript-eslint/parser": "^7.16.0",
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
+    "@typescript-eslint/parser": "^7.17.0",
     "autoprefixer": "^10.4.14",
     "eslint": "8.57.0",
     "next-sitemap": "^4.2.3",
-    "postcss": "^8.4.39",
+    "postcss": "^8.4.40",
     "postcss-import": "^16.1.0",
     "postcss-nesting": "^12.1.5"
   },
@@ -34,9 +34,9 @@
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
     "sharp": "^0.33.4",
-    "tailwindcss": "^3.4.4",
-    "tinacms": "^1.6.5",
-    "typescript": "^5.5.3"
+    "tailwindcss": "^3.4.7",
+    "tinacms": "^2.1.0",
+    "typescript": "^5.5.4"
   },
   "resolutions": {
     "final-form": "4.20.1"

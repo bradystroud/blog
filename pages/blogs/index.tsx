@@ -32,7 +32,9 @@ export default function ReviewPage(
             "Learning from your mistakes is cool, but if you can learn from
             other peoples mistakes, that's even cooler"
           </p>
-          <p className="text-gray-600 text-lg pb-5 font-bold">- Brady Stroud</p>
+          <p className="text-gray-600 text-lg pb-5 font-bold">
+            - Brady "good quotes" Stroud
+          </p>
           <Blogs data={blogs?.sort()} />
         </Container>
       </Section>
