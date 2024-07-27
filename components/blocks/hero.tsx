@@ -4,6 +4,7 @@ import { Container } from "../util/container";
 import { Section } from "../util/section";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import type { Template } from "tinacms";
+import Image from "next/image";
 
 export const Hero = ({ data, parentField }) => {
   return (
@@ -53,10 +54,13 @@ export const Hero = ({ data, parentField }) => {
             data-tinafield={`${parentField}.image`}
             className="relative row-start-1 lg:col-span-2 flex justify-center"
           >
-            <img
-              className="relative z-10 w-full max-w-xs rounded-lg lg:max-w-none h-auto"
+            <Image
+              className="!relative z-10 rounded-lg max-w-md xs:max-w-xs"
               alt={data.image.alt}
               src={data.image.src}
+              quality={100}
+              objectFit="fill"
+              fill
             />
           </div>
         )}

@@ -2,7 +2,7 @@ import React from "react";
 import { Container } from "../util/container";
 import { Section } from "../util/section";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
-import type { Template } from "tinacms";
+import { Template } from "tinacms";
 
 export const Content = ({ data, parentField = "" }) => {
   return (
