@@ -2,9 +2,7 @@
 
 Built with Next.js, TinaCMS and Tailwind.
 
-## Installation
-
-To install this project, follow these steps:
+## Dev
 
 1. Clone
 2. Run `pnpm` to install packages
