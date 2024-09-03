@@ -122,9 +122,6 @@ export const projectBlockSchema: Template = {
           type: "string",
           label: "Url",
           name: "url",
-          ui: {
-            default: "https://github.com/bradystroud",
-          },
         },
       ],
     },
