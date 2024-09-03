@@ -1,6 +1,7 @@
 import { Actions } from "../util/actions";
 import { Section } from "../util/section";
 import { Container } from "../util/container";
+import { Template } from "tinacms";
 
 export const Feature = ({ data, tinaField }) => {
   return (
@@ -62,7 +63,7 @@ const defaultFeature = {
   },
 };
 
-export const featureBlockSchema = {
+export const featureBlockSchema: Template = {
   name: "features",
   label: "Features",
   ui: {

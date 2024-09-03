@@ -2,6 +2,7 @@ import { Section } from "../util/section";
 import { Container } from "../util/container";
 import React from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { Template } from "tinacms";
 
 export const Project = ({ data, tinaField, key }) => {
   return (
@@ -73,7 +74,7 @@ const defaultProject = {
   },
 };
 
-export const projectBlockSchema = {
+export const projectBlockSchema: Template = {
   name: "projects",
   label: "Projects",
   ui: {
@@ -83,6 +84,11 @@ export const projectBlockSchema = {
     },
   },
   fields: [
+    {
+      type: "rich-text",
+      label: "Body",
+      name: "body",
+    },
     {
       type: "object",
       label: "Project Items",
