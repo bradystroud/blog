@@ -3,6 +3,7 @@ import type { Page } from "../tina/__generated__/types";
 import { Content } from "./blocks/content";
 import { Features } from "./blocks/features";
 import { Hero } from "./blocks/hero";
+import { Projects } from "./blocks/projects";
 
 export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
   return (
@@ -38,6 +39,15 @@ export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
                     key={i + block.__typename}
                   >
                     <Features data={block} parentField={`blocks.${i}`} />
+                  </div>
+                );
+              case "PageBlocksProjects":
+                return (
+                  <div
+                    data-tinafield={`blocks.${i}`}
+                    key={i + block.__typename}
+                  >
+                    <Projects data={block} parentField={`blocks.${i}`} />
                   </div>
                 );
               default:

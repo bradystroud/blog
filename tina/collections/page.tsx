@@ -3,6 +3,7 @@ import { contentBlockSchema } from "../../components/blocks/content";
 import { featureBlockSchema } from "../../components/blocks/features";
 import { heroBlockSchema } from "../../components/blocks/hero";
 import { instagramFeedSchema } from "../../components/blocks/instagramFeed";
+import { projectBlockSchema } from "../../components/blocks/projects";
 
 export const PageCollection: Collection = {
   label: "Pages",
@@ -49,6 +50,7 @@ export const PageCollection: Collection = {
         featureBlockSchema,
         contentBlockSchema,
         instagramFeedSchema,
+        projectBlockSchema
       ],
     },
   ],

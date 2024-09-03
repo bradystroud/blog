@@ -80,6 +80,23 @@ export default function Blog(
             <div className="prose dark:prose-dark w-full max-w-none">
               <TinaMarkdown content={data.blog._body} />
             </div>
+            <script
+              src="https://giscus.app/client.js"
+              data-repo="bradystroud/blog"
+              data-repo-id="R_kgDOMG3w4Q"
+              data-category="Comments"
+              data-category-id="DIC_kwDOMG3w4c4ChPCN"
+              data-mapping="url"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="1"
+              data-input-position="top"
+              data-theme="light"
+              data-lang="en"
+              data-loading="lazy"
+              crossOrigin="anonymous"
+              async
+            ></script>
             <br />
           </Container>
         </Section>
