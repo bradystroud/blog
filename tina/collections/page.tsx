@@ -47,10 +47,11 @@ export const PageCollection: Collection = {
       templates: [
         heroBlockSchema,
         // @ts-expect-error - Not sure, tina bug?
+        projectBlockSchema,
+        // @ts-expect-error - Not sure, tina bug?
         featureBlockSchema,
         contentBlockSchema,
         instagramFeedSchema,
-        projectBlockSchema
       ],
     },
   ],
