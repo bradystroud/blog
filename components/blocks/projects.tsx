@@ -3,6 +3,7 @@ import { Container } from "../util/container";
 import React from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { Template } from "tinacms";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
 
 export const Project = ({ data, tinaField, key }) => {
   return (
@@ -47,6 +48,12 @@ export const Projects = ({ data, parentField }) => {
     <Section>
       <Container size="large">
         <h2 className="text-4xl font-semibold text-center mb-9">Projects</h2>
+        <div className="w-full prose mx-auto lg:mx-0 mb-10 text-center max-w-full">
+          <TinaMarkdown
+            content={data.body}
+            data-tinafield={`${parentField}.body`}
+          />
+        </div>
         <div className={`flex flex-wrap gap-x-10 gap-y-8 text-left`}>
           {data.items &&
             data.items.map(function (block, i) {
@@ -88,6 +95,7 @@ export const projectBlockSchema: Template = {
       type: "rich-text",
       label: "Body",
       name: "body",
+      isBody: true,
     },
     {
       type: "object",

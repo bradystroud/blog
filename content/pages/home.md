@@ -14,10 +14,9 @@ blocks:
       with the company's growth.
 
 
-      As someone with a strong technical background, automating processes and
-      tasks comes naturally to me. I find great satisfaction in streamlining
-      workflows, allowing our team to focus on what they do best – delivering
-      high-quality software solutions to our clients.
+      With a strong technical background, automating processes comes naturally
+      to me. I love to streamline workflows, allowing devs to focus on what they
+      do best – deliver high-quality solutions.
     actions:
       - label: See Blogs
         type: button
@@ -29,10 +28,14 @@ blocks:
         link: /about
     image:
       src: /uploads/brady-beach.jpg
-      alt: 'Penguin, Tasmania'
+      alt: 'Brady in Penguin, Tasmania'
     color: default
     _template: hero
-  - items:
+  - body: >
+      The best part about being a software developer is having cool ideas, then
+      being able to turn them into real projects.  \
+         These are some of my favorites.
+    items:
       - title: TimesheetGPT
         text: >-
           AI tool to generate timesheets based on daily activities e.g. sending
