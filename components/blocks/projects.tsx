@@ -5,10 +5,12 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { Template } from "tinacms";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 
-export const Project = ({ data, tinaField, key }) => {
+export const Project = ({ data, tinaField, index }) => {
+  console.log(index);
+
   return (
     <div
-      key={key}
+      key={index.toString()}
       data-tinafield={tinaField}
       className="flex-1 flex flex-col gap-6 text-center items-center lg:items-start lg:text-left max-w-xl mx-auto"
       style={{ flexBasis: "16rem" }}
@@ -56,11 +58,11 @@ export const Projects = ({ data, parentField }) => {
         </div>
         <div className={`flex flex-wrap gap-x-10 gap-y-8 text-left`}>
           {data.items &&
-            data.items.map(function (block, i) {
+            data.items.map(function (block: any, i: number) {
               return (
                 <Project
                   tinaField={`${parentField}.items.${i}`}
-                  key={i}
+                  index={i}
                   data={block}
                 />
               );
