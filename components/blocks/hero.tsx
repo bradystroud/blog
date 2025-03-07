@@ -55,12 +55,12 @@ export const Hero = ({ data, parentField }) => {
             className="relative row-start-1 lg:col-span-2 flex justify-center"
           >
             <Image
-              className="!relative z-10 rounded-lg max-w-md xs:max-w-xs"
+              className="relative! z-10 rounded-lg max-w-md xs:max-w-xs"
               alt={data.image.alt}
               src={data.image.src}
               quality={100}
-              objectFit="fill"
-              fill
+              width={500}
+              height={500}
             />
           </div>
         )}

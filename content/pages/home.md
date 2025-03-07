@@ -1,5 +1,5 @@
 ---
-cannonicalUrl: 'https://bradystroud.dev'
+cannonicalUrl: "https://bradystroud.dev"
 title: Brady Stroud
 blocks:
   - tagline: Software Engineer
@@ -22,13 +22,13 @@ blocks:
         type: button
         icon: true
         link: /blogs
-      - label: Who's Brady?
+      - label: More about Brady
         type: link
         icon: false
         link: /about
     image:
       src: /uploads/brady-beach.jpg
-      alt: 'Brady in Penguin, Tasmania'
+      alt: "Brady in Penguin, Tasmania"
     color: default
     _template: hero
   - body: >
@@ -40,16 +40,15 @@ blocks:
         text: >-
           AI tool to generate timesheets based on daily activities e.g. sending
           emails, calendar appointments and calls
-        url: 'https://github.com/SSWConsulting/TimesheetGPT'
+        url: "https://github.com/SSWConsulting/TimesheetGPT"
       - title: ParmiPicks
         text: Chicken Parmi Review website. Built using TinaCMS and NextJS
-        url: 'https://github.com/bradystroud/ParmiPicks'
+        url: "https://github.com/bradystroud/ParmiPicks"
       - title: .NET  MAUI + Blazor Template
         text: >-
           Imagine writing your UI code once - then having it work on iOS,
           Android, MacOS, Windows, Web, and more! This template makes it easy to
           set up.
-        url: 'https://github.com/bradystroud/MauiBlazorTemplate'
+        url: "https://github.com/bradystroud/MauiBlazorTemplate"
     _template: projects
 ---
-

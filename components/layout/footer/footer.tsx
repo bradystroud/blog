@@ -20,7 +20,7 @@ export const Footer = ({ data }) => {
   };
 
   return (
-    <footer className={`bg-gradient-to-br ${footerColor.default}`}>
+    <footer className={`bg-linear-to-br ${footerColor.default}`}>
       <Container className="relative" size="small">
         <div className="flex justify-between items-center gap-6 flex-wrap">
           <p className="text-gray-300">
@@ -58,7 +58,7 @@ export const Footer = ({ data }) => {
           </div>
         </div>
         <div
-          className={`absolute h-1 bg-gradient-to-r from-transparent ${
+          className={`absolute h-1 bg-linear-to-r from-transparent ${
             data.color === "primary" ? `via-white` : `via-black dark:via-white`
           } to-transparent top-0 left-4 right-4 opacity-5`}
         ></div>

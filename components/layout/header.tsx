@@ -23,10 +23,10 @@ export const Header = ({ data }) => {
   }, [expanded]);
 
   return (
-    <div className={`relative overflow-hidden bg-gradient-to-b`}>
+    <div className={`relative overflow-hidden bg-linear-to-b`}>
       <Container size="custom" className="py-0 relative z-10 max-w-8xl">
         <nav className="flex items-center justify-between flex-wrap p-6">
-          <div className="flex items-center flex-shrink-0 text-white mr-6">
+          <div className="flex items-center shrink-0 text-white mr-6">
             <FaSearchLocation className="fill-current h-8 w-8 mr-2" />{" "}
             {/* Weird stuff happens when i removed the above line, so it stays */}
             <span className="font-semibold text-xl tracking-tight text-black ">
@@ -53,7 +53,7 @@ export const Header = ({ data }) => {
               expanded ? "" : "hidden md:flex"
             }`}
           >
-            <div className="text-sm lg:flex-grow mx-10">
+            <div className="text-sm lg:grow mx-10">
               {data.nav &&
                 data.nav.map((item, i) => {
                   const activeItem =
@@ -77,7 +77,7 @@ export const Header = ({ data }) => {
           </div>
         </nav>
         <div
-          className={`absolute h-1 bg-gradient-to-r from-transparent via-black to-transparent bottom-0 left-4 right-4 -z-1 opacity-5`}
+          className={`absolute h-1 bg-linear-to-r from-transparent via-black to-transparent bottom-0 left-4 right-4 -z-1 opacity-5`}
         />
       </Container>
     </div>

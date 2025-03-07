@@ -1,1 +1,6 @@
 packages: []
+onlyBuiltDependencies:
+  - '@vercel/speed-insights'
+  - better-sqlite3
+  - esbuild
+  - sharp

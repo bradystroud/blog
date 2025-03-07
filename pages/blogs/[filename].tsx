@@ -54,6 +54,10 @@ export default function Blog(
                   width={500}
                   height={500}
                   alt={data.blog.title}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
                 />
               </div>
             ) : (
