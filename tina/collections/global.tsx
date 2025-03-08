@@ -179,7 +179,7 @@ export const GlobalCollection: Collection = {
                   const [selected, setSelected] = useState<{
                     value: string;
                     label: string;
-                    icon: JSX.Element;
+                    icon: React.JSX.Element;
                   }>();
 
                   useEffect(() => {
