@@ -69,7 +69,7 @@ const defaultInstagramPost = {
   imageUrl: "/images/placeholder.jpg",
   caption: "This is a sample Instagram post caption",
   postUrl: "https://instagram.com/",
-  date: new Date().toISOString(),
+  date: "2025-01-01T12:00:00Z",
 };
 
 export const instagramPostsBlockSchema: Template = {
