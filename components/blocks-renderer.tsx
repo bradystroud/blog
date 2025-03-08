@@ -4,8 +4,17 @@ import { Content } from "./blocks/content";
 import { Features } from "./blocks/features";
 import { Hero } from "./blocks/hero";
 import { Projects } from "./blocks/projects";
+import { InstagramPosts } from "./blocks/instagramPosts";
 
 export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
+  const blockComponents = {
+    PageBlocksContent: Content,
+    PageBlocksHero: Hero,
+    PageBlocksFeatures: Features,
+    PageBlocksProjects: Projects,
+    PageBlocksInstagramPosts: InstagramPosts,
+  };
+
   return (
     <>
       {props.blocks
@@ -13,46 +22,14 @@ export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
             if (!block) {
               console.error("Block is undefined, skipping...");
             }
-            switch (block?.__typename) {
-              case "PageBlocksContent":
-                return (
-                  <div
-                    data-tinafield={`blocks.${i}`}
-                    key={i + block.__typename}
-                  >
-                    <Content data={block} parentField={`blocks.${i}`} />
-                  </div>
-                );
-              case "PageBlocksHero":
-                return (
-                  <div
-                    data-tinafield={`blocks.${i}`}
-                    key={i + block.__typename}
-                  >
-                    <Hero data={block} parentField={`blocks.${i}`} />
-                  </div>
-                );
-              case "PageBlocksFeatures":
-                return (
-                  <div
-                    data-tinafield={`blocks.${i}`}
-                    key={i + block.__typename}
-                  >
-                    <Features data={block} parentField={`blocks.${i}`} />
-                  </div>
-                );
-              case "PageBlocksProjects":
-                return (
-                  <div
-                    data-tinafield={`blocks.${i}`}
-                    key={i + block.__typename}
-                  >
-                    <Projects data={block} parentField={`blocks.${i}`} />
-                  </div>
-                );
-              default:
-                return null;
-            }
+            const BlockComponent = blockComponents[block?.__typename];
+            if (!BlockComponent) return null;
+
+            return (
+              <div data-tinafield={`blocks.${i}`} key={i + block.__typename}>
+                <BlockComponent data={block} parentField={`blocks.${i}`} />
+              </div>
+            );
           })
         : null}
     </>

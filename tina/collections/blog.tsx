@@ -57,7 +57,6 @@ export const BlogCollection: Collection = {
         //       label: tag,
         //     }));
 
-        //     console.log(tagOptions);
         //   };
 
         //   fetchTags();

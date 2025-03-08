@@ -3,8 +3,6 @@ import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
 
 export const Blogs = ({ data }) => {
-  console.log(data);
-
   return (
     <>
       {data.map((reviewData) => {

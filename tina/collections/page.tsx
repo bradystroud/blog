@@ -2,7 +2,7 @@ import { Collection } from "tinacms";
 import { contentBlockSchema } from "../../components/blocks/content";
 import { featureBlockSchema } from "../../components/blocks/features";
 import { heroBlockSchema } from "../../components/blocks/hero";
-import { instagramFeedSchema } from "../../components/blocks/instagramFeed";
+import { instagramPostsBlockSchema } from "../../components/blocks/instagramPosts";
 import { projectBlockSchema } from "../../components/blocks/projects";
 
 export const PageCollection: Collection = {
@@ -49,7 +49,7 @@ export const PageCollection: Collection = {
         projectBlockSchema,
         featureBlockSchema,
         contentBlockSchema,
-        instagramFeedSchema,
+        instagramPostsBlockSchema,
       ],
     },
   ],

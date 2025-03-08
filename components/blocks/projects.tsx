@@ -6,8 +6,6 @@ import { Template } from "tinacms";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 
 export const Project = ({ data, tinaField, index }) => {
-  console.log(index);
-
   return (
     <div
       key={index.toString()}

@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaFacebook,
-  FaGithub,
-  FaLinkedin,
-  FaTwitter,
-  FaYoutube,
-} from "react-icons/fa";
+import { FaFacebook, FaGithub, FaLinkedin, FaYoutube } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+
 import { Collection, wrapFieldsWithMeta } from "tinacms";
 import { getPlatformFromUrl } from "../../utils/getPlatformFromUrl";
 import { AiFillInstagram } from "react-icons/ai";
 
 const socialIconClasses = "h-7 w-auto";
 export const options = [
-  //TODO: Weird error when i try move this to a separate file
   {
     value: "twitter",
     label: "Twitter",
-    icon: <FaTwitter className={socialIconClasses} />,
+    icon: <FaXTwitter className={`${socialIconClasses}`} />,
   },
   {
     value: "instagram",

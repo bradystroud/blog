@@ -13,8 +13,6 @@ export const TagCollection: Collection = {
       label: "Tags",
       ui: {
         itemProps: (item) => {
-          console.log(item);
-
           return { label: item?.name };
         },
       },
