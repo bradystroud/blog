@@ -1,3 +1,4 @@
+import React from "react";
 import { Container } from "../../components/util/container";
 import { Section } from "../../components/util/section";
 import { client } from "../../tina/__generated__/client";

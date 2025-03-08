@@ -6,6 +6,7 @@ settings:
 
 overrides:
   final-form: 4.20.1
+  '@types/node': 22.13.10
 
 importers:
 
@@ -67,7 +68,7 @@ importers:
         specifier: ^3.0.6
         version: 3.0.6
       '@types/node':
-        specifier: ^22.13.10
+        specifier: 22.13.10
         version: 22.13.10
       '@types/react':
         specifier: ^19.0.10
@@ -4707,7 +4708,7 @@ packages:
     resolution: {integrity: sha512-2BNGOimxEz5hmjUG2FwoxCt5HN7BXdaWyFqEwxPTrJzVdABtrL4TiHTcsWSFAxPQ/tOnEaQEJh3qWq71QRMY+w==}
     engines: {node: '>=13'}
     peerDependencies:
-      '@types/node': '>=13'
+      '@types/node': 22.13.10
     peerDependenciesMeta:
       '@types/node':
         optional: true
@@ -6243,7 +6244,7 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
-      '@types/node': '>= 14'
+      '@types/node': 22.13.10
       less: '*'
       lightningcss: ^1.21.0
       sass: '*'
