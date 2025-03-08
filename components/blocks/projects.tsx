@@ -56,7 +56,7 @@ export const Projects = ({ data, parentField }) => {
         </div>
         <div className={`flex flex-wrap gap-x-10 gap-y-8 text-left`}>
           {data.items &&
-            data.items.map(function (block: any, i: number) {
+            data.items.map(function (block, i: number) {
               return (
                 <Project
                   tinaField={`${parentField}.items.${i}`}
