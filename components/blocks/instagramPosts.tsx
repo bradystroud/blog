@@ -13,18 +13,7 @@ export interface InstagramPost {
   date: string;
 }
 
-export interface InstagramPostsProps {
-  data: {
-    heading?: string;
-    posts?: InstagramPost[];
-  };
-  parentField?: string;
-}
-
-export const InstagramPosts = ({
-  data,
-  parentField = "",
-}: InstagramPostsProps) => {
+export const InstagramPosts = ({ data, parentField = "" }) => {
   const { posts = [], heading = "Recent Instagram Posts" } = data;
 
   if (!posts || posts.length === 0) {

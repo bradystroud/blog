@@ -19,9 +19,11 @@ export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
     <>
       {props.blocks
         ? props.blocks.map(function (block, i) {
-            if (!block) {
+            if (!block || !block.__typename) {
               console.error("Block is undefined, skipping...");
+              return null;
             }
+
             const BlockComponent = blockComponents[block?.__typename];
             if (!BlockComponent) return null;
 
