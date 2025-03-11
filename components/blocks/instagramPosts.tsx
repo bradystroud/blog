@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Section } from "../util/section";
 import { Container } from "../util/container";
 import { Template } from "tinacms";
