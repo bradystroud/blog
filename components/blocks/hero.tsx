@@ -58,9 +58,11 @@ export const Hero = ({ data, parentField }) => {
               className="relative! z-10 rounded-lg max-w-md xs:max-w-xs"
               alt={data.image.alt}
               src={data.image.src}
-              quality={100}
+              quality={80}
               width={500}
               height={500}
+              priority
+              placeholder="blur"
             />
           </div>
         )}
