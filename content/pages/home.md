@@ -22,7 +22,8 @@ blocks:
         icon: false
         link: /about
     image:
-      src: /uploads/brady-beach.jpg
+      src: /uploads/brady-beach.webp
+      blurSrc: /uploads/brady-beach-blur.webp
       alt: "Brady in Penguin, Tasmania"
     color: default
     _template: hero

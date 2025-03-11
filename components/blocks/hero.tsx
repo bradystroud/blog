@@ -62,7 +62,8 @@ export const Hero = ({ data, parentField }) => {
               width={500}
               height={500}
               priority
-              placeholder="blur"
+              placeholder={data.image.blurSrc ? "blur" : "empty"}
+              blurDataURL={data.image.blurSrc || undefined}
             />
           </div>
         )}
@@ -147,6 +148,11 @@ export const heroBlockSchema: Template = {
         {
           name: "src",
           label: "Image Source",
+          type: "image",
+        },
+        {
+          name: "blurSrc",
+          label: "Blur Image Source",
           type: "image",
         },
         {
