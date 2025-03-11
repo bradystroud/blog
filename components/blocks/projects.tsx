@@ -4,41 +4,43 @@ import React from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { Template } from "tinacms";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { HoverCard } from "../util/hoverCard";
 
 export const Project = ({ data, tinaField, index }) => {
   return (
     <div
       key={index.toString()}
       data-tinafield={tinaField}
-      className="flex-1 flex flex-col gap-6 text-center items-center lg:items-start lg:text-left max-w-xl mx-auto"
+      className="flex-1"
       style={{ flexBasis: "16rem" }}
     >
-      {data.title && (
-        <h3
-          data-tinafield={`${tinaField}.title`}
-          className="text-2xl font-semibold title-font"
-        >
-          {data.title}
-        </h3>
-      )}
-      {data.text && (
-        <p
-          data-tinafield={`${tinaField}.text`}
-          className="text-base opacity-80 leading-relaxed"
-        >
-          {data.text}
-        </p>
-      )}
-      {data.url && (
-        <a
-          href={data.url}
-          target="_blank"
-          data-tinafield={`${tinaField}.text`}
-          className="text-xs opacity-80 leading-relaxed inline-flex items-center hover:text-gray-900 hover:opacity-100"
-        >
-          <p className="mr-1">Check out {data.title}</p> <FaExternalLinkAlt />
-        </a>
-      )}
+      <HoverCard
+        href={data.url}
+        target="_blank"
+        className="flex flex-col gap-6 text-center items-center lg:items-start lg:text-left h-full p-6 rounded-lg relative"
+      >
+        {data.title && (
+          <h3
+            data-tinafield={`${tinaField}.title`}
+            className="text-2xl font-semibold title-font"
+          >
+            {data.title}
+          </h3>
+        )}
+        {data.text && (
+          <p
+            data-tinafield={`${tinaField}.text`}
+            className="text-base opacity-80 leading-relaxed"
+          >
+            {data.text}
+          </p>
+        )}
+        {data.url && (
+          <div className="mt-auto flex items-center text-xs opacity-80 leading-relaxed hover:text-gray-900 hover:opacity-100">
+            <p className="mr-1">View project</p> <FaExternalLinkAlt />
+          </div>
+        )}
+      </HoverCard>
     </div>
   );
 };

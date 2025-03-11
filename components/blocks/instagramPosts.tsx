@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Section } from "../util/section";
 import { Container } from "../util/container";
 import { Template } from "tinacms";
+import { HoverCard } from "../util/hoverCard";
 
 export interface InstagramPost {
   id: string;
@@ -31,15 +32,11 @@ export const InstagramPosts = ({ data, parentField = "" }) => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post, i) => (
-            <div
-              key={post.id}
-              data-tinafield={`${parentField}.posts.${i}`}
-              className="rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow"
-            >
-              <Link
+            <div key={post.id} data-tinafield={`${parentField}.posts.${i}`}>
+              <HoverCard
                 href={post.postUrl}
                 target="_blank"
-                rel="noopener noreferrer"
+                className="rounded-lg overflow-hidden"
               >
                 <div className="relative h-64 w-full">
                   <Image
@@ -55,7 +52,7 @@ export const InstagramPosts = ({ data, parentField = "" }) => {
                     {new Date(post.date).toLocaleDateString()}
                   </p>
                 </div>
-              </Link>
+              </HoverCard>
             </div>
           ))}
         </div>
