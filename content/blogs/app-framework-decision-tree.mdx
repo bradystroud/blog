@@ -1,0 +1,75 @@
+---
+cannonicalUrl: "https://bradystroud.dev/app-framework-decision-tree"
+coverImage: null
+title: The Right Mobile App Framework - Comprehensive Decision Tree
+date: 2025-03-12T07:30:00.000Z
+tags:
+  - .net-maui
+  - cross-platform
+  - mobile
+  - .net
+  - maui
+  - blazor
+  - flutter
+  - pwa
+---
+
+A colleague recently introduced me to [Expo](https://expo.dev). I read a bit about it and realized it was just another React Native wrapper. Similar to [React](https://react.dev), [React Native](https://reactnative.dev) is just a library with a bunch of frameworks built on top of it that all have their strengths and weaknesses.
+
+It got me thinking about all the different app frameworks, and which I would use in different scenarios. I've considered this topic before, so I decided to document my current thoughts on the mobile app framework landscape.
+
+![Figure: Mobile App framework decision tree](/uploads/mobile-app-decision-tree.webp)
+
+Let's look at some of the decision points in the diagram.
+
+## Do you need a mobile app?
+
+This is the most important question, and a lot of people get it wrong.
+Chances are, a mobile app is the wrong approach - Mobile app development is often slower and costlier than web development.
+
+Often, a web app or [PWA](https://web.dev/explore/progressive-web-apps) suffices.
+
+## Do you need a cross-platform app?
+
+I can only think of a few scenarios where you don't need a cross-platform app
+(e.g. You might build an iOS app that provides some functionality that's already available on Android)
+
+Even if you're building something to solve a problem that only applies to a single platform, you should still build a cross platform app to future proof.
+If you're going to go to the effort of building a mobile app, **do it right - use a cross platform framework**.
+
+## Existing skills or infrastructure - Make the most of what you already have
+
+This one is simple.
+
+- If you already have an awesome team of React Devs, use **React Native**
+- If you have a team of .NET devs, use **[.NET MAUI](https://dotnet.microsoft.com/en-us/apps/maui)**
+
+OR
+
+- If you already have a React site, Stick with it! [React Native](https://reactnative.dev) will come naturally to your team.
+- If you already have a .NET API or app, Stick with it! You might be able to reuse some of the code 🙂.
+
+## Performance needs
+
+If your app, does fancy stuff like 3D rendering, or needs to be super fast, Pick a framework that compiles to native code like [Flutter](https://flutter.dev) or [.NET MAUI](https://dotnet.microsoft.com/en-us/apps/maui) to get near-native performance. ⚡
+React Native frameworks Tend to have slower startup times and be less performant.
+
+## .NET MAUI - Blazor or XAML?
+
+I know some developers prefer XAML, but tend to lean toward Blazor for 2 reasons; Easy to build (IMO) and your UI code is reusable in a web app (Huge bonus if you need/already have a web app).
+Of course, there are Also benefits to XAML (E.g. compiles to native code), so do your research.
+
+## Summary of the options
+
+Here's a breakdown of each approach:
+
+- **[PWA](https://web.dev/explore/progressive-web-apps)**: Best if you don't need an app and want a simpler delivery
+- **Native (Swift/Kotlin)**: Best if you prefer working with platform-specific code and tools
+- **[.NET MAUI](https://dotnet.microsoft.com/en-us/apps/maui)**: High-performance apps with XAML and .NET infrastructure
+- **.NET MAUI Blazor**: Ideal if you prefer Blazor for UI rendering
+- **[Expo](https://expo.dev) or React Native**: Best if you prefer React and don't care about top-tier performance
+- **[Flutter](https://flutter.dev)**: Best for performance-centric apps with advanced UI components
+
+Picking the right mobile app framework depends on your requirements, previous experience and existing infrastructure. Whether you like React Native's flexibility, Flutter's speed, or .NET MAUI's familiarity, there's a framework for you. I hope this guide helps you decide. 
+
+Let me know your thoughts - Disagree with any of the decisions?
