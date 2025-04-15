@@ -19,8 +19,7 @@ Whole-page “Loading…” screens block the user even when 90% of the page is 
 
 | Approach                           | Upside             | Downside                                      |
 | ---------------------------------- | ------------------ | --------------------------------------------- |
-| Inline if checks                   | Simple             | Repetition + noisy markup                     |
-| Early-return in OnInitializedAsync | Keeps markup clean | Still blocks the whole component              |
+| Inline `if` checks                 | Simple             | Repetition + noisy markup                     |
 | Global “splash” page               | Easy to add        | Users stare at a spinner instead of usable UI |
 | Skeleton loaders                   | Great UX           | You still need the trigger logic everywhere   |
 
