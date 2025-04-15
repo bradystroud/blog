@@ -71,8 +71,11 @@ export default function Blog(
             </h1>
             <div
               data-tinafield="author"
-              className="flex items-center justify-center my-8"
+              className="flex flex-col items-center justify-center my-8"
             >
+              <div className="text-lg font-medium mb-2">
+                By Brady Stroud
+              </div>
               <p
                 data-tinafield="date"
                 className="text-base text-gray-400 group-hover:text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-150"

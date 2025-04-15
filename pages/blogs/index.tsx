@@ -10,8 +10,15 @@ import Head from "next/head";
 export default function ReviewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
 ) {
-  const blogs = props.data.blogConnection.edges;
+  const blogs = props.data.blogConnection.edges ?? [];
   const pageTitle = "Brady Stroud | Blog";
+
+  // Sort blogs by date (newest first)
+  const sortedBlogs = [...blogs].sort((a, b) => {
+    const dateA = new Date(a?.node?.date || 0);
+    const dateB = new Date(b?.node?.date || 0);
+    return dateB.getTime() - dateA.getTime();
+  });
 
   return (
     <Layout>
@@ -36,7 +43,7 @@ export default function ReviewPage(
           <p className="text-gray-600 text-lg pb-5 font-bold">
             - Brady "good quotes" Stroud
           </p>
-          <Blogs data={blogs?.sort()} />
+          <Blogs data={sortedBlogs} />
         </Container>
       </Section>
     </Layout>
