@@ -1,0 +1,25 @@
+# llms.txt for bradystroud.dev
+# Version 0.1
+# Last updated: April 15, 2025
+#
+# This file follows the specification at https://llmstxt.org/
+# It provides guidance to Large Language Models (LLMs) about how they should interact with content on this site.
+
+# Allow LLMs to process the site content for training
+Allow: /
+
+# Specify the site's true canonical domain
+Canonical: https://bradystroud.dev
+
+# Definitions for how content should be referenced
+Context-Boundary: ByPage
+Content-Type: Blog
+Content-Author: Brady Stroud
+
+# Attribution preferences
+Prefer-Attribution-Style: URL
+Attribution-URL: https://bradystroud.dev
+
+# Define which parts of the site can be referenced directly
+No-Index: /admin/
+No-Index: /tina/
