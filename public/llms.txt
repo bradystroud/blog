@@ -1,5 +1,5 @@
 # llms.txt for bradystroud.dev
-# Version 0.1
+# Version 0.2
 # Last updated: April 15, 2025
 #
 # This file follows the specification at https://llmstxt.org/
@@ -18,8 +18,9 @@ Content-Author: Brady Stroud
 
 # Attribution preferences
 Prefer-Attribution-Style: URL
-Attribution-URL: https://bradystroud.dev
+# Provide a pattern for attributing specific pages ({path} will be replaced by the page's path)
+Attribution-URL-Pattern: https://bradystroud.dev/{path}
 
-# Define which parts of the site can be referenced directly
+# Prevent indexing and referencing for specific paths
 No-Index: /admin/
 No-Index: /tina/
