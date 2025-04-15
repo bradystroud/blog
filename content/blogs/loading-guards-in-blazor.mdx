@@ -1,0 +1,149 @@
+---
+cannonicalUrl: "https://bradystroud.dev/blogs/loading-guards-in-blazor"
+title: 🚦 Loading Guards in Blazor - Stop Writing Null-Checks Everywhere
+coverImage: null
+date: 2025-04-15T10:00:00.000Z
+tags:
+  - blazor
+  - dotnet
+  - web-development
+  - ui
+  - patterns
+---
+
+When building UI with Blazor, every data-fetching async call leaves you sprinkling `if (data == null)` or `if (!IsLoaded)` around the page.It bloats markup, hides the real UI, and is easy to forget in a big component tree.
+
+Whole-page “Loading…” screens block the user even when 90% of the page is ready.
+
+## Typical work-arounds (and why they still hurt)
+
+| Approach                           | Upside             | Downside                                      |
+| ---------------------------------- | ------------------ | --------------------------------------------- |
+| Inline if checks                   | Simple             | Repetition + noisy markup                     |
+| Early-return in OnInitializedAsync | Keeps markup clean | Still blocks the whole component              |
+| Global “splash” page               | Easy to add        | Users stare at a spinner instead of usable UI |
+| Skeleton loaders                   | Great UX           | You still need the trigger logic everywhere   |
+
+## Loading Guard pattern
+
+A loading guard is a tiny wrapper component that:
+
+1. Receives a boolean telling it whether the data it guards is ready.
+2. Renders a placeholder (spinner, skeleton, etc.) until the flag is true.
+3. Then simply renders its ChildContent.
+
+No more null-checks, and you can wrap only the parts of the page that truly depend on a given slice of state.
+
+## Building a generic guard
+
+```razor
+<!-- LoadGuard.razor -->
+@if (When())
+{
+    @ChildContent
+}
+else
+{
+    @Placeholder
+}
+
+@code {
+    [Parameter] public required Func<bool> When { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public RenderFragment? Placeholder { get; set; }
+}
+```
+
+**Usage:**
+
+```razor
+<LoadGuard When="@(() => OrdersState.Value.IsLoaded)">
+    <OrdersTable />
+</LoadGuard>
+```
+
+Add a custom placeholder when you need more than a spinner:
+
+```razor
+<LoadGuard When="@(() => OrdersState.Value.IsLoaded)">
+    <OrdersTable />
+    <Placeholder>
+        <RadzenSkeleton Count="5" />
+    </Placeholder>
+</LoadGuard>
+```
+
+## A named, domain-specific guard (recommended)
+
+A named guard documents intent and avoids long lambda expressions in markup.
+
+```razor
+<!-- Frazor -->
+@inherits FluxorComponent
+
+@if (CoreUiState.Value.FinancialYearsLoaded)
+{
+    @ChildContent
+}
+else
+{
+    <RadzenProgressBar Mode="Indeterminate" />
+}
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; } = default!;
+    [Inject]  public required IState<CoreUiState> CoreUiState { get; set; }
+}
+```
+
+**Usage:**
+
+```razor
+<FinancialYearLoadingGuard>
+    <FinancialYearSelector />
+    <BalanceSheet />
+</FinancialYearLoadingGuard>
+```
+
+**Benefits:**
+
+- Self-documenting – any dev sees instantly what data is awaited.
+- Re-usable – drop it around any UI that needs the same slice of state.
+- Composable – nest multiple guards so pieces of the page light up independently.
+
+##
+
+These work great with Fluxor (but don't require it) - Fluxor gives you a single source of truth (`IState<T>`) and a clean `IsLoaded` flag—perfect for a guard.
+Without Fluxor, just expose a `bool IsReady` from your service and bind it to `When`.
+
+## Guidelines
+
+1. Guard only what depends on the data – not the whole page.
+2. Keep placeholders lightweight – a simple skeleton or spinner.
+3. Name guards by domain (`CustomerGuard`, `PermissionsGuard`) for readability.
+4. Compose guards – let unrelated sections load independently.
+5. Avoid business logic inside guards – they’re purely presentational.
+
+
+
+Loading guards cut boilerplate, improve perceived performance, and make your Blazor pages declarative:
+
+```razor
+<PermissionsGuard>
+    <DeleteButton />
+</PermissionsGuard>
+
+<WeatherGuard>
+    <ForecastChart />
+</WeatherGuard>
+```
+
+No more scattered null-checks—just clean, readable markup that lights up as data arrives. Happy guarding! 😎
+
+
+
+Loading guards are a simple but powerful pattern for improving reliability and user experience in Blazor apps. By preventing premature UI actions, you can avoid many common bugs and make your app feel more polished.
+
+---
+
+Have you used loading guards in your Blazor projects? Share your experience in the comments!
