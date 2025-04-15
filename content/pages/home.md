@@ -1,5 +1,5 @@
 ---
-cannonicalUrl: "https://bradystroud.dev"
+canonicalUrl: "https://bradystroud.dev"
 title: Brady Stroud
 blocks:
   - tagline: Software Engineer

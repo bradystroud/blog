@@ -13,7 +13,7 @@ export const BlogCollection: Collection = {
   fields: [
     {
       type: "string",
-      name: "cannonicalUrl",
+      name: "canonicalUrl",
       label: "Cannonical URL",
       required: true,
     },

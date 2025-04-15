@@ -41,7 +41,7 @@ export default function Blog(
           <title>{title}</title>
           <link
             rel="canonical"
-            href={data.blog.cannonicalUrl}
+            href={data.blog.canonicalUrl}
             key="canonical"
           />
           <meta property="og:title" content={title} />
