@@ -1,7 +1,7 @@
 {
   "name": "bradystroud",
   "version": "0.1.0",
-  "packageManager": "pnpm@10.7.1+sha256.dc514890ea719003cb7a57d6b21af24fdafadd9f171e7567eca1665d7cfcef76",
+  "packageManager": "pnpm@10.8.1+sha256.d8b2ebbc65cf02c349eca6b45c9640b910f16b6adebdb7b926e9db440e47cac7",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "tinacms dev -c \"next dev\"",
