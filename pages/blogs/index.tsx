@@ -37,11 +37,8 @@ export default function ReviewPage(
             <h1 className="text-4xl title-font mb-4">Blogs</h1>
           </div>
           <p className="text-gray-600 text-lg pb-5 italic">
-            "Learning from your mistakes is cool, but if you can learn from
-            other peoples mistakes, that's even cooler"
-          </p>
-          <p className="text-gray-600 text-lg pb-5 font-bold">
-            - Brady "good quotes" Stroud
+            Learning from your mistakes is cool, but if you can learn from
+            other peoples mistakes, that's even cooler. Thats why you should read my blogs - a collection of past learnings.
           </p>
           <Blogs data={sortedBlogs} />
         </Container>
