@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Brady Stroud Blog</title>
+    <link>https://bradystroud.dev</link>
+    <description>Latest posts from Brady Stroud</description>
+
+    <item>
+      <title>OpenAI Chat Model Cheat Sheet - Decoding the Chaos</title>
+      <link>https://bradystroud.dev/blogs/openai-model-cheatsheet</link>
+      <guid>https://bradystroud.dev/blogs/openai-model-cheatsheet</guid>
+      <pubDate>Thu, 17 Apr 2025 10:00:00 GMT</pubDate>
+      <description>OpenAI’s model names e. g., o4, 4o are confusing and change often. This guide is
+        my quick reference for picking the best model for any task.</description>
+    </item>
+    <item>
+      <title>RAID - Rapid AI Development</title>
+      <link>https://bradystroud.dev/blogs/raid</link>
+      <guid>https://bradystroud.dev/blogs/raid</guid>
+      <pubDate>Thu, 17 Apr 2025 10:00:00 GMT</pubDate>
+      <description>Normally, when building things, we need to balance quality and speed. You could
+        spend all day polishing and optimizing a single feature, or you could call it “good enough”
+        and move on to the next thing. When developers decide something is good enough but want to
+        improve it later, we call this “technical debt” and record it in the backlog for another
+        time.</description>
+    </item>
+    <item>
+      <title>🚦 Loading Guards in Blazor - Stop Writing Null-Checks Everywhere</title>
+      <link>https://bradystroud.dev/blogs/loading-guards-in-blazor</link>
+      <guid>https://bradystroud.dev/blogs/loading-guards-in-blazor</guid>
+      <pubDate>Tue, 15 Apr 2025 10:00:00 GMT</pubDate>
+      <description>When building UI with Blazor, every data-fetching async call leaves you
+        sprinkling if data == null or if IsLoaded around the page. It bloats markup, hides the real
+        UI, and is easy to forget in a big component tree.</description>
+    </item>
+    <item>
+      <title>The Right Mobile App Framework - Comprehensive Decision Tree</title>
+      <link>https://bradystroud.dev/blogs/app-framework-decision-tree</link>
+      <guid>https://bradystroud.dev/blogs/app-framework-decision-tree</guid>
+      <pubDate>Wed, 12 Mar 2025 07:30:00 GMT</pubDate>
+      <description>A colleague recently introduced me to Expohttps://expo. dev. I read a bit about
+        it and realized it was just another React Native wrapper. Similar to Reacthttps://react.
+        dev, React Nativehttps://reactnative. dev is just a library with a bunch of frameworks built
+        on top of it that all have their strengths and weaknesses.</description>
+    </item>
+    <item>
+      <title>Guide to professional Growth</title>
+      <link>https://bradystroud.dev/blogs/professional-growth</link>
+      <guid>https://bradystroud.dev/blogs/professional-growth</guid>
+      <pubDate>Sun, 28 Jul 2024 14:30:00 GMT</pubDate>
+      <description>I&#39;ve often given the same advice to friends, family, and colleagues, so I
+        decided to document it.</description>
+    </item>
+    <item>
+      <title>Cultral Exchange</title>
+      <link>https://bradystroud.dev/blogs/cultral-exchange</link>
+      <guid>https://bradystroud.dev/blogs/cultral-exchange</guid>
+      <pubDate>Wed, 27 Jul 2022 14:30:00 GMT</pubDate>
+      <description>TODO: Write about this post</description>
+    </item>
+    <item>
+      <title>.NET MAUI Blazor template — Build your UI once</title>
+      <link>https://bradystroud.dev/blogs/maui-blazor</link>
+      <guid>https://bradystroud.dev/blogs/maui-blazor</guid>
+      <pubDate>Wed, 27 Jul 2022 14:30:00 GMT</pubDate>
+      <description>Another post for Matt Goldman&#39;s . NET MAUI UI July . NET MAUI UI
+        Julyhttps://goforgoldman. com/2022/05/19/maui-ui-july. html</description>
+    </item>
+    <item>
+      <title>.NET MAUI vs Flutter — Multi-platform frameworks showdown</title>
+      <link>https://bradystroud.dev/blogs/maui-vs-flutter</link>
+      <guid>https://bradystroud.dev/blogs/maui-vs-flutter</guid>
+      <pubDate>Fri, 22 Jul 2022 14:30:00 GMT</pubDate>
+      <description>Here it is — my post for . NET MAUI July https://goforgoldman.
+        com/2022/05/19/maui-ui-july. html</description>
+    </item>
+  </channel>
+</rss>

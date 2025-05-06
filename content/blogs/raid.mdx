@@ -1,0 +1,70 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/raid"
+title: RAID - Rapid AI Development
+date: 2025-04-17T10:00:00.000Z
+tags:
+  - openai
+  - gpt
+  - ai
+  - raid
+coverImage: null
+---
+
+Normally, when building things, we need to balance quality and speed. You could spend all day polishing and optimizing a single feature, or you could call it “good enough” and move on to the next thing.
+When developers decide something is good enough but want to improve it later, we call this “technical debt” and record it in the backlog for another time.
+
+This “move fast, clean up later” approach can go even further with AI. AI chat completion can do many things for us that we’d normally have to write code for.
+
+Consider this example:
+
+Converting a CSV file to JSON.
+
+A dev might write a script to do this in a day, but with AI, we can build a prototype in an hour. The results will be good, but not always perfect—and since it’s AI, you can’t guarantee consistent behaviour. It’s also an expensive approach, since you’re paying for API calls to OpenAI.
+
+RAID approach:
+
+1. Build the feature using AI to do the heavy lifting.
+2. Log the tech debt in the backlog.
+3. Move on to the next feature.
+4. When time permits, go back and write reliable, optimized code to replace the use of AI.
+
+```python
+import openai
+import os
+import pandas as pd
+
+# Load the OpenAI API key from an environment variable
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# Load data from a CSV file
+data = pd.read_csv("data.csv")
+
+# Function to get OpenAI model's response
+def get_openai_response(prompt):
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7,
+        max_tokens=150
+    )
+    return response.choices[0].message['content']
+
+# Function to process the data (for demo purposes, just ask GPT-4 to reformat)
+def process_data(data):
+    data_json = data.to_json(orient="records")
+    prompt = f"Convert the following data to JSON: {data_json}"
+    response = get_openai_response(prompt)
+    # NOTE: In reality, always add error handling here!
+    return pd.read_json(response)
+
+processed_data = process_data(data)
+
+# Save processed data to a new CSV file
+processed_data.to_csv("processed_data.csv", index=False)
+```
+
+This code uses OpenAI's GPT-4 to process a CSV file. It loads the data, sends it to GPT-4 for processing, and saves the result. Obviously this is like using a fire hose to water a plant. It's not efficient.
+This approach will probably work most of the time, but not 100% and not robust against edge cases or large datasets. 
+
+Leverage AI for rapid development, but always track and pay down your technical debt over time. 🚀
+
