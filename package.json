@@ -14,7 +14,7 @@
   "devDependencies": {
     "@next/eslint-plugin-next": "^15.3.1",
     "@svgr/webpack": "^8.1.0",
-    "@tinacms/cli": "^1.9.5",
+    "@tinacms/cli": "^1.9.7",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "22.15.12",
     "@types/react": "^19.1.3",
