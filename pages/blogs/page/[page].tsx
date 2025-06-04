@@ -55,7 +55,7 @@ export default function BlogsPage(
 
 export const getStaticProps = async ({ params }) => {
   const tinaProps = await client.queries.blogPageQuery();
-  const totalPosts = tinaProps.data.blogConnection.edges.length;
+  const totalPosts = tinaProps?.data?.blogConnection?.edges?.length ?? 0;
   const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
   const currentPage = parseInt(params.page as string, 10);
 
@@ -74,7 +74,7 @@ export const getStaticProps = async ({ params }) => {
 
 export const getStaticPaths = async () => {
   const tinaProps = await client.queries.blogPageQuery();
-  const totalPosts = tinaProps.data.blogConnection.edges.length;
+  const totalPosts = tinaProps?.data?.blogConnection?.edges?.length ?? 0;
   const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
 
   const paths = Array.from({ length: totalPages - 1 }, (_, i) => ({
