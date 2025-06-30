@@ -50,9 +50,14 @@ blocks:
     _template: projects
   - heading: Recent Instagram Posts
     posts:
+      - id: 2025-vanuatu
+        imageUrl: /uploads/IMG_8945.jpeg
+        caption: "Vanuatu 2025 \U0001F1FB\U0001F1FA"
+        postUrl: "https://www.instagram.com/p/DIBTgvlB0F0"
+        date: 2025-04-04T14:00:00.000Z
       - id: 2023-24-vanuatu
         imageUrl: /uploads/IMG_8945.jpeg
-        caption: "Vanuatu \U0001F1FB\U0001F1FA"
+        caption: "Vanuatu 2024 \U0001F1FB\U0001F1FA"
         postUrl: "https://www.instagram.com/p/C1T54C9hEbD"
         date: 2023-12-25T14:00:00.000Z
       - id: canada
