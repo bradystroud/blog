@@ -51,7 +51,7 @@ blocks:
   - heading: Recent Instagram Posts
     posts:
       - id: 2025-vanuatu
-        imageUrl: /uploads/IMG_8945.jpeg
+        imageUrl: /uploads/IMG_5171.jpeg
         caption: "Vanuatu 2025 \U0001F1FB\U0001F1FA"
         postUrl: "https://www.instagram.com/p/DIBTgvlB0F0"
         date: 2025-04-04T14:00:00.000Z
