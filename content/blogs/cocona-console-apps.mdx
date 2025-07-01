@@ -1,0 +1,71 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/cocona-console-apps"
+title: Building Console Apps with Cocona
+date: 2025-07-01T10:00:00.000Z
+tags:
+  - cocona
+  - console
+  - cli
+  - .net
+coverImage: null
+---
+
+[Cocona](https://github.com/amybarga/cocona) is a small framework that simplifies building command line applications in .NET. It handles parsing, help pages, dependency injection and more, so you can focus on your app's logic.
+
+## Simple DI
+
+Cocona uses the same dependency injection (DI) abstractions as ASP.NET Core. Register your services with a builder and they are automatically injected into your command classes.
+
+```csharp
+var builder = CoconaApp.CreateBuilder();
+builder.Services.AddTransient<IMessageService, MessageService>();
+builder.Build().Run();
+```
+
+Now any constructor parameter or command method parameter marked with `[FromService]` will be resolved for you.
+
+## Commands and subcommands
+
+Commands are created from classes and methods. Each public method becomes a command. You can also group related commands using subcommands by applying the `[HasSubCommands]` attribute.
+
+```csharp
+[HasSubCommands(typeof(MathCommands))]
+public class Program
+{
+    public static void Main(string[] args) => CoconaApp.Run<Program>(args);
+
+    public void Hello(string name) => Console.WriteLine($"Hello {name}!");
+}
+
+public class MathCommands
+{
+    public void Add(int a, int b) => Console.WriteLine(a + b);
+}
+```
+
+Running `app math add 1 2` executes the `Add` command defined in `MathCommands`.
+
+## Options
+
+Method parameters become command arguments. Prefix a parameter with `[Option]` to make it an option instead. Cocona parses the command line and assigns values automatically.
+
+```csharp
+public void Hello([Option('t', Description = "Greeting text")] string text, string name)
+{
+    Console.WriteLine($"{text}, {name}!");
+}
+```
+
+You can call this with `app hello --text "Hi" Brady`.
+
+## Automatic help pages
+
+Cocona generates help output for you. Run the command with `--help` or `-h` to see available commands, options and descriptions.
+
+```
+app --help
+```
+
+The framework handles all the formatting and usage instructions so you don't need to maintain help text manually.
+
+Cocona keeps console apps small and maintainable while still providing powerful features. Give it a try the next time you need a quick command line tool.
