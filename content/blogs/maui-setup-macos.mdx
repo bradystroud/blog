@@ -1,0 +1,51 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/maui-setup-macos"
+title: ".NET MAUI setup on macOS — build once, run everywhere"
+date: 2025-07-01T10:00:00.000Z
+tags:
+  - .net-maui
+  - cross-platform
+  - macos
+  - setup
+coverImage: null
+---
+
+Getting started with .NET MAUI on macOS is straight forward once you know the tooling you need. With a single installation you can build and deploy to iOS, Android, macOS and even Windows through Mac Catalyst.
+
+## Install the .NET MAUI workload
+
+First install the [.NET SDK](https://dotnet.microsoft.com/download) via the installer or with Homebrew:
+
+```bash
+brew install dotnet-sdk
+```
+
+Then add the MAUI workload:
+
+```bash
+dotnet workload install maui
+```
+
+This command downloads all of the MAUI templates and the underlying platform libraries.
+
+## Install Xcode
+
+To build and run iOS or Mac Catalyst apps you need Apple’s build tools. Install [Xcode](https://developer.apple.com/xcode/) from the App Store and run it once to accept the license agreement. MAUI will use Xcode’s toolchain for compiling and deploying to iOS simulators or devices.
+
+## Install Android Studio
+
+MAUI relies on Android SDKs and emulators from Android Studio. Download [Android Studio](https://developer.android.com/studio) and during the setup, install the latest Android SDK and create a device emulator. The MAUI templates reference the Android tooling automatically once it is installed.
+
+## Ready to build
+
+After installing the MAUI workload, Xcode and Android Studio you are ready to create your first project:
+
+```bash
+dotnet new maui -n MyFirstMauiApp
+cd MyFirstMauiApp
+dotnet run
+```
+
+This launches a build for the default platform. You can target iOS or Android specifically using the `-f` flag (`net8.0-ios`, `net8.0-android`, etc.).
+
+That’s it! With these three components installed on macOS you can start building and debugging .NET MAUI applications across all supported platforms.
