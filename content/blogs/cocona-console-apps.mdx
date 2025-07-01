@@ -1,16 +1,18 @@
 ---
 canonicalUrl: "https://bradystroud.dev/blogs/cocona-console-apps"
-title: Building Console Apps with Cocona
+title: Cocona - Clean console apps in .NET
 date: 2025-07-01T10:00:00.000Z
 tags:
   - cocona
   - console
   - cli
   - .net
+  - architecture
 coverImage: null
 ---
 
 [Cocona](https://github.com/amybarga/cocona) is a small framework that simplifies building command line applications in .NET. It handles parsing, help pages, dependency injection and more, so you can focus on your app's logic.
+It makes it easy to build well-structured vertically sliced commands.
 
 ## Simple DI
 
@@ -18,11 +20,12 @@ Cocona uses the same dependency injection (DI) abstractions as ASP.NET Core. Reg
 
 ```csharp
 var builder = CoconaApp.CreateBuilder();
+
 builder.Services.AddTransient<IMessageService, MessageService>();
+builder.Services.AddSingleton<TodoService>();
+
 builder.Build().Run();
 ```
-
-Now any constructor parameter or command method parameter marked with `[FromService]` will be resolved for you.
 
 ## Commands and subcommands
 
@@ -66,6 +69,4 @@ Cocona generates help output for you. Run the command with `--help` or `-h` to s
 app --help
 ```
 
-The framework handles all the formatting and usage instructions so you don't need to maintain help text manually.
-
-Cocona keeps console apps small and maintainable while still providing powerful features. Give it a try the next time you need a quick command line tool.
+Give Cocona a go the next time you need a quick command line tool.
