@@ -33,21 +33,23 @@ const NextBreadcrumb = () => {
               <FaHome className="mt-1" />
             </Link>
           </li>
-          {pathNames.length > 0 && separator}
           {pathNames.map((link, index) => {
             const href = `/${pathNames.slice(0, index + 1).join("/")}`;
             const itemClasses =
               paths === href
                 ? "opacity-70 cursor-default"
                 : "hover:opacity-70 hover:underline";
+
             return (
               <React.Fragment key={index}>
+                <li aria-hidden="true" className="mx-2">
+                  /
+                </li>
                 <li className="mx-2">
                   <Link className={itemClasses} href={href}>
                     {cleanUpLink(link)}
                   </Link>
                 </li>
-                {pathNames.length !== index + 1 && separator}
               </React.Fragment>
             );
           })}
