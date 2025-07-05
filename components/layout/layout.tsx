@@ -19,10 +19,10 @@ export const Layout = ({ data = layoutData, children }) => {
       </Head>
       <div suppressHydrationWarning>
         <Header data={data?.header} />
-        <div className="flex-1 text-gray-80 flex flex-col">
+        <main role="main" className="flex-1 text-gray-800 flex flex-col">
           <NextBreadcrumb />
           {children}
-        </div>
+        </main>
         <Footer
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           data={data?.footer}
