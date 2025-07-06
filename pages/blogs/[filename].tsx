@@ -39,11 +39,7 @@ export default function Blog(
       <Layout data={data.global as any}>
         <Head>
           <title>{title}</title>
-          <link
-            rel="canonical"
-            href={data.blog.canonicalUrl}
-            key="canonical"
-          />
+          <link rel="canonical" href={data.blog.canonicalUrl} key="canonical" />
           <meta property="og:title" content={title} />
         </Head>
         <Section className="flex-1">
@@ -73,9 +69,7 @@ export default function Blog(
               data-tinafield="author"
               className="flex flex-col items-center justify-center my-8"
             >
-              <div className="text-lg font-medium mb-2">
-                By Brady Stroud
-              </div>
+              <div className="text-lg font-medium mb-2">By Brady Stroud</div>
               <p
                 data-tinafield="date"
                 className="text-base text-gray-400 group-hover:text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-150"

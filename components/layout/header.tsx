@@ -30,7 +30,7 @@ export const Header = ({ data }) => {
             <FaSearchLocation className="fill-current h-8 w-8 mr-2" />{" "}
             {/* Weird stuff happens when i removed the above line, so it stays */}
             <span className="font-semibold text-xl tracking-tight text-black ">
-              <Link href="/" className="flex">
+              <Link href="/" className="flex" legacyBehavior>
                 <FaLaptopCode className="fill-current h-8 w-8 mr-2" />
                 Brady Stroud
               </Link>
@@ -68,7 +68,7 @@ export const Header = ({ data }) => {
                       className={`block mt-4 md:inline-block md:mt-0 hover:text-blue-600 mr-4 ${
                         activeItem ? "opacity-50" : ""
                       }`}
-                    >
+                      legacyBehavior>
                       {item.label}
                     </Link>
                   );
