@@ -23,7 +23,6 @@ function cleanUpLink(link: string) {
 const NextBreadcrumb = () => {
   const paths = usePathname();
   const pathNames = paths.split("/").filter((path) => path);
-  const separator = <span className="mx-2">/</span>;
   return (pathNames.length > 0 && (<div className="mx-20">
     <ul className="flex py-5">
       <li className="hover:opacity-70 hover:underline mx-2">
