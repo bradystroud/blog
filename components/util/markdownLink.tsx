@@ -10,7 +10,7 @@ export const MarkdownLink: React.FC<MarkdownLinkProps> = ({ url = "", children, 
   const isExternal = /^https?:\/\//i.test(url);
   if (isExternal) {
     return (
-      <a href={url} target="_blank" rel="nofollow" {...rest}>
+      <a href={url} target="_blank" rel="nofollow noopener" {...rest}>
         {children}
       </a>
     );
