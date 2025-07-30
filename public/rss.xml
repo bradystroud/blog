@@ -6,6 +6,20 @@
    <description>Latest posts from Brady Stroud</description>
    
    <item>
+   <title>Cocona - Clean console apps in .NET</title>
+   <link>https://bradystroud.dev/blogs/cocona-console-apps</link>
+   <guid>https://bradystroud.dev/blogs/cocona-console-apps</guid>
+   <pubDate>Tue, 01 Jul 2025 10:00:00 GMT</pubDate>
+   <description>Coconahttps://github. com/amybarga/cocona is a small framework that simplifies building command line applications in . NET. It handles parsing, help pages, dependency injection and more, so you can focus on your app&#39;s logic. It makes it easy to build well-structured vertically sliced commands.</description>
+   </item>
+   <item>
+   <title>.NET MAUI setup on macOS — build once, run everywhere</title>
+   <link>https://bradystroud.dev/blogs/maui-setup-macos</link>
+   <guid>https://bradystroud.dev/blogs/maui-setup-macos</guid>
+   <pubDate>Tue, 01 Jul 2025 10:00:00 GMT</pubDate>
+   <description>Getting started with . NET MAUI on macOS is straight forward once you know the tooling you need. With a single installation you can build and debug on iOS, Android, macOS.</description>
+   </item>
+   <item>
    <title>OpenAI Chat Model Cheat Sheet - Decoding the Chaos</title>
    <link>https://bradystroud.dev/blogs/openai-model-cheatsheet</link>
    <guid>https://bradystroud.dev/blogs/openai-model-cheatsheet</guid>
@@ -41,11 +55,11 @@
    <description>I&#39;ve often given the same advice to friends, family, and colleagues, so I decided to document it.</description>
    </item>
    <item>
-   <title>Cultral Exchange</title>
-   <link>https://bradystroud.dev/blogs/cultral-exchange</link>
-   <guid>https://bradystroud.dev/blogs/cultral-exchange</guid>
-   <pubDate>Wed, 27 Jul 2022 14:30:00 GMT</pubDate>
-   <description>TODO: Write about this post</description>
+   <title>Cultural Exchange - 2 Months with SSW France</title>
+   <link>https://bradystroud.dev/blogs/cultural-exchange</link>
+   <guid>https://bradystroud.dev/blogs/cultural-exchange</guid>
+   <pubDate>Sat, 27 Jul 2024 14:30:00 GMT</pubDate>
+   <description>In 2024 I had the opportunity to spend 2 months living and working in France.</description>
    </item>
    <item>
    <title>.NET MAUI Blazor template — Build your UI once</title>
