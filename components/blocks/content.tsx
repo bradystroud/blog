@@ -2,6 +2,7 @@ import React from "react";
 import { Container } from "../util/container";
 import { Section } from "../util/section";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { MarkdownLink } from "../util/markdownLink";
 import { Template } from "tinacms";
 
 export const Content = ({ data, parentField = "" }) => {
@@ -15,7 +16,7 @@ export const Content = ({ data, parentField = "" }) => {
         size="large"
         width="medium"
       >
-        <TinaMarkdown content={data.body} />
+        <TinaMarkdown content={data.body} components={{ a: MarkdownLink }} />
       </Container>
     </Section>
   );

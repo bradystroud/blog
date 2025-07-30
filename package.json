@@ -14,13 +14,13 @@
   "devDependencies": {
     "@next/eslint-plugin-next": "^15.3.5",
     "@svgr/webpack": "^8.1.0",
-    "@tinacms/cli": "^1.9.9",
+    "@tinacms/cli": "^1.10.1",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "24.0.10",
     "@types/react": "^19.1.8",
     "@types/styled-components": "^5.1.34",
-    "@typescript-eslint/eslint-plugin": "^8.35.1",
-    "@typescript-eslint/parser": "^8.35.1",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
     "eslint": "9.30.1",
     "next-sitemap": "^4.2.3",
     "postcss": "^8.5.6",
@@ -41,12 +41,11 @@
     "react-icons": "^5.5.0",
     "sharp": "^0.34.2",
     "tailwindcss": "^4.1.11",
-    "tinacms": "^2.7.9",
+    "tinacms": "^2.8.1",
     "typescript": "^5.8.3"
   },
   "resolutions": {
-    "final-form": "4.20.1",
-    "@types/node": "22.13.10"
+    "final-form": "4.20.1"
   },
   "pnpm": {
     "overrides": {

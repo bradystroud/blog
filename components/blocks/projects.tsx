@@ -4,6 +4,7 @@ import React from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { Template } from "tinacms";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { MarkdownLink } from "../util/markdownLink";
 import { HoverCard } from "../util/hoverCard";
 
 export const Project = ({ data, tinaField, index }) => {
@@ -54,6 +55,7 @@ export const Projects = ({ data, parentField }) => {
           <TinaMarkdown
             content={data.body}
             data-tinafield={`${parentField}.body`}
+            components={{ a: MarkdownLink }}
           />
         </div>
         <div className={`flex flex-wrap gap-x-10 gap-y-8 text-left`}>

@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const matter = require('gray-matter');
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
 
 const siteUrl = 'https://bradystroud.dev';
 const blogsDir = path.resolve(process.cwd(), 'content', 'blogs');
@@ -29,13 +29,14 @@ const items: RssItem[] = files.flatMap(file => {
 
     const slug = file.replace(/\.mdx?$/, '');
 
-    // description: front‑matter excerpt → description → first paragraph
+    // description: front-matter excerpt -> description -> first paragraph
     const desc = (data.excerpt ?? data.description ?? '') ||
         content.split(/\r?\n\r?\n/)            // paragraphs
             .find(p => p.trim())!                // first non‑empty
             .replace(/\n+/g, ' ')
             .replace(/\.([A-Za-z])/g, '. $1')    // '.I' → '. I'
-            .replace(/[#*_`>\[\]\(\)!]/g, '')    // strip md
+            // eslint-disable-next-line no-useless-escape
+            .replace(/[#*_`>\[\]()!]/g, '')    // strip md
             .replace(/\s+/g, ' ')
             .trim();
 
@@ -50,9 +51,9 @@ const items: RssItem[] = files.flatMap(file => {
 const rss = `<?xml version="1.0" encoding="UTF-8"?>
    <rss version="2.0">
    <channel>
-   <title>Brady Stroud Blog</title>
+   <title>Brady Stroud Blog</title>
    <link>${siteUrl}</link>
-   <description>Latest posts from Brady Stroud</description>
+   <description>Latest posts from Brady Stroud</description>
    ${items
         .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
         .map(i => `

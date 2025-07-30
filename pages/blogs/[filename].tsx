@@ -5,6 +5,7 @@ import { Layout } from "../../components/layout";
 import { Section } from "../../components/util/section";
 import { Container } from "../../components/util/container";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { MarkdownLink } from "../../components/util/markdownLink";
 import { InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Head from "next/head";
@@ -80,7 +81,10 @@ export default function Blog(
           </Container>
           <Container className={`flex-1 pt-4`} width="small" size="large">
             <div className="prose dark:prose-dark w-full max-w-none">
-              <TinaMarkdown content={data.blog._body} />
+              <TinaMarkdown
+                content={data.blog._body}
+                components={{ a: MarkdownLink }}
+              />
             </div>
             <div>
               <Giscus
