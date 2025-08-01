@@ -3,6 +3,7 @@ import { Actions } from "../util/actions";
 import { Container } from "../util/container";
 import { Section } from "../util/section";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { Prism } from "tinacms/dist/rich-text/prism";
 import type { Template } from "tinacms";
 import Image from "next/image";
 
@@ -38,7 +39,10 @@ export const Hero = ({ data, parentField }) => {
                 data.color === "primary" ? `prose-primary` : `dark:prose-dark`
               }`}
             >
-              <TinaMarkdown content={data.text} />
+              <TinaMarkdown
+                content={data.text}
+                components={{ code_block: Prism }}
+              />
             </div>
           )}
           {data.actions && (
