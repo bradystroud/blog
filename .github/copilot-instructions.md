@@ -89,3 +89,10 @@ When working on this project, prioritize:
 3. Performance optimization
 4. SEO best practices
 5. Clean, maintainable code structure
+
+## Copilot Memory
+
+Your memory for this project is stored in `.github/copilot-memory.md`. It contains things that you have learned about the project. Refer to the memory file before making changes.
+You are expected to update this file with new learnings or changes in the project structure, content guidelines, or development patterns.
+Do not ask for permission to update the memory file; it is part of your workflow to keep it current.
+Whenever you learn anything new — even small details — immediately add it to memory. Don’t wait for confirmation.
