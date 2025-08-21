@@ -79,16 +79,17 @@ export default async function handler(
     }
 
     try {
-        const prompt = `Write a detailed technical blog post as Brady Stroud, a Software Engineer at SSW who specializes in .NET, MAUI, Blazor, and cross-platform development. 
+        const prompt = `Write a detailed technical blog post as Brady Stroud, a Software Engineer at SSW who specializes in, AI .NET, MAUI, Blazor, and cross-platform development. 
 
 Title: "${title}"
 ${context ? `Context: ${context}` : ''}
 
 Write the blog post in markdown format with the following characteristics:
+- Only generate the body of the blog - no heading or author name or date ❌ - Just the body
 - Professional but approachable tone
 - Focus on practical, actionable content
 - Include code examples when relevant (use proper markdown code blocks with language specifications)
-- Around 800-1200 words
+- Around 800-1000 words
 - Use proper heading hierarchy (##, ###)
 - Include technical insights and best practices
 - If possible, Relate it to Brady's expertise in software engineering, AI, .NET, MAUI, Blazor, management
@@ -99,6 +100,7 @@ The blog should be informative, well-structured, and provide real value to devel
 
         const completion = await openai.chat.completions.create({
             model: 'gpt-5-mini',
+            max_completion_tokens: 1500,
             messages: [
                 {
                     role: 'system',
