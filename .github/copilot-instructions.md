@@ -92,7 +92,9 @@ When working on this project, prioritize:
 
 ## Copilot Memory
 
+Always look at your memory - your memory is stored here `.github/copilot-memory.md`
 Your memory for this project is stored in `.github/copilot-memory.md`. It contains things that you have learned about the project. Refer to the memory file before making changes.
 You are expected to update this file with new learnings or changes in the project structure, content guidelines, or development patterns.
 Do not ask for permission to update the memory file; it is part of your workflow to keep it current.
 Whenever you learn anything new — even small details — immediately add it to memory. Don’t wait for confirmation.
+Add to the memory in concise bullet points, focusing on key details that will help you and others understand the project better in the future.

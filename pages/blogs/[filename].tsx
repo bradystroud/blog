@@ -9,10 +9,16 @@ import { InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Head from "next/head";
 import Giscus from "@giscus/react";
+import AIBlog from "../../components/ai-blog";
 
 export default function Blog(
   props: InferGetStaticPropsType<typeof getStaticProps>
 ) {
+  // If no blog data exists, render AI-generated content
+  if (!props.data?.blog && props.filename) {
+    return <AIBlog title={props.filename} globalData={props.data?.global} />;
+  }
+
   const { data } = useTina({
     query: props.query,
     variables: props.variables,
@@ -24,7 +30,7 @@ export default function Blog(
     const date = new Date(data.blog.date);
 
     if (!isNaN(date.getTime())) {
-      formattedDate = date.toLocaleDateString("en-US", {
+      formattedDate = date.toLocaleDateString("en-AU", {
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -112,15 +118,50 @@ export default function Blog(
 }
 
 export const getStaticProps = async ({ params }) => {
-  const tinaProps = await client.queries.blogQuery({
-    relativePath: `${params.filename}.mdx`,
-  });
-  return {
-    props: {
-      ...tinaProps,
-      __filename,
-    },
-  };
+  try {
+    const tinaProps = await client.queries.blogQuery({
+      relativePath: `${params.filename}.mdx`,
+    });
+    return {
+      props: {
+        ...tinaProps,
+        filename: params.filename,
+        __filename,
+      },
+    };
+  } catch (error) {
+    // Blog doesn't exist, but we'll handle it with AI generation
+    // Still fetch global data for layout
+    try {
+      const globalResponse = await client.queries.pageQuery();
+      return {
+        props: {
+          data: {
+            global: globalResponse.data.global,
+            blog: null,
+          },
+          filename: params.filename,
+          query: '',
+          variables: {},
+          __filename,
+        },
+      };
+    } catch (globalError) {
+      // Fallback if even global data fails
+      return {
+        props: {
+          data: {
+            global: null,
+            blog: null,
+          },
+          filename: params.filename,
+          query: '',
+          variables: {},
+          __filename,
+        },
+      };
+    }
+  }
 };
 
 export const getStaticPaths = async () => {
