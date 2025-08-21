@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { AIBlogResponse, AIBlogErrorResponse, AIBlogRequest } from '../../types/ai-blog';
+import { getCachedContent, setCachedContent, clearExpiredCache } from '../../utils/ai-blog-cache';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -50,14 +51,31 @@ export default async function handler(
     return res.status(400).json({ error: 'Title is required' });
   }
 
+  // Clean up expired cache entries periodically
+  clearExpiredCache();
+
+  // Check cache first
+  const cachedContent = getCachedContent(title);
+  if (cachedContent) {
+    return res.status(200).json({
+      ...cachedContent,
+      cached: true, // Add indicator that this was cached
+    } as AIBlogResponse & { cached: boolean });
+  }
+
   // If no OpenAI API key, return fallback content
   if (!process.env.OPENAI_API_KEY) {
-    return res.status(200).json({
+    const fallbackResponse: AIBlogResponse = {
       content: getFallbackContent(title),
       generated: false,
       fallback: true,
       timestamp: new Date().toISOString(),
-    });
+    };
+    
+    // Cache the fallback content
+    setCachedContent(title, fallbackResponse);
+    
+    return res.status(200).json(fallbackResponse);
   }
 
   try {
@@ -99,31 +117,46 @@ The blog should be informative, well-structured, and provide real value to devel
 
     if (!generatedContent) {
       // Fallback to static content if AI generation fails
-      return res.status(200).json({
+      const fallbackResponse: AIBlogResponse = {
         content: getFallbackContent(title),
         generated: false,
         fallback: true,
         timestamp: new Date().toISOString(),
-      });
+      };
+      
+      // Cache the fallback content
+      setCachedContent(title, fallbackResponse);
+      
+      return res.status(200).json(fallbackResponse);
     }
 
-    return res.status(200).json({
+    const successResponse: AIBlogResponse = {
       content: generatedContent,
       generated: true,
       fallback: false,
       timestamp: new Date().toISOString(),
-    });
+    };
+    
+    // Cache the successful response
+    setCachedContent(title, successResponse);
+
+    return res.status(200).json(successResponse);
 
   } catch (error) {
     console.error('Error generating blog content:', error);
     
     // Return fallback content instead of error
-    return res.status(200).json({
+    const fallbackResponse: AIBlogResponse = {
       content: getFallbackContent(title),
       generated: false,
       fallback: true,
       error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString(),
-    });
+    };
+    
+    // Cache the fallback content
+    setCachedContent(title, fallbackResponse);
+    
+    return res.status(200).json(fallbackResponse);
   }
 }

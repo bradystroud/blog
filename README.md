@@ -27,4 +27,24 @@ The site includes an intelligent fallback for non-existent blog posts. Instead o
 3. Displays the generated content with clear indication that it's AI-generated
 4. Maintains the same styling and layout as regular blog posts
 
+### Caching System
+
+The AI blog generation includes a robust caching system for optimal performance:
+
+**Server-Side Caching:**
+- Generated content is cached to `.ai-blog-cache/` directory
+- Cache expires after 24 hours
+- Automatic cleanup of expired cache entries
+- Reduces API calls and improves response times
+
+**Client-Side Caching:**
+- Uses localStorage for 2-hour client-side cache
+- Instant loading for previously viewed AI-generated content
+- Graceful fallback if localStorage is unavailable
+
+**Cache Management:**
+- API endpoint `/api/cache-management` for clearing cache
+- POST requests with actions: `clear-all` or `clear-expired`
+- Cache status indicator shown to users (⚡ symbol)
+
 This feature requires an `OPENAI_API_KEY` environment variable to be set.

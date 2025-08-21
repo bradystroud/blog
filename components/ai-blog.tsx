@@ -57,15 +57,69 @@ export default function AIBlog({ title, globalData }: AIBlogProps) {
   const [error, setError] = useState<string>('');
   const [isAIGenerated, setIsAIGenerated] = useState(false);
   const [isFallback, setIsFallback] = useState(false);
+  const [isCached, setIsCached] = useState(false);
 
   useEffect(() => {
     generateBlogContent();
   }, [title]);
 
+  // Client-side cache key
+  const getCacheKey = (title: string) => `ai-blog-${title}`;
+  const CACHE_EXPIRY_HOURS = 2; // Client cache expires after 2 hours
+
+  // Check client-side cache
+  const getClientCache = (title: string) => {
+    try {
+      const cacheKey = getCacheKey(title);
+      const cached = localStorage.getItem(cacheKey);
+      if (!cached) return null;
+
+      const parsedCache = JSON.parse(cached);
+      const expiresAt = parsedCache.expiresAt;
+      
+      // Check if expired
+      if (Date.now() > expiresAt) {
+        localStorage.removeItem(cacheKey);
+        return null;
+      }
+
+      return parsedCache;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  // Set client-side cache
+  const setClientCache = (title: string, data: any) => {
+    try {
+      const cacheKey = getCacheKey(title);
+      const cacheData = {
+        ...data,
+        expiresAt: Date.now() + (CACHE_EXPIRY_HOURS * 60 * 60 * 1000),
+        clientCached: true,
+      };
+      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+    } catch (error) {
+      // localStorage might be full or disabled
+      console.warn('Could not cache to localStorage:', error);
+    }
+  };
+
   const generateBlogContent = async () => {
     try {
       setLoading(true);
       setError('');
+
+      // Check client-side cache first
+      const clientCached = getClientCache(title);
+      if (clientCached) {
+        setContent(clientCached.content);
+        setIsAIGenerated(clientCached.generated);
+        setIsFallback(clientCached.fallback);
+        setIsCached(true);
+        setLoading(false);
+        return;
+      }
 
       // Extract potential keywords from the title for context
       const context = `This appears to be about ${title.replace(/-/g, ' ')}. Please write content that would be relevant for someone searching for this topic.`;
@@ -89,6 +143,10 @@ export default function AIBlog({ title, globalData }: AIBlogProps) {
       setContent(data.content);
       setIsAIGenerated(data.generated);
       setIsFallback(data.fallback);
+      setIsCached(data.cached || false);
+
+      // Cache the response on client-side
+      setClientCache(title, data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate content');
     } finally {
@@ -213,17 +271,24 @@ export default function AIBlog({ title, globalData }: AIBlogProps) {
                 )}
               </div>
               <div className="ml-3">
-                {isFallback ? (
-                  <p className="text-sm text-yellow-700 dark:text-yellow-300">
-                    <strong>Blog Post Not Found:</strong> This content doesn't exist yet, but I've provided some information that might be helpful. 
-                    If you'd like me to write about this topic, let me know!
-                  </p>
-                ) : (
-                  <p className="text-sm text-blue-700 dark:text-blue-300">
-                    <strong>AI-Generated Content:</strong> This blog post was automatically generated based on your search. 
-                    While I don't have a specific post on this topic yet, I've created this content to help answer your questions.
-                  </p>
-                )}
+                <div className="flex flex-col">
+                  {isFallback ? (
+                    <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                      <strong>Blog Post Not Found:</strong> This content doesn't exist yet, but I've provided some information that might be helpful. 
+                      If you'd like me to write about this topic, let me know!
+                    </p>
+                  ) : (
+                    <p className="text-sm text-blue-700 dark:text-blue-300">
+                      <strong>AI-Generated Content:</strong> This blog post was automatically generated based on your search. 
+                      While I don't have a specific post on this topic yet, I've created this content to help answer your questions.
+                    </p>
+                  )}
+                  {isCached && (
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      ⚡ Loaded from cache for faster performance
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
