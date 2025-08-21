@@ -111,7 +111,7 @@ export default function AIBlog({ title, globalData }: AIBlogProps) {
 
       return parsedCache;
     } catch (error) {
-      console.warn('Failed to get client cache:', error);
+      console.warn("Failed to get client cache:", error);
       return null;
     }
   };

@@ -8,3 +8,5 @@ These are important details about the project that you maintain and refer to whe
 - Client-side caching uses localStorage with 2-hour expiry for faster subsequent loads
 - Cache management API available at `/api/cache-management` for clearing cache
 - AI blog component shows cache status to users with ⚡ indicator
+- Blog pages use `fallback: true` with ISR revalidation for deployment resilience
+- Graceful fallback handling when TinaCMS is unavailable in production

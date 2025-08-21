@@ -10,10 +10,33 @@ import Image from "next/image";
 import Head from "next/head";
 import Giscus from "@giscus/react";
 import AIBlog from "../../components/ai-blog";
+import { useRouter } from "next/router";
 
 export default function Blog(
   props: InferGetStaticPropsType<typeof getStaticProps>
 ) {
+  const router = useRouter();
+
+  // If the page is being generated (fallback), show loading
+  if (router.isFallback) {
+    return (
+      <Layout>
+        <Section className="flex-1">
+          <Container width="small" className="flex-1 pb-2" size="large">
+            <div className="flex justify-center items-center min-h-[400px]">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-lg text-gray-600 dark:text-gray-400">
+                  Loading...
+                </p>
+              </div>
+            </div>
+          </Container>
+        </Section>
+      </Layout>
+    );
+  }
+
   // If no blog data exists, render AI-generated content
   if (!props.data?.blog && props.filename) {
     return <AIBlog title={props.filename} globalData={props.data?.global} />;
@@ -130,9 +153,9 @@ export const getStaticProps = async ({ params }) => {
       },
     };
   } catch (error) {
-    console.error(error);
-    // Blog doesn't exist, but we'll handle it with AI generation
-    // Still fetch global data for layout
+    console.error("Blog query failed:", error);
+    // Blog doesn't exist or TinaCMS is unavailable, handle with AI generation
+    // Try to fetch global data for layout, but don't fail if it's unavailable
     try {
       const globalResponse = await client.queries.pageQuery();
       return {
@@ -146,10 +169,12 @@ export const getStaticProps = async ({ params }) => {
           variables: {},
           __filename,
         },
+        // Add revalidation for ISR
+        revalidate: 60, // Revalidate every minute to retry TinaCMS connection
       };
     } catch (globalError) {
-      console.error("Error fetching global data:", globalError);
-      // Fallback if even global data fails
+      console.error("Global data fetch also failed:", globalError);
+      // Complete fallback - no TinaCMS data available
       return {
         props: {
           data: {
@@ -161,17 +186,29 @@ export const getStaticProps = async ({ params }) => {
           variables: {},
           __filename,
         },
+        // Shorter revalidation when no data is available
+        revalidate: 30,
       };
     }
   }
 };
 
 export const getStaticPaths = async () => {
-  const blogListData = await client.queries.blogConnection();
-  return {
-    paths: blogListData?.data?.blogConnection?.edges?.map((post) => ({
-      params: { filename: post?.node?._sys.filename },
-    })),
-    fallback: "blocking",
-  };
+  try {
+    const blogListData = await client.queries.blogConnection();
+    return {
+      paths:
+        blogListData?.data?.blogConnection?.edges?.map((post) => ({
+          params: { filename: post?.node?._sys.filename },
+        })) || [],
+      fallback: true, // Changed from "blocking" to true
+    };
+  } catch (error) {
+    console.error("Error fetching blog list:", error);
+    // If we can't fetch the blog list, return empty paths and let fallback handle it
+    return {
+      paths: [],
+      fallback: true,
+    };
+  }
 };
