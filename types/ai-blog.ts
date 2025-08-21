@@ -1,16 +1,16 @@
 export interface AIBlogResponse {
-  content: string;
-  generated: boolean;
-  fallback: boolean;
-  timestamp: string;
-  error?: string;
+    content: string;
+    generated: boolean;
+    fallback: boolean;
+    timestamp: string;
+    error?: string;
 }
 
 export interface AIBlogErrorResponse {
-  error: string;
+    error: string;
 }
 
 export interface AIBlogRequest {
-  title: string;
-  context?: string;
+    title: string;
+    context?: string;
 }

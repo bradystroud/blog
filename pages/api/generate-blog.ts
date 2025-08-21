@@ -1,15 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
-import { AIBlogResponse, AIBlogErrorResponse, AIBlogRequest } from '../../types/ai-blog';
+import { AIBlogResponse, AIBlogErrorResponse } from '../../types/ai-blog';
 import { getCachedContent, setCachedContent, clearExpiredCache } from '../../utils/ai-blog-cache';
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 // Fallback content when AI generation fails
 const getFallbackContent = (title: string): string => {
-  return `## ${title}
+    return `## ${title}
 
 I don't have a specific blog post about "${title}" yet, but I'd love to write about it! 
 
@@ -38,48 +38,48 @@ This topic sounds interesting and I'd be happy to explore it in a future post. K
 };
 
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<AIBlogResponse | AIBlogErrorResponse>
+    req: NextApiRequest,
+    res: NextApiResponse<AIBlogResponse | AIBlogErrorResponse>
 ) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
 
-  const { title, context } = req.body;
+    const { title, context } = req.body;
 
-  if (!title) {
-    return res.status(400).json({ error: 'Title is required' });
-  }
+    if (!title) {
+        return res.status(400).json({ error: 'Title is required' });
+    }
 
-  // Clean up expired cache entries periodically
-  clearExpiredCache();
+    // Clean up expired cache entries periodically
+    clearExpiredCache();
 
-  // Check cache first
-  const cachedContent = getCachedContent(title);
-  if (cachedContent) {
-    return res.status(200).json({
-      ...cachedContent,
-      cached: true, // Add indicator that this was cached
-    } as AIBlogResponse & { cached: boolean });
-  }
+    // Check cache first
+    const cachedContent = getCachedContent(title);
+    if (cachedContent) {
+        return res.status(200).json({
+            ...cachedContent,
+            cached: true, // Add indicator that this was cached
+        } as AIBlogResponse & { cached: boolean });
+    }
 
-  // If no OpenAI API key, return fallback content
-  if (!process.env.OPENAI_API_KEY) {
-    const fallbackResponse: AIBlogResponse = {
-      content: getFallbackContent(title),
-      generated: false,
-      fallback: true,
-      timestamp: new Date().toISOString(),
-    };
-    
-    // Cache the fallback content
-    setCachedContent(title, fallbackResponse);
-    
-    return res.status(200).json(fallbackResponse);
-  }
+    // If no OpenAI API key, return fallback content
+    if (!process.env.OPENAI_API_KEY) {
+        const fallbackResponse: AIBlogResponse = {
+            content: getFallbackContent(title),
+            generated: false,
+            fallback: true,
+            timestamp: new Date().toISOString(),
+        };
 
-  try {
-    const prompt = `Write a detailed technical blog post as Brady Stroud, a Software Engineer at SSW who specializes in .NET, MAUI, Blazor, and cross-platform development. 
+        // Cache the fallback content
+        setCachedContent(title, fallbackResponse);
+
+        return res.status(200).json(fallbackResponse);
+    }
+
+    try {
+        const prompt = `Write a detailed technical blog post as Brady Stroud, a Software Engineer at SSW who specializes in .NET, MAUI, Blazor, and cross-platform development. 
 
 Title: "${title}"
 ${context ? `Context: ${context}` : ''}
@@ -97,66 +97,66 @@ Write the blog post in markdown format with the following characteristics:
 
 The blog should be informative, well-structured, and provide real value to developers. Don't include frontmatter or metadata - just the markdown content.`;
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are Brady Stroud, a Software Engineer at SSW with expertise in .NET, MAUI, Blazor, and cross-platform development. Write technical blog posts that are informative, practical, and reflect your professional experience. Always include code examples when relevant and make the content actionable for developers.'
-        },
-        {
-          role: 'user',
-          content: prompt
+        const completion = await openai.chat.completions.create({
+            model: 'gpt-4',
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are Brady Stroud, a Software Engineer at SSW with expertise in .NET, MAUI, Blazor, and cross-platform development. Write technical blog posts that are informative, practical, and reflect your professional experience. Always include code examples when relevant and make the content actionable for developers.'
+                },
+                {
+                    role: 'user',
+                    content: prompt
+                }
+            ],
+            max_tokens: 2500,
+            temperature: 0.7,
+        });
+
+        const generatedContent = completion.choices[0]?.message?.content;
+
+        if (!generatedContent) {
+            // Fallback to static content if AI generation fails
+            const fallbackResponse: AIBlogResponse = {
+                content: getFallbackContent(title),
+                generated: false,
+                fallback: true,
+                timestamp: new Date().toISOString(),
+            };
+
+            // Cache the fallback content
+            setCachedContent(title, fallbackResponse);
+
+            return res.status(200).json(fallbackResponse);
         }
-      ],
-      max_tokens: 2500,
-      temperature: 0.7,
-    });
 
-    const generatedContent = completion.choices[0]?.message?.content;
+        const successResponse: AIBlogResponse = {
+            content: generatedContent,
+            generated: true,
+            fallback: false,
+            timestamp: new Date().toISOString(),
+        };
 
-    if (!generatedContent) {
-      // Fallback to static content if AI generation fails
-      const fallbackResponse: AIBlogResponse = {
-        content: getFallbackContent(title),
-        generated: false,
-        fallback: true,
-        timestamp: new Date().toISOString(),
-      };
-      
-      // Cache the fallback content
-      setCachedContent(title, fallbackResponse);
-      
-      return res.status(200).json(fallbackResponse);
+        // Cache the successful response
+        setCachedContent(title, successResponse);
+
+        return res.status(200).json(successResponse);
+
+    } catch (error) {
+        console.error('Error generating blog content:', error);
+
+        // Return fallback content instead of error
+        const fallbackResponse: AIBlogResponse = {
+            content: getFallbackContent(title),
+            generated: false,
+            fallback: true,
+            error: error instanceof Error ? error.message : 'Unknown error',
+            timestamp: new Date().toISOString(),
+        };
+
+        // Cache the fallback content
+        setCachedContent(title, fallbackResponse);
+
+        return res.status(200).json(fallbackResponse);
     }
-
-    const successResponse: AIBlogResponse = {
-      content: generatedContent,
-      generated: true,
-      fallback: false,
-      timestamp: new Date().toISOString(),
-    };
-    
-    // Cache the successful response
-    setCachedContent(title, successResponse);
-
-    return res.status(200).json(successResponse);
-
-  } catch (error) {
-    console.error('Error generating blog content:', error);
-    
-    // Return fallback content instead of error
-    const fallbackResponse: AIBlogResponse = {
-      content: getFallbackContent(title),
-      generated: false,
-      fallback: true,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      timestamp: new Date().toISOString(),
-    };
-    
-    // Cache the fallback content
-    setCachedContent(title, fallbackResponse);
-    
-    return res.status(200).json(fallbackResponse);
-  }
 }

@@ -130,6 +130,7 @@ export const getStaticProps = async ({ params }) => {
       },
     };
   } catch (error) {
+    console.error(error);
     // Blog doesn't exist, but we'll handle it with AI generation
     // Still fetch global data for layout
     try {
@@ -141,12 +142,13 @@ export const getStaticProps = async ({ params }) => {
             blog: null,
           },
           filename: params.filename,
-          query: '',
+          query: "",
           variables: {},
           __filename,
         },
       };
     } catch (globalError) {
+      console.error("Error fetching global data:", globalError);
       // Fallback if even global data fails
       return {
         props: {
@@ -155,7 +157,7 @@ export const getStaticProps = async ({ params }) => {
             blog: null,
           },
           filename: params.filename,
-          query: '',
+          query: "",
           variables: {},
           __filename,
         },
