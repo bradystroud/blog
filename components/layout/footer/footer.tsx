@@ -25,30 +25,31 @@ export const Footer = ({ data }) => {
           </p>
 
           <div className="flex gap-4">
-            {data.social.map((social) => {
-              if (social && social.platform) {
-                return (
-                  <a
-                    className="text-gray-400 hover:text-black inline-block"
-                    href={social.url}
-                    target="_blank"
-                    key={`social-link-${social.platform}`}
-                    aria-label={social.platform}
-                  >
-                    {
-                      options.filter(
-                        (option) => option.value === social.platform
-                      )[0].icon
-                    }
-                  </a>
-                );
-              }
-            })}
+            {data?.social &&
+              data.social.map((social) => {
+                if (social && social.platform) {
+                  return (
+                    <a
+                      className="text-gray-400 hover:text-black inline-block"
+                      href={social.url}
+                      target="_blank"
+                      key={`social-link-${social.platform}`}
+                      aria-label={social.platform}
+                    >
+                      {
+                        options.filter(
+                          (option) => option.value === social.platform
+                        )[0].icon
+                      }
+                    </a>
+                  );
+                }
+              })}
           </div>
         </div>
         <div
           className={`absolute h-1 bg-linear-to-r from-transparent ${
-            data.color === "primary" ? `via-white` : `via-black dark:via-white`
+            data?.color === "primary" ? `via-white` : `via-black dark:via-white`
           } to-transparent top-0 left-4 right-4 opacity-5`}
         ></div>
       </Container>

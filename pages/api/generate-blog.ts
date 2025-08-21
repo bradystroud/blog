@@ -91,14 +91,14 @@ Write the blog post in markdown format with the following characteristics:
 - Around 800-1200 words
 - Use proper heading hierarchy (##, ###)
 - Include technical insights and best practices
-- Relate it to Brady's expertise in .NET, MAUI, Blazor, or software engineering
+- If possible, Relate it to Brady's expertise in software engineering, AI, .NET, MAUI, Blazor, management
 - Include practical examples and real-world applications
 - End with a call-to-action or invitation for discussion
 
 The blog should be informative, well-structured, and provide real value to developers. Don't include frontmatter or metadata - just the markdown content.`;
 
         const completion = await openai.chat.completions.create({
-            model: 'gpt-4',
+            model: 'gpt-5-mini',
             messages: [
                 {
                     role: 'system',
@@ -109,8 +109,6 @@ The blog should be informative, well-structured, and provide real value to devel
                     content: prompt
                 }
             ],
-            max_tokens: 2500,
-            temperature: 0.7,
         });
 
         const generatedContent = completion.choices[0]?.message?.content;

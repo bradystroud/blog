@@ -54,7 +54,7 @@ export const Header = ({ data }) => {
             }`}
           >
             <div className="text-sm lg:grow mx-10">
-              {data.nav &&
+              {data?.nav &&
                 data.nav.map((item, i) => {
                   const activeItem =
                     item.href === ""
