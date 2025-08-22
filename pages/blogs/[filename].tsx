@@ -5,6 +5,7 @@ import { Layout } from "../../components/layout";
 import { Section } from "../../components/util/section";
 import { Container } from "../../components/util/container";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { Prism } from "tinacms/dist/rich-text/prism";
 import { InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Head from "next/head";
@@ -82,7 +83,10 @@ export default function Blog(
               </div>
             </div>
             <div className="prose dark:prose-dark w-full max-w-none">
-              <TinaMarkdown content={data.blog._body} />
+              <TinaMarkdown
+                content={data.blog._body}
+                components={{ code_block: Prism }}
+              />
             </div>
             <div className="mt-8">
               <Giscus
