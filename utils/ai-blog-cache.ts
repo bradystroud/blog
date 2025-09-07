@@ -43,6 +43,11 @@ function isExpired(expiresAt: number): boolean {
 // Get cached content
 export function getCachedContent(title: string): AIBlogResponse | null {
     try {
+        // Disable server-side caching in serverless environments (Vercel)
+        if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+            return null;
+        }
+
         ensureCacheDir();
         const filePath = getCacheFilePath(title);
 
@@ -75,6 +80,11 @@ export function getCachedContent(title: string): AIBlogResponse | null {
 // Cache content
 export function setCachedContent(title: string, response: AIBlogResponse): void {
     try {
+        // Disable server-side caching in serverless environments (Vercel)
+        if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+            return;
+        }
+
         ensureCacheDir();
         const filePath = getCacheFilePath(title);
 
@@ -111,6 +121,11 @@ export function clearAllCache(): void {
 // Clear expired cache entries (utility function)
 export function clearExpiredCache(): void {
     try {
+        // Disable server-side caching in serverless environments (Vercel)
+        if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+            return;
+        }
+
         if (!fs.existsSync(CACHE_DIR)) {
             return;
         }

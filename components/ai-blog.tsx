@@ -81,6 +81,7 @@ const formatMarkdownToHTML = (markdown: string): string => {
 export default function AIBlog({ title, globalData }: AIBlogProps) {
   const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string>("");
   const [isFallback, setIsFallback] = useState(false);
   const [isCached, setIsCached] = useState(false);
@@ -147,6 +148,20 @@ export default function AIBlog({ title, globalData }: AIBlogProps) {
         return;
       }
 
+      // Use streaming for better UX
+      await generateStreamingContent();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to generate content"
+      );
+      setLoading(false);
+    }
+  };
+
+  const generateStreamingContent = async () => {
+    try {
+      setStreaming(true);
+
       // Extract potential keywords from the title for context
       const context = `This appears to be about ${title.replace(
         /-/g,
@@ -161,6 +176,75 @@ export default function AIBlog({ title, globalData }: AIBlogProps) {
         body: JSON.stringify({
           title: title.replace(/-/g, " "),
           context,
+          stream: true,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to generate content: ${response.statusText}`);
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error("Failed to get response reader");
+      }
+
+      const decoder = new TextDecoder();
+      let streamedContent = "";
+
+      // Start streaming - show the page structure immediately
+      setLoading(false);
+      setContent("");
+
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value, { stream: true });
+          streamedContent += chunk;
+          setContent(streamedContent);
+        }
+
+        // Cache the complete streamed content
+        const finalData = {
+          content: streamedContent,
+          generated: true,
+          fallback: false,
+          timestamp: new Date().toISOString(),
+        };
+        setClientCache(title, finalData);
+        setIsFallback(false);
+        setIsCached(false);
+      } finally {
+        reader.releaseLock();
+        setStreaming(false);
+      }
+    } catch (err) {
+      console.error("Streaming error:", err);
+      setStreaming(false);
+      // Fallback to non-streaming mode
+      await generateNonStreamingContent();
+    }
+  };
+
+  const generateNonStreamingContent = async () => {
+    try {
+      // Extract potential keywords from the title for context
+      const context = `This appears to be about ${title.replace(
+        /-/g,
+        " "
+      )}. Please write content that would be relevant for someone searching for this topic.`;
+
+      const response = await fetch("/api/generate-blog", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: title.replace(/-/g, " "),
+          context,
+          stream: false,
         }),
       });
 
@@ -176,11 +260,7 @@ export default function AIBlog({ title, globalData }: AIBlogProps) {
       // Cache the response on client-side
       setClientCache(title, data);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to generate content"
-      );
-    } finally {
-      setLoading(false);
+      throw err; // Re-throw to be handled by parent
     }
   };
 
@@ -354,6 +434,18 @@ export default function AIBlog({ title, globalData }: AIBlogProps) {
         </Container>
 
         <Container className="flex-1 pt-4" width="small" size="large">
+          {/* Streaming indicator */}
+          {streaming && (
+            <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+              <div className="flex items-center">
+                <div className="animate-pulse h-2 w-2 bg-blue-600 rounded-full mr-2"></div>
+                <span className="text-sm text-blue-700 dark:text-blue-300">
+                  Content is being generated in real-time...
+                </span>
+              </div>
+            </div>
+          )}
+
           <div className="prose dark:prose-dark w-full max-w-none">
             <div
               dangerouslySetInnerHTML={{
