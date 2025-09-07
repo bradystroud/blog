@@ -1,0 +1,106 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/connect-windows-vm-to-mac-apis"
+title: Connecting Windows VMs to Mac-Hosted APIs
+date: 2025-09-07T00:00:00.000Z
+tags:
+  - parallels
+  - macos
+  - ssh
+  - dotnet
+---
+
+When developing distributed applications, it’s common to run different components on separate environments. A frequent scenario is hosting backend APIs on a macOS machine while consuming them from a Windows-based client application running inside a virtual machine (VM). This setup works well with tools like Parallels Desktop or VMware Fusion, but requires a bit of networking and certificate setup.
+
+In this post, we’ll walk through how to connect a Windows VM to APIs running on macOS using SSH tunnels and .NET development certificates.
+
+## Why This Matters
+
+When you’re building full-stack systems, you might:
+- Run APIs or identity providers (e.g., IdentityServer) on your Mac host.
+- Run client apps (e.g., legacy .NET Framework applications) inside a Windows VM.
+
+The challenge: the VM must talk securely to the host’s APIs, which usually only trust localhost by default.
+
+## Step 1 — Export and Trust Dev Certificates
+
+By default, dotnet dev-certs https generates a certificate trusted for https://localhost. If you want your Windows VM apps to talk to Mac-hosted APIs, you need to import this certificate into Windows.
+
+### On macOS
+
+```bash
+dotnet dev-certs https -ep "$HOME/aspnet-https.pfx" -p DevPass123 --trust
+```
+
+This exports the certificate to `aspnet-https.pfx`.
+
+### On Windows VM
+
+Copy the `.pfx` file over and import it with PowerShell (run as Administrator):
+
+```powershell
+$pwd = ConvertTo-SecureString "DevPass123" -AsPlainText -Force
+Import-PfxCertificate -FilePath "$env:USERPROFILE\Desktop\aspnet-https.pfx" `
+  -CertStoreLocation Cert:\LocalMachine\Root -Password $pwd
+```
+Now Windows trusts the dev cert for localhost.
+
+## Step 2 — Open SSH Tunnels
+
+Since the certificate only covers localhost, the easiest way to bridge traffic from your VM to your host is via SSH tunnels.
+
+Enable SSH on macOS:
+- Go to System Settings → General → Sharing
+- Enable Remote Login
+
+On Windows VM (PowerShell):
+
+```powershell
+ssh -N -L 7230:127.0.0.1:7230 user@10.211.55.2   # Forward API
+ssh -N -L 5001:127.0.0.1:5001 user@10.211.55.2   # Forward IdentityServer
+```
+
+Replace user with your macOS username and 10.211.55.2 with your Mac’s IP in Parallels/VM setup.
+
+This means https://localhost:7230 in the VM now maps to the API on the Mac, and https://localhost:5001 maps to IdentityServer.
+
+## Step 3 — Confirm Connectivity
+
+From macOS (host):
+
+```bash
+curl -k https://localhost:7230/health
+curl -k https://localhost:5001/.well-known/openid-configuration
+```
+
+From Windows VM:
+
+```powershell
+curl https://localhost:7230/health
+curl https://localhost:5001/.well-known/openid-configuration
+```
+
+Both should return valid responses.
+
+---
+
+## Why Use Tunnels Instead of Binding IPs?
+
+Although you can bind your .NET apps to 0.0.0.0 and expose them directly on 10.211.55.2, the development certificates won’t match that IP. By tunneling, you:
+- Keep using localhost, which matches the cert
+- Avoid generating custom SAN certificates
+- Limit exposure (only your VM can access the APIs via tunnel)
+
+---
+
+## Wrap Up
+
+By exporting dev certificates and setting up SSH tunnels, you can run APIs on macOS and seamlessly consume them from a Windows VM. This approach keeps HTTPS working correctly without extra certificate management, and it isolates your dev environment securely.
+
+---
+
+✅ Next time you spin up a VM, just:
+1. Import the dev cert once
+2. Start the SSH tunnels
+3. Point your client apps at https://localhost:<port>
+
+Simple, secure, and repeatable.
