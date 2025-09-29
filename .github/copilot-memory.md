@@ -30,3 +30,5 @@ These are important details about the project that you maintain and refer to whe
 - New blog added: `aspire-windows-vm-using-mac-docker-part-2.mdx` (advanced follow-up: SSH hardening, passwordless auth, clean non-interactive shells, port access strategies (forward vs publish), generic diagnostics & troubleshooting, security considerations, script ideas)
 
 - Series note: Part 2 is the canonical recommended approach; Part 1 retained mainly for historical journey/motivation.
+
+- Blogs listing component now supports client-side sorting (Newest default, plus Oldest and Title A–Z) with TypeScript typings added.
