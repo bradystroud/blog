@@ -26,3 +26,7 @@ These are important details about the project that you maintain and refer to whe
 - **ERROR HANDLING**: Comprehensive error handling prevents production crashes
 
 - New blog added: `aspire-windows-vm-using-mac-docker.mdx` (problem-first guide: run .NET Aspire in Windows VM while using macOS Docker; primary motivation = Windows-only .NET Framework / legacy tooling; explains nested virtualization issues on Apple Silicon vs Intel caveat; includes architecture, troubleshooting, performance & security notes)
+
+- New blog added: `aspire-windows-vm-using-mac-docker-part-2.mdx` (advanced follow-up: SSH hardening, passwordless auth, clean non-interactive shells, port access strategies (forward vs publish), generic diagnostics & troubleshooting, security considerations, script ideas)
+
+- Series note: Part 2 is the canonical recommended approach; Part 1 retained mainly for historical journey/motivation.
