@@ -24,3 +24,5 @@ These are important details about the project that you maintain and refer to whe
 - **OPTIMIZATION**: Reduced token limits to 700 max completion tokens for faster generation
 - **FALLBACK**: Robust fallback content system when OpenAI API fails or times out
 - **ERROR HANDLING**: Comprehensive error handling prevents production crashes
+
+- New blog added: `aspire-windows-vm-using-mac-docker.mdx` (problem-first guide: run .NET Aspire in Windows VM while using macOS Docker; primary motivation = Windows-only .NET Framework / legacy tooling; explains nested virtualization issues on Apple Silicon vs Intel caveat; includes architecture, troubleshooting, performance & security notes)

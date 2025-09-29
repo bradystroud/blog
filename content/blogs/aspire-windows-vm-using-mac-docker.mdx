@@ -1,0 +1,207 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/aspire-windows-vm-using-mac-docker"
+title: "Running .NET Aspire in a Windows VM While Using Docker on the Mac Host"
+date: 2025-09-29T00:00:00.000Z
+tags:
+  - dotnet
+  - aspire
+  - docker
+  - macos
+  - windows
+  - parallels
+  - devops
+---
+
+## The Problem
+
+You need to build and run a .NET Aspire solution inside a Windows VM because parts of your stack (legacy services, libraries, build tooling, test harnesses, or full .NET Framework projects) are Windows-only. But you’re physically on a Mac. If you try to also run Docker inside that Windows VM on Apple Silicon, you end up attempting nested (or at least layered) virtualization and translated instruction sets — it gets weird fast (works more predictably on older Intel Macs, but not reliably or efficiently on Apple Silicon). It also duplicates images, slows builds, drains battery, and explodes disk usage. You already have Docker running natively on macOS — so reuse that single, fast daemon from the Windows VM instead.
+
+## Constraints & Pain Points
+
+- Aspire spins up multiple containers (dashboard, services, infra dependencies) — duplication across host + VM is costly.
+- Windows-on-ARM or x64 translation can slow Docker inside the VM.
+- Nested virtualization issues appear if you try to force Linux containers inside certain Windows VM setups.
+- File sharing between VM and host can degrade I/O-heavy builds.
+- Non-interactive SSH shells on macOS sometimes lack the expected PATH → docker CLI unavailable.
+
+## Desired Outcome
+
+Run your full Aspire solution (orchestration + dashboards) from inside Windows (Parallels VM) while all containers actually execute on the macOS host’s Docker daemon — with minimal friction and reliable developer ergonomics.
+
+## Architecture Overview
+
+Windows VM:
+- Runs dotnet SDK + editor (VS / VS Code)
+- Uses a Docker "context" that tunnels over SSH to the Mac
+
+macOS Host:
+- Runs Docker Desktop (native daemon)
+- Accepts SSH connections
+- Exposes docker socket capability via remote CLI execution
+
+Communication:
+- Docker context (ssh://user@mac-ip) → invokes docker commands remotely
+- No TCP daemon exposure needed (avoids opening 2375/2376)
+- SSH keys recommended for auth
+
+### Primary Motivation: Windows‑Only Workloads
+
+Even if most of your modern code is .NET (Core) / .NET 8+ and technically cross‑platform, many real-world solutions still include:
+
+- Full .NET Framework class libraries or test projects
+- Proprietary build steps that shell out to Windows tooling (MSBuild targets, COM automation, legacy reporting engines)
+- Third-party SDKs or drivers only distributed for Windows
+- Old WCF host implementations you haven’t ported yet
+
+Running those inside a Windows VM keeps the workflow intact while still letting containerized Aspire dependencies execute natively on the Mac.
+
+## Core Idea: Docker Context over SSH
+
+Docker lets you define multiple "contexts." One context points to the remote macOS host via SSH. Once selected, any docker CLI command inside Windows transparently operates against the Mac's daemon. Aspire’s orchestrator simply uses whatever Docker environment is active.
+
+## Step 1: Prepare macOS Host
+
+1. Enable Remote Login: System Settings → General → Sharing → Remote Login → ON  
+2. Ensure docker is in PATH for non-interactive shells (SSH sessions):
+
+```bash
+echo 'export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"' >> ~/.zshenv
+```
+
+3. Test from Windows VM:
+
+```powershell
+ssh <user>@<mac-ip> "command -v docker && docker version --format '{{.Server.Version}}'"
+```
+
+If docker is “not found”, your login shell config (.zshenv vs .zprofile) is misaligned.
+
+## Step 2: Create an SSH Key (Recommended)
+
+From Windows VM:
+
+```powershell
+ssh-keygen -t ed25519 -C "vm-to-mac" -f "$HOME\.ssh\vm-mac"
+type $HOME\.ssh\vm-mac.pub | ssh <user>@<mac-ip> "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+```
+
+## Step 3: Define the Docker Context (Windows VM)
+
+```powershell
+docker context rm mac -f 2>$null
+docker context create mac --docker "host=ssh://<user>@<mac-ip>"
+docker context use mac
+
+docker --context mac info
+docker --context mac ps
+```
+
+If this hangs: confirm you can SSH cleanly (no passphrase prompts blocking).
+
+## Step 4: Run Aspire Against Remote Docker
+
+From your solution root in Windows:
+
+```powershell
+docker context show   # Should show: mac
+dotnet run --project src/AppHost
+```
+
+All Aspire containers (dashboard, services, infra) now appear in macOS’s Docker Desktop UI.
+
+## Handling File Paths & Mounts
+
+- Volumes referencing Windows-only paths will not resolve on macOS.
+- Prefer build contexts + container COPY rather than heavy bind mounts across host/VM boundary.
+- If you must share code, evaluate Parallels shared folders performance; sometimes a repo clone on the Mac side (for build steps only) is faster.
+
+## Networking & Parallels Considerations
+
+| Mode | Impact | Recommendation |
+| ---- | ------ | ------------- |
+| Shared Network | VM gets NAT-like address | Usually works; confirm Mac reachable |
+| Bridged | VM and Mac on same LAN | More stable IP discovery |
+| Host-Only | Not suitable here | Avoid |
+
+Find Mac IP:
+```bash
+ipconfig getifaddr en0
+```
+
+If Mac IP changes (e.g., different network), update context:
+```powershell
+docker context update mac --docker "host=ssh://<user>@<new-ip>"
+```
+
+## Troubleshooting Matrix
+
+| Symptom | Likely Cause | Action |
+| ------- | ------------ | ------ |
+| docker: command not found (over SSH) | PATH not exported | Add export to ~/.zshenv |
+| Cannot connect to Docker daemon | SSH / firewall / host key mismatch | Test plain ssh |
+| Aspire dashboard not loading | Container crash | `docker logs <dashboard-container>` |
+| High latency in builds | Remote volume mounts | Minimize bind mounts; use COPY |
+| Host key verification failed | Mac reinstalled | Remove line from ~/.ssh/known_hosts |
+
+## Security Notes
+
+- Use SSH keys (no password auth).
+- Limit macOS user permissions.
+- Keep Docker Desktop updated.
+- Consider disabling password SSH logins (sshd_config: PasswordAuthentication no).
+
+## Why Not Just Install Docker in the VM?
+
+Short answer: on Apple Silicon it’s inefficient and occasionally brittle; on Intel it’s merely redundant.
+
+Detailed reasons:
+
+1. Duplicate resource consumption (memory, disk images, image layers) — wastes SSD and increases backup size.
+2. Nested / layered virtualization & translation on Apple Silicon: Windows (ARM) + hypervisor + Linux emulation → slower cold starts and inconsistent networking.
+3. Slower I/O due to VM file system abstractions; build caches invalidate more often.
+4. Larger cognitive overhead in multi-engine scenarios (Which daemon are you on? Why different images?).
+5. Image drift / divergence (“works on Mac, fails in VM”) complicates troubleshooting.
+6. Battery + thermal impact; the VM now schedules extra CPU for Docker’s background processes.
+
+Intel Mac caveat: If you’re on an older Intel Mac, Docker inside the VM can function more predictably because you’re not crossing ARM ↔ x64 boundaries. Even then, centralizing on one daemon still simplifies your workflow.
+
+## Performance Tips
+
+- Leverage multi-stage Dockerfiles.
+- Use docker buildx with cache exports (still happens on Mac host).
+- Avoid chatty bind mounts for node_modules, obj, bin — consider .dockerignore hygiene.
+
+## Quick Verification Flow
+
+```powershell
+docker context use mac
+docker ps
+dotnet new web -n sanity
+cd sanity
+dotnet run &
+```
+
+Then on macOS:
+```bash
+docker ps | grep sanity
+```
+
+## FAQ
+
+### Does this expose my Docker daemon over the network?
+No. The connection rides over SSH; no raw TCP socket is opened publicly.
+
+### Can I use this with VS debug container tools?
+Yes, as long as VS (or CLI) respects the selected Docker context.
+
+### What about Compose?
+Works transparently: docker compose up uses the active context.
+
+### Does Aspire need special configuration?
+No. It inherits the environment (Docker context) of the shell launching it.
+
+## Recap
+
+You develop in Windows. Docker lives on macOS. An SSH-based Docker context stitches them together. Aspire just works—and you avoid duplicated engines, sluggish virtualization layers, and image sprawl.
+
+Let me know if you want an automated setup script for provisioning the context and validating connectivity.
