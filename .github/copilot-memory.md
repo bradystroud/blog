@@ -25,10 +25,10 @@ These are important details about the project that you maintain and refer to whe
 - **FALLBACK**: Robust fallback content system when OpenAI API fails or times out
 - **ERROR HANDLING**: Comprehensive error handling prevents production crashes
 
-- New blog added: `aspire-windows-vm-using-mac-docker.mdx` (problem-first guide: run .NET Aspire in Windows VM while using macOS Docker; primary motivation = Windows-only .NET Framework / legacy tooling; explains nested virtualization issues on Apple Silicon vs Intel caveat; includes architecture, troubleshooting, performance & security notes)
+- New blog added: `aspire-windows-vm.mdx` (Part 1: Docker context approach for running .NET Aspire in Windows VM while using macOS Docker; motivation = Windows-only .NET Framework / legacy tooling; explains nested virtualization issues on Apple Silicon vs Intel)
 
-- New blog added: `aspire-windows-vm-using-mac-docker-part-2.mdx` (advanced follow-up: SSH hardening, passwordless auth, clean non-interactive shells, port access strategies (forward vs publish), generic diagnostics & troubleshooting, security considerations, script ideas)
+- New blog added: `connect-windows-vm-to-mac-apis.mdx` (Part 2: Ultimate solution for Windows VM + Mac development; SSH tunnels, dev certificate management, secure port forwarding; builds on Part 1)
 
-- Series note: Part 2 is the canonical recommended approach; Part 1 retained mainly for historical journey/motivation.
+- Series note: Part 2 (connect-windows-vm) is the recommended ultimate solution; Part 1 (aspire-windows-vm) is the foundational Docker context approach.
 
 - Blogs listing component now supports client-side sorting (Newest default, plus Oldest and Title A–Z) with TypeScript typings added.

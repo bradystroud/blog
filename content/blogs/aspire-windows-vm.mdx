@@ -13,7 +13,7 @@ tags:
 coverImage: null
 ---
 
-> This article is the origin story & reasoning. For the current, hardened process (SSH hardening, clean shells, port strategy, diagnostics) skip straight to **[Part 2: Hardening & Port Strategy](./aspire-windows-vm-using-mac-docker-part-2)**.
+> This article shows the initial Docker context approach. For the ultimate solution with SSH tunnels, certificates, and port forwarding, see **[Part 2: Connecting Windows VMs to Mac-Hosted APIs](./connect-windows-vm-to-mac-apis)**.
 
 ## The Problem
 
@@ -207,10 +207,8 @@ No. It inherits the environment (Docker context) of the shell launching it.
 
 You develop in Windows. Docker lives on macOS. An SSH-based Docker context stitches them together. Aspire just works—and you avoid duplicated engines, sluggish virtualization layers, and image sprawl.
 
-Let me know if you want an automated setup script for provisioning the context and validating connectivity.
-
 ---
 
 ### Continue to Part 2
 
-Next: **[Running .NET Aspire from a Windows VM Using macOS Docker – Part 2: Hardening & Port Strategy](./aspire-windows-vm-using-mac-docker-part-2)** for passwordless SSH setup, clean non-interactive shells, tunneling vs publishing ports, diagnostics toolbox, and troubleshooting patterns.
+Next: **[Connecting Windows VMs to Mac-Hosted APIs](./connect-windows-vm-to-mac-apis)** for the ultimate solution with SSH tunnels, dev certificate management, and secure port forwarding.

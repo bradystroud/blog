@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     defaultLocale: "en",
   },
   images: {
+    qualities: [25, 50, 75, 80],
     remotePatterns: [
       {
         protocol: "https",

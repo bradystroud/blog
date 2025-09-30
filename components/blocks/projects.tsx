@@ -9,7 +9,7 @@ import { HoverCard } from "../util/hoverCard";
 export const Project = ({ data, tinaField, index }) => {
   return (
     <div
-      key={index.toString()}
+      key={index.toString()+data.url}
       data-tinafield={tinaField}
       className="flex-1"
       style={{ flexBasis: "16rem" }}

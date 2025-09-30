@@ -9,17 +9,17 @@ tags:
   - dotnet
 ---
 
-When developing distributed applications, it’s common to run different components on separate environments. A frequent scenario is hosting backend APIs on a macOS machine while consuming them from a Windows-based client application running inside a virtual machine (VM). This setup works well with tools like Parallels Desktop or VMware Fusion, but requires a bit of networking and certificate setup.
+> **Part 2 of the Windows VM + Mac series.** This is the ultimate solution for connecting Windows VMs to Mac-hosted services. For the foundational Docker context approach, see **[Part 1: Running .NET Aspire in a Windows VM](./aspire-windows-vm)**.
 
-In this post, we’ll walk through how to connect a Windows VM to APIs running on macOS using SSH tunnels and .NET development certificates.
+When developing distributed applications, it's common to run different components on separate environments. A frequent scenario is hosting backend APIs on a macOS machine while consuming them from a Windows-based client application running inside a virtual machine (VM). This setup works well with tools like Parallels Desktop or VMware Fusion, but requires a bit of networking and certificate setup.
 
 ## Why This Matters
 
-When you’re building full-stack systems, you might:
+When you're building full-stack systems, you might:
 - Run APIs or identity providers (e.g., IdentityServer) on your Mac host.
 - Run client apps (e.g., legacy .NET Framework applications) inside a Windows VM.
 
-The challenge: the VM must talk securely to the host’s APIs, which usually only trust localhost by default.
+The challenge: the VM must talk securely to the host's APIs, which usually only trust localhost by default.
 
 ## Step 1 — Export and Trust Dev Certificates
 
@@ -59,7 +59,7 @@ ssh -N -L 7230:127.0.0.1:7230 user@10.211.55.2   # Forward API
 ssh -N -L 5001:127.0.0.1:5001 user@10.211.55.2   # Forward IdentityServer
 ```
 
-Replace user with your macOS username and 10.211.55.2 with your Mac’s IP in Parallels/VM setup.
+Replace user with your macOS username and 10.211.55.2 with your Mac's IP in Parallels/VM setup.
 
 This means https://localhost:7230 in the VM now maps to the API on the Mac, and https://localhost:5001 maps to IdentityServer.
 
@@ -85,7 +85,7 @@ Both should return valid responses.
 
 ## Why Use Tunnels Instead of Binding IPs?
 
-Although you can bind your .NET apps to 0.0.0.0 and expose them directly on 10.211.55.2, the development certificates won’t match that IP. By tunneling, you:
+Although you can bind your .NET apps to 0.0.0.0 and expose them directly on 10.211.55.2, the development certificates won't match that IP. By tunneling, you:
 - Keep using localhost, which matches the cert
 - Avoid generating custom SAN certificates
 - Limit exposure (only your VM can access the APIs via tunnel)
@@ -101,6 +101,6 @@ By exporting dev certificates and setting up SSH tunnels, you can run APIs on ma
 ✅ Next time you spin up a VM, just:
 1. Import the dev cert once
 2. Start the SSH tunnels
-3. Point your client apps at https://localhost:<port>
+3. Point your client apps at `https://localhost:<port>`
 
 Simple, secure, and repeatable.
