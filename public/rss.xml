@@ -6,11 +6,25 @@
    <description>Latest posts from Brady Stroud</description>
    
    <item>
-   <title>Your Data Is Power — Even Your Search History</title>
-   <link>https://bradystroud.dev/blogs/your-data-is-power</link>
-   <guid>https://bradystroud.dev/blogs/your-data-is-power</guid>
-   <pubDate>Tue, 30 Sep 2025 14:30:00 GMT</pubDate>
-   <description>We live in a world where data is power. Companies know it. Governments know it. And honestly, you should know it too.</description>
+   <title>Running .NET Aspire from a Windows VM Using macOS Docker – Part 2: Hardening &amp; Port Strategy</title>
+   <link>https://bradystroud.dev/blogs/aspire-windows-vm-part-2</link>
+   <guid>https://bradystroud.dev/blogs/aspire-windows-vm-part-2</guid>
+   <pubDate>Mon, 29 Sep 2025 00:00:00 GMT</pubDate>
+   <description>This is the canonical guide. Part 1 is optional historical context the journey + motivation. If you just want the right, hardened process—stay here. Skim Part 1./aspire-windows-vm-using-mac-docker only if you care about the backstory.</description>
+   </item>
+   <item>
+   <title>Running .NET Aspire in a Windows VM While Using Docker on the Mac Host</title>
+   <link>https://bradystroud.dev/blogs/aspire-windows-vm</link>
+   <guid>https://bradystroud.dev/blogs/aspire-windows-vm</guid>
+   <pubDate>Mon, 29 Sep 2025 00:00:00 GMT</pubDate>
+   <description>This article is the origin story &amp; reasoning. For the current, hardened process SSH hardening, clean shells, port strategy, diagnostics skip straight to Part 2: Hardening &amp; Port Strategy./aspire-windows-vm-using-mac-docker-part-2.</description>
+   </item>
+   <item>
+   <title>Connecting Windows VMs to Mac-Hosted APIs</title>
+   <link>https://bradystroud.dev/blogs/connect-windows-vm-to-mac-apis</link>
+   <guid>https://bradystroud.dev/blogs/connect-windows-vm-to-mac-apis</guid>
+   <pubDate>Sun, 07 Sep 2025 00:00:00 GMT</pubDate>
+   <description>When developing distributed applications, it’s common to run different components on separate environments. A frequent scenario is hosting backend APIs on a macOS machine while consuming them from a Windows-based client application running inside a virtual machine VM. This setup works well with tools like Parallels Desktop or VMware Fusion, but requires a bit of networking and certificate setup.</description>
    </item>
    <item>
    <title>Cocona - Clean console apps in .NET</title>
@@ -25,6 +39,13 @@
    <guid>https://bradystroud.dev/blogs/maui-setup-macos</guid>
    <pubDate>Tue, 01 Jul 2025 10:00:00 GMT</pubDate>
    <description>Getting started with . NET MAUI on macOS is straight forward once you know the tooling you need. With a single installation you can build and debug on iOS, Android, macOS.</description>
+   </item>
+   <item>
+   <title>Your Data Is Power — Even Your Search History</title>
+   <link>https://bradystroud.dev/blogs/your-data-is-power</link>
+   <guid>https://bradystroud.dev/blogs/your-data-is-power</guid>
+   <pubDate>Mon, 30 Jun 2025 14:30:00 GMT</pubDate>
+   <description>We live in a world where data is power. Companies know it. Governments know it. And honestly, you should know it too.</description>
    </item>
    <item>
    <title>OpenAI Chat Model Cheat Sheet - Decoding the Chaos</title>

@@ -13,12 +13,24 @@ export default function ReviewPage(
   const blogs = props.data.blogConnection.edges ?? [];
   const pageTitle = "Brady Stroud | Blog";
 
-  // Sort blogs by date (newest first)
-  const sortedBlogs = [...blogs].sort((a, b) => {
-    const dateA = new Date(a?.node?.date || 0);
-    const dateB = new Date(b?.node?.date || 0);
-    return dateB.getTime() - dateA.getTime();
-  });
+  // Filter out null edges and sort by date (newest first)  
+  const sortedBlogs = blogs
+    .filter((edge): edge is Exclude<typeof edge, null> => 
+      edge !== null && edge.node !== null && edge.node !== undefined
+    )
+    .map(edge => ({
+      node: {
+        _sys: edge.node!._sys,
+        id: edge.node!.id,
+        title: edge.node!.title,
+        date: edge.node!.date ?? undefined,
+      }
+    }))
+    .sort((a, b) => {
+      const dateA = new Date(a.node.date || 0);
+      const dateB = new Date(b.node.date || 0);
+      return dateB.getTime() - dateA.getTime();
+    });
 
   return (
     <Layout>

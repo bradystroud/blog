@@ -10,7 +10,7 @@ interface BlogNode {
   _sys: BlogSysMeta;
   id?: string;
   title: string;
-  date?: string;
+  date?: string | null;
 }
 
 interface BlogEdge {
