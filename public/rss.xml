@@ -6,25 +6,18 @@
    <description>Latest posts from Brady Stroud</description>
    
    <item>
-   <title>Running .NET Aspire from a Windows VM Using macOS Docker – Part 2: Hardening &amp; Port Strategy</title>
-   <link>https://bradystroud.dev/blogs/aspire-windows-vm-part-2</link>
-   <guid>https://bradystroud.dev/blogs/aspire-windows-vm-part-2</guid>
-   <pubDate>Mon, 29 Sep 2025 00:00:00 GMT</pubDate>
-   <description>This is the canonical guide. Part 1 is optional historical context the journey + motivation. If you just want the right, hardened process—stay here. Skim Part 1./aspire-windows-vm-using-mac-docker only if you care about the backstory.</description>
-   </item>
-   <item>
    <title>Running .NET Aspire in a Windows VM While Using Docker on the Mac Host</title>
    <link>https://bradystroud.dev/blogs/aspire-windows-vm</link>
    <guid>https://bradystroud.dev/blogs/aspire-windows-vm</guid>
    <pubDate>Mon, 29 Sep 2025 00:00:00 GMT</pubDate>
-   <description>This article is the origin story &amp; reasoning. For the current, hardened process SSH hardening, clean shells, port strategy, diagnostics skip straight to Part 2: Hardening &amp; Port Strategy./aspire-windows-vm-using-mac-docker-part-2.</description>
+   <description>This article shows the initial Docker context approach. For the ultimate solution with SSH tunnels, certificates, and port forwarding, see Part 2: Connecting Windows VMs to Mac-Hosted APIs./connect-windows-vm-to-mac-apis.</description>
    </item>
    <item>
    <title>Connecting Windows VMs to Mac-Hosted APIs</title>
    <link>https://bradystroud.dev/blogs/connect-windows-vm-to-mac-apis</link>
    <guid>https://bradystroud.dev/blogs/connect-windows-vm-to-mac-apis</guid>
    <pubDate>Sun, 07 Sep 2025 00:00:00 GMT</pubDate>
-   <description>When developing distributed applications, it’s common to run different components on separate environments. A frequent scenario is hosting backend APIs on a macOS machine while consuming them from a Windows-based client application running inside a virtual machine VM. This setup works well with tools like Parallels Desktop or VMware Fusion, but requires a bit of networking and certificate setup.</description>
+   <description>Part 2 of the Windows VM + Mac series. This is the ultimate solution for connecting Windows VMs to Mac-hosted services. For the foundational Docker context approach, see Part 1: Running . NET Aspire in a Windows VM./aspire-windows-vm.</description>
    </item>
    <item>
    <title>Cocona - Clean console apps in .NET</title>

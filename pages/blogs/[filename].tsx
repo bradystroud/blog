@@ -131,7 +131,7 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const blogListData = await client.queries.blogConnection();
+  const blogListData = await client.queries.blogConnection({ first: 100 });
   return {
     paths:
       blogListData.data.blogConnection.edges?.map((post) => ({
