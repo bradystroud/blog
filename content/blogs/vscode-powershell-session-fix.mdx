@@ -1,0 +1,37 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/vscode-powershell-session-fix"
+title: "Fixing the 'PowerShell session not found' issue in VS Code"
+date: 2025-10-03T00:00:00.000Z
+tags:
+  - vscode
+  - powershell
+  - macos
+  - troubleshooting
+coverImage: null
+---
+
+Recently, I was working with some PowerShell scripts in VS Code and ran into a frustrating error:
+
+> "Can't find the PowerShell session."
+
+After some digging, I discovered the fix: VS Code couldn't locate my PowerShell executable. The solution was to point VS Code directly to the PowerShell exe path in the settings.
+
+## How to Fix It
+
+1. Open VS Code Settings (`Ctrl + ,` or `Cmd + ,` on Mac).
+2. Search for `powershell.exe` or **PowerShell: Executable Path**.
+3. Manually set the path to your PowerShell installation.
+
+## Where to Find PowerShell (if installed with Homebrew)
+
+If you've installed PowerShell via Homebrew, here's where you'll find it on macOS:
+
+```bash
+/usr/local/bin/pwsh
+```
+
+(or `/opt/homebrew/bin/pwsh` if you're on Apple Silicon).
+
+That's the file path you'll want to paste into VS Code's PowerShell settings.
+
+Thats all - once you set the correct path, restart VS Code and the error should be gone. Happy scripting!
