@@ -31,8 +31,10 @@ export const Header = ({ data }) => {
             {/* Weird stuff happens when i removed the above line, so it stays */}
             <span className="font-semibold text-xl tracking-tight text-black ">
               <Link href="/" className="flex">
-                <FaLaptopCode className="fill-current h-8 w-8 mr-2" />
-                Brady Stroud
+                <div>
+                  <FaLaptopCode className="fill-current h-8 w-8 mr-2" />
+                  Brady Stroud
+                </div>
               </Link>
             </span>
           </div>
@@ -49,9 +51,8 @@ export const Header = ({ data }) => {
             </button>
           </div>
           <div
-            className={`w-full block md:items-center md:w-auto ${
-              expanded ? "" : "hidden md:flex"
-            }`}
+            className={`w-full block md:items-center md:w-auto ${expanded ? "" : "hidden md:flex"
+              }`}
           >
             <div className="text-sm lg:grow mx-10">
               {data?.nav &&
@@ -69,9 +70,8 @@ export const Header = ({ data }) => {
                       legacyBehavior
                     >
                       <a
-                        className={`block mt-4 md:inline-block md:mt-0 hover:text-blue-600 mr-4 ${
-                          activeItem ? "opacity-50" : ""
-                        }`}
+                        className={`block mt-4 md:inline-block md:mt-0 hover:text-blue-600 mr-4 ${activeItem ? "opacity-50" : ""
+                          }`}
                       >
                         {item.label}
                       </a>
