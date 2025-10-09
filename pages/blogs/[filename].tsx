@@ -8,7 +8,6 @@ import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Head from "next/head";
-import Giscus from "@giscus/react";
 
 export default function Blog(
   props: InferGetStaticPropsType<typeof getStaticProps>
