@@ -1,7 +1,7 @@
 ---
 canonicalUrl: "https://bradystroud.dev/blogs/openai-model-cheatsheet"
 title: OpenAI Chat Model Cheat Sheet - Decoding the Chaos
-date: 2025-04-17T10:00:00.000Z
+date: 2025-10-10T10:00:00.000Z
 tags:
   - openai
   - gpt
@@ -11,47 +11,55 @@ tags:
 coverImage: null
 ---
 
-OpenAI’s model names (e.g., o4, 4o) are confusing and change often. This guide is my quick reference for picking the best model for any task.
+OpenAI’s model names (e.g., o4, 4o, 4.1) are confusing and change often.  
+This is my quick reference for picking the right model for any task 🧠⚡️
 
-This is a living document and I've probably made some mistakes while writing it, so feel free to suggest changes or additions. I'll keep it updated as OpenAI rolls out new models and features 🚀
-If you see something missing, or a mistake, please [make a PR](https://github.com/bradystroud/blog/edit/main/content/blogs/openai-model-cheatsheet.mdx)! this page is stored as markdown in GitHub using [TinaCMS 🦙](https://tina.io)
-
-
-## OpenAI Chat Model Cheat-Sheet
-
-Status Legend: 
-- **🟢 current & recommended** 
-- **🟡 active but being phased out** 
-- **🔴 legacy/deprecated**
-
-| Status | Model                          | Release date       | Strengths / Best use-cases                                                   | Trade-offs                            | Naming note                                             |
-| --- | ----------------------------- | ------------------ | ---------------------------------------------------------------------------- | ------------------------------------- | -------------------------------------------------------- |
-| 🟢  | **GPT-4.1**                    | 14 April 2025      | Flagship long-context (1M tokens), top-tier coding & RAG                     | Costliest text-only model             | “4.1” = incremental rev over 4                          |
-| 🟢  | **GPT-4.1 mini/nano**         | 14 April 2025      | ~80–90% of 4.1 accuracy at lower price/latency                               | Slightly less reasoning depth         | “mini / nano” denote distillations                      |
-| 🟢  | **GPT-4o**                     | 13 May 2024        | Native text + image + audio (“omni”) real-time chat                          | Pricier than 4o mini                  | “o” = **o**mni multimodal                              |
-| 🟢  | **GPT-4o mini**               | July 2024          | Cheaper, faster multimodal                                                  | Lower accuracy vs 4o                  | Same naming rule                                        |
-| 🟢  | **o4 mini / o4 mini high**    | 16 April 2025      | Efficient reasoning, image-aware; “high” spends more tokens for reliability | Smaller context than 4.1              | “mini” = size; “high” = higher reasoning effort setting |
-| 🟢  | **o3**                         | 16 April 2025      | Deep step-by-step reasoning, code, math, tool use                            | Slower & pricier than o4 mini         | “o-series” = optimized reasoning line                   |
-| 🟢  | **o3 mini / o3 mini high**    | February–March 2025 | Very cheap STEM reasoning; “high” = extra depth                              | Outclassed by o4 mini on most tasks   | Legacy small variant                                   |
-| 🟢  | **GPT-3.5 Turbo**             | 30 November 2022   | Budget workhorse for text                                                   | Reasoning weaker than 4-line          | “Turbo” = cost/latency optimized snapshot               |
-| 🟡  | **GPT-4 Turbo**               | November 2023      | 128K context text/vision                                                    | Sunset mid-2025                       | “Turbo” as above                                       |
-| 🟡  | **GPT-3.5 (base)**            | March–November 2022 | Early RLHF model; ChatGPT v1                                                | Small context, dated knowledge        | “3.5” signaled RLHF-tuned step between 3 & 4            |
-| 🔴  | **GPT-4**                     | 14 March 2023      | High-quality text; vision via separate endpoint                             | Retired from ChatGPT 30 April 2025    | Plain version number                                   |
-| 🔴  | **GPT-4.5 preview**           | February 2025      | Bridge model while 4o rolled out                                            | API removal slated 14 July 2025       | “.5” = half-step; “preview” = experimental             |
-| 🔴  | **GPT-3**                     | June 2020          | Historic foundation LLM                                                     | Lags on reasoning, cut-off 2020       | Generation number only                                 |
-| 🔴  | **GPT-2**                     | February 2019      | Historic: text generation demo                                              | Small context, safety gaps            | Generation number only                                 |
-| 🔴  | **GPT-1**                     | June 2018          | Proof-of-concept                                                            | 117M params, research only            | First use of “GPT”                                     |
-
-### Decoding the names
-
-- **GPT**= _Generative Pre-trained Transformer_
-- **Major number** (1, 2, 3, 4, 4.1…) → new architecture/train run.
-- **.5/.1** → mid-cycle fine-tune refresh.
-- **o** → **o**mni (multimodal I/O).
-- **o-series without “GPT”** (o1, o3, o4…) → separate reasoning line; letters are branding, numbers track generations.
-- **mini / nano / high** → trade speed/cost vs accuracy.
-- **Turbo** → snapshot tuned for throughput/cost.
-- Date format - **MMDD** (e.g., `gpt-4-0613`) → training-snapshot date.
+This is a living document — if you spot mistakes or missing models,  
+please [make a PR](https://github.com/bradystroud/blog/edit/main/content/blogs/openai-model-cheatsheet.mdx)!  
+This page lives in GitHub Markdown via [TinaCMS 🦙](https://tina.io)
 
 ---
- 
+
+## OpenAI Chat Model Cheat-Sheet (Updated October 2025)
+
+**Legend:**  
+- 🟢 current & recommended  
+- 🟡 active but phasing out  
+- 🔴 legacy / deprecated  
+
+| Status | Model | Release / Change | Strengths / Best Use-Cases | Trade-offs / Notes |
+| --- | --- | --- | --- | --- |
+| 🟢 | **GPT-5** | Aug 2025 | Unified “smart” (fast) + “thinking” (deep) routing model. Best for general work, reasoning, coding, and RAG. | Variable latency; cost scales with reasoning depth. |
+| 🟢 | **GPT-4.1** | 14 Apr 2025 | Flagship API model — top coding, logic, and 1 M token context. | Pricier than mini/nano. |
+| 🟢 | **GPT-4.1 mini** | 14 Apr 2025 | ~90 % of 4.1 accuracy at lower price/latency; great default. | Slightly less reasoning depth. |
+| 🟢 | **GPT-4.1 nano** | 14 Apr 2025 | Ultra-fast and cheap; still supports 1 M context. Perfect for classification / autocomplete. | Loses nuance and creativity. |
+| 🟡 | **GPT-4o / 4o mini** | May-Jul 2024 | Multimodal (text + image + audio) real-time chat. | Slightly weaker reasoning than 4.1 series. |
+| 🟡 | **GPT-4 Turbo / 3.5 Turbo** | 2023-2024 | Older “Turbo” line optimized for speed & cost. | Sunsetting by late 2025. |
+| 🟡 / 🔴 | **GPT-4.5 (“Orion”)** | Feb 2025 → retired mid-2025 | Bridge between 4o and 4.1; good reasoning. | Deprecated for GPT-5 and 4.1. |
+| 🔴 | **GPT-4 (base)** | 14 Mar 2023 | Original 4-series model (text-only). | Retired Apr 2025. |
+| 🔴 | **GPT-3.5 (base)** | 2022 | Early RLHF (ChatGPT v1). | Obsolete; small context. |
+| 🔴 | **GPT-3 / 2 / 1** | 2018 - 2020 | Historical models for context. | Too limited for modern tasks. |
+
+---
+
+### Decoding the Names
+
+- **GPT** = _Generative Pre-trained Transformer_  
+- **Major number** (3, 4, 5) → architecture generation  
+- **.1 / .5** → mid-cycle refresh or fine-tune  
+- **o** → **o**mni (multimodal I/O line)  
+- **mini / nano / high** → size vs accuracy trade-off  
+- **Turbo** → throughput-optimized snapshot  
+- **MMDD** in ID (e.g. `gpt-4-0613`) → training-snapshot date  
+
+---
+
+### References
+
+- [OpenAI - Introducing GPT-5](https://openai.com/index/introducing-gpt-5/?utm_source=chatgpt.com)  
+- [OpenAI - GPT-4.1 Overview](https://openai.com/index/gpt-4-1/?utm_source=chatgpt.com)  
+- [Platform Docs - GPT-4.1 Nano](https://platform.openai.com/docs/models/gpt-4-1-nano?utm_source=chatgpt.com)  
+- [Wikipedia - GPT-4.5](https://en.wikipedia.org/wiki/GPT-4.5?utm_source=chatgpt.com)  
+- [Business Insider - Altman on Naming Confusion](https://www.businessinsider.com/sam-altman-openai-fix-confusing-ai-model-names-gpt-2025-4?utm_source=chatgpt.com)  
+
+---
