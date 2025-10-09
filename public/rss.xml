@@ -6,18 +6,25 @@
    <description>Latest posts from Brady Stroud</description>
    
    <item>
-   <title>Running .NET Aspire in a Windows VM While Using Docker on the Mac Host</title>
-   <link>https://bradystroud.dev/blogs/aspire-windows-vm</link>
-   <guid>https://bradystroud.dev/blogs/aspire-windows-vm</guid>
-   <pubDate>Mon, 29 Sep 2025 00:00:00 GMT</pubDate>
-   <description>This article shows the initial Docker context approach. For the ultimate solution with SSH tunnels, certificates, and port forwarding, see Part 2: Connecting Windows VMs to Mac-Hosted APIs./connect-windows-vm-to-mac-apis.</description>
+   <title>Fixing the &#39;PowerShell session not found&#39; issue in VS Code</title>
+   <link>https://bradystroud.dev/blogs/vscode-powershell-session-fix</link>
+   <guid>https://bradystroud.dev/blogs/vscode-powershell-session-fix</guid>
+   <pubDate>Fri, 03 Oct 2025 00:00:00 GMT</pubDate>
+   <description>Recently, I was working with some PowerShell scripts in VS Code and ran into a frustrating error:</description>
    </item>
    <item>
    <title>Connecting Windows VMs to Mac-Hosted APIs</title>
    <link>https://bradystroud.dev/blogs/connect-windows-vm-to-mac-apis</link>
    <guid>https://bradystroud.dev/blogs/connect-windows-vm-to-mac-apis</guid>
-   <pubDate>Sun, 07 Sep 2025 00:00:00 GMT</pubDate>
+   <pubDate>Tue, 30 Sep 2025 00:00:00 GMT</pubDate>
    <description>Part 2 of the Windows VM + Mac series. This is the ultimate solution for connecting Windows VMs to Mac-hosted services. For the foundational Docker context approach, see Part 1: Running . NET Aspire in a Windows VM./aspire-windows-vm.</description>
+   </item>
+   <item>
+   <title>.NET Aspire in Windows VM using Docker on the Mac Host</title>
+   <link>https://bradystroud.dev/blogs/aspire-windows-vm</link>
+   <guid>https://bradystroud.dev/blogs/aspire-windows-vm</guid>
+   <pubDate>Mon, 29 Sep 2025 00:00:00 GMT</pubDate>
+   <description>This article shows the initial Docker context approach. For the ultimate solution with SSH tunnels, certificates, and port forwarding, see Part 2: Connecting Windows VMs to Mac-Hosted APIs./connect-windows-vm-to-mac-apis.</description>
    </item>
    <item>
    <title>Cocona - Clean console apps in .NET</title>
@@ -32,13 +39,6 @@
    <guid>https://bradystroud.dev/blogs/maui-setup-macos</guid>
    <pubDate>Tue, 01 Jul 2025 10:00:00 GMT</pubDate>
    <description>Getting started with . NET MAUI on macOS is straight forward once you know the tooling you need. With a single installation you can build and debug on iOS, Android, macOS.</description>
-   </item>
-   <item>
-   <title>Your Data Is Power — Even Your Search History</title>
-   <link>https://bradystroud.dev/blogs/your-data-is-power</link>
-   <guid>https://bradystroud.dev/blogs/your-data-is-power</guid>
-   <pubDate>Mon, 30 Jun 2025 14:30:00 GMT</pubDate>
-   <description>We live in a world where data is power. Companies know it. Governments know it. And honestly, you should know it too.</description>
    </item>
    <item>
    <title>OpenAI Chat Model Cheat Sheet - Decoding the Chaos</title>
