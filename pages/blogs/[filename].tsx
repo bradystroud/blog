@@ -85,7 +85,8 @@ export default function Blog(
               <TinaMarkdown content={data.blog._body} />
             </div>
             <div className="mt-8">
-              <Giscus
+              {/* TODO: Reconfigure Giscus */}
+              {/* <Giscus
                 id="comments"
                 repo="bradystroud/bradystroud.dev"
                 repoId="R_kgDOHYKKTg"
@@ -99,7 +100,7 @@ export default function Blog(
                 theme="preferred_color_scheme"
                 lang="en"
                 loading="lazy"
-              />
+              /> */}
             </div>
           </Container>
         </Section>
