@@ -1,0 +1,100 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/word-doc-to-pdf-automation"
+title: "Word Doc to PDF at Scale: Evaluating Tools and Landing on Power Automate"
+date: 2025-04-25T08:00:00.000Z
+tags:
+  - automation
+  - power-automate
+  - microsoft-365
+  - pdf
+  - document-processing
+---
+
+Converting Microsoft Word documents into pixel-perfect PDFs sounds trivial until you try to automate it. The moment you promise a client “we’ll just script it,” you realise you have to preserve headers, footers, custom fonts, and cross-platform reliability – and there is no room for manual tweaks. This post documents the journey I went through: researching the commercial landscape, trialling Foxit PDF and IronPDF, and eventually rolling my own approach with Microsoft Power Automate.
+
+## The requirements
+
+The brief from the client was straightforward:
+
+- Accept a `.docx` file from our application.
+- Generate a PDF that looks identical to the source, including headers, footers, section breaks, and embedded fonts.
+- Run unattended in our cloud environment without licensing headaches.
+- Avoid enterprise-level pricing for a relatively small workflow.
+
+Those requirements guided every evaluation decision.
+
+## Foxit PDF: Strong brand, tough developer experience
+
+Foxit was the first platform we tried because of its reputation in the PDF space. Unfortunately, it fell short in three areas:
+
+1. **Setup friction** – Getting Foxit’s SDK running was unexpectedly painful. The documentation assumes a Windows-first environment and offers minimal guidance for Linux containers, which is where we deploy our workloads.
+2. **Cross-platform limitations** – We rely on containerized builds and CI pipelines. Foxit’s licensing model and runtime dependencies made it difficult to maintain a consistent environment across machines.
+3. **Poor documentation** – Critical details, like how to handle fonts or configure conversion profiles, were either missing or buried in forum posts. After multiple attempts we still did not have a stable conversion pipeline.
+
+The net result: zero production-ready PDFs after several days of effort.
+
+## IronPDF: Easier install, but quality issues
+
+After Foxit we trialled [IronPDF](https://ironpdf.com/). The experience started strong:
+
+- Installation via NuGet was painless.
+- The API surface is clean, and we had a proof-of-concept working within an hour.
+- The support team responded quickly to our queries.
+
+The deal-breaker was output fidelity. Despite toggling render options and font embedding settings, our exported PDFs were missing fonts and reflowing key elements. IronPDF does offer a containerized rendering service, but we never managed to connect our app reliably, and there was no guarantee it would resolve the formatting issues. At that point it didn’t make sense to spend more time when the core requirement – identical layout – was still failing.
+
+![Placeholder: IronPDF export with missing fonts and layout shifts](/uploads/placeholder-ironpdf-export.png)
+*Replace with a screenshot that demonstrates the IronPDF rendering issues.*
+
+## The pricing problem
+
+While researching alternatives we kept bumping into enterprise-grade products with eye-watering price tags. Services like [Text Control](https://www.textcontrol.com/technology/pdf/) are powerful, but their pricing targets large organisations. For a single client workflow, the cost-to-value ratio just wasn’t defensible.
+
+## Pivoting to a DIY Power Automate flow
+
+We ultimately solved the problem with Microsoft Power Automate. Because the client already uses Microsoft 365, we could leverage their existing licensing and infrastructure. Power Automate includes a “Convert Word Document to PDF” action that wraps the same rendering engine used by Office Online, so fidelity is excellent – headers, footers, and fonts all come through perfectly.
+
+![Placeholder: Power Automate flow producing a pixel-perfect PDF](/uploads/placeholder-power-automate-flow.png)
+*Replace with a screenshot that shows the successful Power Automate conversion.*
+
+### Why Power Automate worked
+
+- **Proven rendering engine** – Office Online is the gold standard for opening `.docx` files. Power Automate simply exposes that engine via an HTTP-friendly workflow.
+- **Zero infrastructure to manage** – No Docker containers, no custom services, just a flow triggered from our app.
+- **Predictable cost** – Under Microsoft 365 Business Premium the action is included, and even with premium connectors the pricing is far less than dedicated PDF tooling.
+- **Security and compliance** – Documents never leave the Microsoft 365 tenant, satisfying the client’s data residency requirements.
+
+### High-level architecture
+
+1. Our application uploads the `.docx` to a SharePoint document library via Microsoft Graph.
+2. A Power Automate flow is triggered (either manually via webhook or on file creation).
+3. The flow uses the “Convert Word Document to PDF” action.
+4. The resulting PDF is written back to SharePoint and the download URL is returned to the app.
+
+### Implementation tips
+
+- **Keep fonts embedded** – Before uploading, ensure the Word template has “Embed fonts in the file” enabled. Power Automate preserves embedded fonts perfectly.
+- **Handle naming collisions** – Append a timestamp or GUID when saving the converted PDF to avoid overwriting previous runs.
+- **Return structured responses** – Use the flow’s `Response` action to send JSON back to your application (e.g., `{ "pdfUrl": "..." }`).
+- **Monitor with run history** – Power Automate keeps a full audit trail, which is invaluable for debugging failed conversions.
+
+## When to choose a commercial PDF SDK
+
+There are still good reasons to pay for a dedicated PDF library:
+
+- You need full offline processing with no external dependencies.
+- You require advanced manipulation beyond conversion (e.g., digital signing, redaction, or form field generation).
+- Your workloads sit outside the Microsoft ecosystem and Power Automate licensing would exceed the cost of a library.
+
+If those scenarios apply, revisit IronPDF, Syncfusion, or Text Control – just budget time for proof-of-concepts to validate output quality.
+
+## Lessons learned
+
+- Start every PDF project with a fidelity test suite: collect sample documents with tricky layouts and fonts, and automate regression checks.
+- Documentation quality matters. Time spent deciphering sparse docs can quickly exceed licensing costs.
+- Don’t underestimate the power of “good enough” platforms you already own. Power Automate saved both time and money because it was hidden in plain sight within the client’s Microsoft 365 subscription.
+
+## Final thoughts
+
+The best tool is the one that balances quality, cost, and maintainability. For us, the high-end PDF SDKs were overkill, and even the promising ones couldn’t meet our formatting requirements. Power Automate gave us enterprise-grade conversion with minimal effort. If you are facing a similar Word-to-PDF challenge, check whether your client already has the pieces in Microsoft 365 – you might already be paying for the perfect solution.
+
