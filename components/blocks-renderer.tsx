@@ -5,6 +5,7 @@ import { Features } from "./blocks/features";
 import { Hero } from "./blocks/hero";
 import { Projects } from "./blocks/projects";
 import { InstagramPosts } from "./blocks/instagramPosts";
+import { TikTokPosts } from "./blocks/tiktokPosts";
 import { AboutShowcase } from "./blocks/about";
 
 export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
@@ -14,6 +15,7 @@ export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
     PageBlocksFeatures: Features,
     PageBlocksProjects: Projects,
     PageBlocksInstagramPosts: InstagramPosts,
+    PageBlocksTiktokPosts: TikTokPosts,
     PageBlocksAboutShowcase: AboutShowcase,
   };
 
