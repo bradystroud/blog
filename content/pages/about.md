@@ -1,6 +1,5 @@
 ---
 canonicalUrl: 'https://bradystroud.dev/about'
-canonicalUrl: 'https://bradystroud.dev/about'
 title: About
 blocks:
   - eyebrow: More than code
