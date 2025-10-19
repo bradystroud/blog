@@ -84,7 +84,14 @@ blocks:
       clips through TinaCMS.
     profileUrl: 'https://www.tiktok.com/@bradystroud'
     emptyMessage: TikToks coming soon—check back shortly!
-    posts: []
+    posts:
+      - id: grampians-wildlife
+        videoUrl: >-
+          https://www.tiktok.com/@bradystroud/video/7558397396800015637?_r=1&_t=ZS-90gu7dooZ05
+        caption: ''
+      - id: building
+        videoUrl: 'https://www.tiktok.com/@bradystroud/video/7556724645987126549'
+        caption: ''
     _template: tiktokPosts
 ---
 
