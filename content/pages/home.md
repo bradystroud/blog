@@ -78,5 +78,20 @@ blocks:
         postUrl: 'https://www.instagram.com/p/C5_bqE3MQXq'
         date: 2024-04-20T14:00:00.000Z
     _template: instagramPosts
+  - heading: Latest TikToks
+    description: >-
+      Off-the-clock adventures that keep life interesting. Add your favourite
+      clips through TinaCMS.
+    profileUrl: 'https://www.tiktok.com/@bradystroud'
+    emptyMessage: TikToks coming soon—check back shortly!
+    posts:
+      - id: grampians-wildlife
+        videoUrl: >-
+          https://www.tiktok.com/@bradystroud/video/7558397396800015637?_r=1&_t=ZS-90gu7dooZ05
+        caption: ''
+      - id: building
+        videoUrl: 'https://www.tiktok.com/@bradystroud/video/7556724645987126549'
+        caption: ''
+    _template: tiktokPosts
 ---
 

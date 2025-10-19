@@ -4,6 +4,7 @@ import { featureBlockSchema } from "../../components/blocks/features";
 import { heroBlockSchema } from "../../components/blocks/hero";
 import { instagramPostsBlockSchema } from "../../components/blocks/instagramPosts";
 import { projectBlockSchema } from "../../components/blocks/projects";
+import { tikTokPostsBlockSchema } from "../../components/blocks/tiktokPosts";
 import { aboutShowcaseBlockSchema } from "../../components/blocks/about";
 
 export const PageCollection: Collection = {
@@ -51,6 +52,7 @@ export const PageCollection: Collection = {
         featureBlockSchema,
         contentBlockSchema,
         instagramPostsBlockSchema,
+        tikTokPostsBlockSchema,
         aboutShowcaseBlockSchema,
       ],
     },
