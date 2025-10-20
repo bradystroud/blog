@@ -1,0 +1,68 @@
+==================================================================
+https://keybase.io/bradystroud
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://bradystroud.dev
+  * I am bradystroud (https://keybase.io/bradystroud) on keybase.
+  * I have a public key with fingerprint 9EFF F8C3 C203 C1DB 42CA  384E A420 8C73 0B2B F08A
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01014e0a7950f8e465ccc85d90f72ddf94cc3e5ebe2246c953ab3013638ff6e2e5a30a",
+      "fingerprint": "9efff8c3c203c1db42ca384ea4208c730b2bf08a",
+      "host": "keybase.io",
+      "key_id": "a4208c730b2bf08a",
+      "kid": "01014e0a7950f8e465ccc85d90f72ddf94cc3e5ebe2246c953ab3013638ff6e2e5a30a",
+      "uid": "8788a039d1717bb8273113e146abdd19",
+      "username": "bradystroud"
+    },
+    "service": {
+      "hostname": "bradystroud.dev",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1760991302,
+  "expire_in": 157680000,
+  "prev": "5cf57cb43d493f82b93cb1a6907b416a44c81376a61eecdc6236a00da44fba1b",
+  "seqno": 4,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.1.17
+Comment: https://keybase.io/crypto
+
+yMIlAnicrVJZSFRRGB5zWpwywiyCyuJWFDQ659xz14HECiWLdtAKczrbdS7Z3One
+qzmYUdDyUFCRREGb5UNQQWILiUkuBWILVA+lIFPQXk9itEB1r9RTPXZeDud8y//9
+P39PdmYglIFOr9/5ImPdu4y+ztM1gfjnEyX1ArFYSojWC1v5yMWrGXfc2FaTCVEB
+QAAlDrCqy8DQuKTIlFJNZjowVJExQ5coRVzmhIuipFBdRpggAJGCNMNQuMhljAAW
+woJhJqq4nbTNhOvZ6twwDI0iKgJEISOSSDHSJI4lEWhURYCIxACaL4xbjq/wwhHs
+8ALT8v68R2wk3j/4/zl3zYidpmoaBkhnUIUqIZqoIggRh5KCCWNQ94kOtxN4G/fY
+xMYs5bi2VcOEhrDgAbUm5f5s/Wb+JhUwXus5JG3LtahV7YFx1006UV/sppI+ewcn
+sd8+MWImmDdNT1HLbce0EkIUekzqmr4xVBWg6xABMSzwuqRp85jpM2RV0YB3/Dpe
+uaggU0NWKZEQk3RkaCLRESUQKzpQiQQVLElUg0hVsAI5p4wqIlIwAMwDDIIhEfzO
+ticsISp5MXGVZ+mYVQns1thcaOi6UxEMZIQCY0aP8rcsEMqa9Gf39OyxP/I3Xnle
+2mZfKCruZCWTJvTm5eVN7qiIPG0olA9/2LDiUt9w2dkl09akEpt2v21rKV34cVH7
+PfXq64VPirpzV39Plzau3PeqkS37mdMxdCLZn85d++3Iu7K8AxOLb9y8HJda5wxd
+711k5BR92h853j2juW9q1t1Pcfx4dteB7JLqCWeCTtme4PDY1rLFM+/Pf3OrM6v8
+XMHHpf3D4Uo85sX5WdObTqbb81c8W6o03w7HDvasGXhQvHnevMPLu6Zlfpmy4KJz
+St5bNHCoZXw40l9u7E73Nj38GnrZUXetP7+xsBQM7tmSXmKGRj+6VfntWN3rxeNW
+DUbm2O/V5PRD25uDF51dc48O/QInWEBz
+=QHa8
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/bradystroud
+
+==================================================================
