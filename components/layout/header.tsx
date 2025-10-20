@@ -30,7 +30,7 @@ export const Header = ({ data }) => {
             <FaSearchLocation className="fill-current h-8 w-8 mr-2" />{" "}
             {/* Weird stuff happens when i removed the above line, so it stays */}
             <span className="font-semibold text-xl tracking-tight text-black ">
-              <Link href="/" className="flex items-center">
+              <Link href="/" className="flex items-center" legacyBehavior>
                 <FaLaptopCode className="fill-current h-8 w-8 mr-2" />
                 <span>Brady Stroud</span>
               </Link>
