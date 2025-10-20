@@ -6,6 +6,20 @@
    <description>Latest posts from Brady Stroud</description>
    
    <item>
+   <title>Word Doc to PDF: Evaluating Tools and Landing on PowerAutomate</title>
+   <link>https://bradystroud.dev/blogs/word-doc-to-pdf</link>
+   <guid>https://bradystroud.dev/blogs/word-doc-to-pdf</guid>
+   <pubDate>Sun, 19 Oct 2025 17:30:00 GMT</pubDate>
+   <description>Converting Microsoft Word documents into pixel-perfect PDFs sounds trivial until you try to automate it. This post documents the journey I went through: researching the commercial landscape, trialling Foxit PDF and IronPDF, and eventually rolling my own approach with Microsoft Power Automate.</description>
+   </item>
+   <item>
+   <title>OpenAI Chat Model Cheat Sheet - Decoding the Chaos</title>
+   <link>https://bradystroud.dev/blogs/openai-model-cheatsheet</link>
+   <guid>https://bradystroud.dev/blogs/openai-model-cheatsheet</guid>
+   <pubDate>Fri, 10 Oct 2025 10:00:00 GMT</pubDate>
+   <description>OpenAI's model names e. g., o4, 4o, 4.1 are confusing and change often. This is my quick reference for picking the right model for any task 🧠⚡️</description>
+   </item>
+   <item>
    <title>Fixing the &#39;PowerShell session not found&#39; issue in VS Code</title>
    <link>https://bradystroud.dev/blogs/vscode-powershell-session-fix</link>
    <guid>https://bradystroud.dev/blogs/vscode-powershell-session-fix</guid>
@@ -34,18 +48,18 @@
    <description>Coconahttps://github. com/amybarga/cocona is a small framework that simplifies building command line applications in . NET. It handles parsing, help pages, dependency injection and more, so you can focus on your app&#39;s logic. It makes it easy to build well-structured vertically sliced commands.</description>
    </item>
    <item>
-   <title>.NET MAUI setup on macOS — build once, run everywhere</title>
+   <title>.NET MAUI setup on macOS - build once, run everywhere</title>
    <link>https://bradystroud.dev/blogs/maui-setup-macos</link>
    <guid>https://bradystroud.dev/blogs/maui-setup-macos</guid>
    <pubDate>Tue, 01 Jul 2025 10:00:00 GMT</pubDate>
    <description>Getting started with . NET MAUI on macOS is straight forward once you know the tooling you need. With a single installation you can build and debug on iOS, Android, macOS.</description>
    </item>
    <item>
-   <title>OpenAI Chat Model Cheat Sheet - Decoding the Chaos</title>
-   <link>https://bradystroud.dev/blogs/openai-model-cheatsheet</link>
-   <guid>https://bradystroud.dev/blogs/openai-model-cheatsheet</guid>
-   <pubDate>Thu, 17 Apr 2025 10:00:00 GMT</pubDate>
-   <description>OpenAI’s model names e. g., o4, 4o are confusing and change often. This guide is my quick reference for picking the best model for any task.</description>
+   <title>Your Data Is Power - Even Your Search History</title>
+   <link>https://bradystroud.dev/blogs/your-data-is-power</link>
+   <guid>https://bradystroud.dev/blogs/your-data-is-power</guid>
+   <pubDate>Mon, 30 Jun 2025 14:30:00 GMT</pubDate>
+   <description>We live in a world where data is power. Companies know it. Governments know it. And honestly, you should know it too.</description>
    </item>
    <item>
    <title>RAID - Rapid AI Development</title>
@@ -83,18 +97,18 @@
    <description>In 2024 I had the opportunity to spend 2 months living and working in France.</description>
    </item>
    <item>
-   <title>.NET MAUI Blazor template — Build your UI once</title>
+   <title>.NET MAUI Blazor template - Build your UI once</title>
    <link>https://bradystroud.dev/blogs/maui-blazor</link>
    <guid>https://bradystroud.dev/blogs/maui-blazor</guid>
    <pubDate>Wed, 27 Jul 2022 14:30:00 GMT</pubDate>
    <description>Another post for Matt Goldman&#39;s . NET MAUI UI July . NET MAUI UI Julyhttps://goforgoldman. com/2022/05/19/maui-ui-july. html</description>
    </item>
    <item>
-   <title>.NET MAUI vs Flutter — Multi-platform frameworks showdown</title>
+   <title>.NET MAUI vs Flutter - Multi-platform frameworks showdown</title>
    <link>https://bradystroud.dev/blogs/maui-vs-flutter</link>
    <guid>https://bradystroud.dev/blogs/maui-vs-flutter</guid>
    <pubDate>Fri, 22 Jul 2022 14:30:00 GMT</pubDate>
-   <description>Here it is — my post for . NET MAUI Julyhttps://goforgoldman. com/2022/05/19/maui-ui-july. html</description>
+   <description>Here it is - my post for . NET MAUI Julyhttps://goforgoldman. com/2022/05/19/maui-ui-july. html</description>
    </item>
    </channel>
    </rss>

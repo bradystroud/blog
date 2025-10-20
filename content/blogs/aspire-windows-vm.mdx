@@ -17,11 +17,11 @@ coverImage: /uploads/docker-mac-windows.png
 
 ## The Problem
 
-You need to build and run a .NET Aspire solution inside a Windows VM because parts of your stack (legacy services, libraries, build tooling, test harnesses, or full .NET Framework projects) are Windows-only. But you're physically on a Mac. If you try to also run Docker inside that Windows VM on Apple Silicon, you end up attempting nested (or at least layered) virtualization and translated instruction sets — it gets weird fast (works more predictably on older Intel Macs, but not reliably or efficiently on Apple Silicon). It also duplicates images, slows builds, drains battery, and explodes disk usage. You already have Docker running natively on macOS — so reuse that single, fast daemon from the Windows VM instead.
+You need to build and run a .NET Aspire solution inside a Windows VM because parts of your stack (legacy services, libraries, build tooling, test harnesses, or full .NET Framework projects) are Windows-only. But you're physically on a Mac. If you try to also run Docker inside that Windows VM on Apple Silicon, you end up attempting nested (or at least layered) virtualization and translated instruction sets - it gets weird fast (works more predictably on older Intel Macs, but not reliably or efficiently on Apple Silicon). It also duplicates images, slows builds, drains battery, and explodes disk usage. You already have Docker running natively on macOS - so reuse that single, fast daemon from the Windows VM instead.
 
 ## Constraints & Pain Points
 
-- Aspire spins up multiple containers (dashboard, services, infra dependencies) — duplication across host + VM is costly.
+- Aspire spins up multiple containers (dashboard, services, infra dependencies) - duplication across host + VM is costly.
 - Windows-on-ARM or x64 translation can slow Docker inside the VM.
 - Nested virtualization issues appear if you try to force Linux containers inside certain Windows VM setups.
 - File sharing between VM and host can degrade I/O-heavy builds.
@@ -29,7 +29,7 @@ You need to build and run a .NET Aspire solution inside a Windows VM because par
 
 ## Desired Outcome
 
-Run your full Aspire solution (orchestration + dashboards) from inside Windows (Parallels VM) while all containers actually execute on the macOS host's Docker daemon — with minimal friction and reliable developer ergonomics.
+Run your full Aspire solution (orchestration + dashboards) from inside Windows (Parallels VM) while all containers actually execute on the macOS host's Docker daemon - with minimal friction and reliable developer ergonomics.
 
 ## Architecture Overview
 
@@ -157,7 +157,7 @@ docker ps | grep sanity
 
 ## Recap
 
-You develop in Windows. Docker lives on macOS. An SSH-based Docker context stitches them together. Aspire just works—and you avoid duplicated engines, sluggish virtualization layers, and image sprawl.
+You develop in Windows. Docker lives on macOS. An SSH-based Docker context stitches them together. Aspire just works-and you avoid duplicated engines, sluggish virtualization layers, and image sprawl.
 
 ---
 

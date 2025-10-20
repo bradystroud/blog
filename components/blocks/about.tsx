@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Template } from "tinacms";
-import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { TinaMarkdown, TinaMarkdownContent } from "tinacms/dist/rich-text";
 import { Section } from "../util/section";
 import { Container } from "../util/container";
 
@@ -21,7 +21,7 @@ interface AboutBlockProps {
     eyebrow?: string | null;
     heading?: string | null;
     subheading?: string | null;
-    body?: unknown;
+    body?: TinaMarkdownContent | null;
     highlights?: Array<AboutHighlight | null> | null;
     mainImage?: AboutImage | null;
     accentImages?: Array<AboutImage | null> | null;
@@ -162,7 +162,7 @@ export const AboutShowcase = ({
                   <ImageTile
                     // index offset ensures key uniqueness when accentImages shorter than 2
                     key={`placeholder-${index}`}
-                    parentField={`${parentField}.accentImages.${data.accentImages.length + index}`}
+                    parentField={`${parentField}.accentImages.${data.accentImages!.length + index}`}
                     layoutClass="aspect-[5/6]"
                   />
                 )
@@ -216,7 +216,7 @@ export const aboutShowcaseBlockSchema: Template = {
         },
         {
           title: "Outdoor Explorer",
-          description: "From surf to summit—fueling creativity through adventure.",
+          description: "From surf to summit-fueling creativity through adventure.",
         },
       ],
       mainImage: {

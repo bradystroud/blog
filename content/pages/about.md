@@ -4,17 +4,17 @@ title: About
 blocks:
   - eyebrow: More than code
     heading: Brady Stroud
-    subheading: Problem solver at heart — software engineering is my my tool of choice.
+    subheading: Problem solver at heart - software engineering is my my tool of choice.
     body: >
       I’m a software engineer because I love solving problems and building
-      things that work better. Code is just the medium — what really excites me
+      things that work better. Code is just the medium - what really excites me
       is improving how things function, whether that’s a process, a product, or
       a team.
 
 
       I’m a Senior Software Engineer with strong expertise in .NET, Blazor, MAUI
       (was Xamarin), and React. Beyond hands-on development, I manage projects
-      end-to-end — driving process improvements, setting engineering standards,
+      end-to-end - driving process improvements, setting engineering standards,
       and helping teams deliver with clarity and consistency. I’m a big believer
       in open-source tech for its flexibility, transparency, and the speed it
       brings to innovation.

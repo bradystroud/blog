@@ -21,7 +21,7 @@ When you're building full-stack systems, you might:
 
 The challenge: the VM must talk securely to the host's APIs, which usually only trust localhost by default.
 
-## Step 1 — Export and Trust Dev Certificates
+## Step 1 - Export and Trust Dev Certificates
 
 By default, dotnet dev-certs https generates a certificate trusted for https://localhost. If you want your Windows VM apps to talk to Mac-hosted APIs, you need to import this certificate into Windows.
 
@@ -44,7 +44,7 @@ Import-PfxCertificate -FilePath "$env:USERPROFILE\Desktop\aspnet-https.pfx" `
 ```
 Now Windows trusts the dev cert for localhost.
 
-## Step 2 — Open SSH Tunnels
+## Step 2 - Open SSH Tunnels
 
 Since the certificate only covers localhost, the easiest way to bridge traffic from your VM to your host is via SSH tunnels.
 
@@ -63,7 +63,7 @@ Replace user with your macOS username and 10.211.55.2 with your Mac's IP in Para
 
 This means https://localhost:7230 in the VM now maps to the API on the Mac, and https://localhost:5001 maps to IdentityServer.
 
-## Step 3 — Confirm Connectivity
+## Step 3 - Confirm Connectivity
 
 From macOS (host):
 
