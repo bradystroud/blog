@@ -40,6 +40,16 @@ export const BlogCollection: Collection = {
       },
     },
     {
+      type: "boolean",
+      name: "aiCollaboration",
+      label: "AI Collaboration",
+      description:
+        "Show the AI collaboration flag at the top of this post.",
+      ui: {
+        component: "toggle",
+      },
+    },
+    {
       // TODO: Do some work here to ensure this is a valid tag (from the tags collection). at a minimum, validate that the tag exists.
       // Ideally provide a dropdown lookup thing of valid tags.
       type: "string",
