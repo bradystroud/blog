@@ -80,6 +80,19 @@ export default function Blog(
                 </div>
               </div>
             </div>
+            {data.blog.aiCollaboration ? (
+              <div className="mb-8 flex justify-center">
+                <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 shadow-sm dark:border-amber-400/40 dark:bg-amber-500/10 dark:text-amber-100">
+                  <span aria-hidden className="text-lg leading-none">
+                    🤝
+                  </span>
+                  <p>
+                    AI collaboration: This post was drafted with AI support,
+                    but the ideas, experiences and opinions are all my own.
+                  </p>
+                </div>
+              </div>
+            ) : null}
             <div className="prose dark:prose-dark w-full max-w-none">
               <TinaMarkdown content={data.blog._body} />
             </div>
