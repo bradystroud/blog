@@ -88,7 +88,7 @@ export default function Blog(
                   </span>
                   <p>
                     AI collaboration: This post was drafted with AI support,
-                    but the ideas and experiences are mine.
+                    but the ideas, experiences and opinions are all my own.
                   </p>
                 </div>
               </div>
