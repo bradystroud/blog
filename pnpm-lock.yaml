@@ -7,9 +7,6 @@ settings:
 overrides:
   final-form: 4.20.1
   '@types/node': 22.13.10
-  color-string: ^1.9.1
-
-packageExtensionsChecksum: sha256-6QpWj9CWUNn3AEkIPCd48i2jjybyhYwEmMAwdqmqRJ8=
 
 importers:
 
