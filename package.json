@@ -50,7 +50,8 @@
   },
   "pnpm": {
     "overrides": {
-      "@types/node": "22.13.10"
+      "@types/node": "22.13.10",
+      "color-string": "^1.9.1"
     },
     "onlyBuiltDependencies": [
       "@tailwindcss/oxide",
@@ -58,6 +59,14 @@
       "better-sqlite3",
       "esbuild",
       "sharp"
-    ]
+    ],
+    "packageExtensions": {
+      "color-string": {
+        "type": "commonjs"
+      }
+    },
+    "patchedDependencies": {
+      "tinacms@3.2.0": "patches/tinacms@3.2.0.patch"
+    }
   }
 }

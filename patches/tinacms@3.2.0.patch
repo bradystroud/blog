@@ -1,0 +1,13 @@
+diff --git a/dist/index.js b/dist/index.js
+index 39065d912978443cce3d3672525a13854c63946c..83684915763dd5a52bdd064a473bd6acb8615bc2 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -45,7 +45,7 @@ import { sortableKeyboardCoordinates, useSortable, SortableContext, verticalList
+ import { CSS } from "@dnd-kit/utilities";
+ import { buildSchema, print, getIntrospectionQuery, buildClientSchema, parse as parse$4 } from "graphql";
+ import { diff as diff$1 } from "@graphql-inspector/core";
+-import { get as get$6, to as to$1 } from "color-string";
++import colorString from "color-string"; const get$6 = colorString.get; const to$1 = colorString.to;
+ import { HexColorPicker } from "react-colorful";
+ import * as dropzone from "react-dropzone";
+ import { Command as Command$3 } from "@udecode/cmdk";

@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ['color-string', 'color', 'tinacms'],
+  turbopack: {},
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
@@ -15,20 +17,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  turbopack: {
-    rules: {
-      "*.svg": {
-        loaders: ["@svgr/webpack"],
-        as: "*.js",
-      },
-    },
-  },
-  webpack(config) {
+  webpack(config, { isServer }) {
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
+
+    // Handle CommonJS modules in TinaCMS dependencies
+    if (isServer) {
+      config.externals = config.externals || [];
+      config.externals.push({
+        'color-string': 'commonjs color-string',
+        'color': 'commonjs color',
+      });
+    }
 
     return config;
   },
