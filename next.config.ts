@@ -1,8 +1,11 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ['color-string', 'color', 'tinacms'],
-  turbopack: {},
+  serverExternalPackages: ['color-string', 'color'],
+  turbopack: {
+    resolveExtensions: ['.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
+  },
+  transpilePackages: ['tinacms'],
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
