@@ -52,6 +52,11 @@ blocks:
     _template: projects
   - heading: Recent Instagram Posts
     posts:
+      - id: DTQs7dJEjUc
+        imageUrl: /uploads/IMG_0226.jpeg
+        caption: Canada 2025-26
+        postUrl: 'https://www.instagram.com/p/DTQs7dJEjUc'
+        date: 2026-01-10T12:00:00.000Z
       - id: 2025-vanuatu
         imageUrl: /uploads/IMG_5171.jpeg
         caption: "Vanuatu 2025 \U0001F1FB\U0001F1FA"
@@ -77,11 +82,6 @@ blocks:
         caption: "Rome \U0001F35D"
         postUrl: 'https://www.instagram.com/p/C5_bqE3MQXq'
         date: 2024-04-20T14:00:00.000Z
-      - id: DTQs7dJEjUc
-        imageUrl: /uploads/IMG_0226.jpeg
-        caption: Canada 2025-26
-        postUrl: 'https://www.instagram.com/p/DTQs7dJEjUc'
-        date: 2026-01-10T12:00:00.000Z
     _template: instagramPosts
 ---
 
