@@ -77,6 +77,11 @@ blocks:
         caption: "Rome \U0001F35D"
         postUrl: 'https://www.instagram.com/p/C5_bqE3MQXq'
         date: 2024-04-20T14:00:00.000Z
+      - id: Canada-2026
+        imageUrl: /uploads/IMG_0226.jpeg
+        caption: Canada 2025-26
+        postUrl: 'https://instagram.com/bradystroud'
+        date: 2026-01-10T12:00:00.000Z
     _template: instagramPosts
 ---
 
