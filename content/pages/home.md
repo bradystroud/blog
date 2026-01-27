@@ -1,6 +1,7 @@
 ---
 canonicalUrl: 'https://bradystroud.dev'
 title: Brady Stroud
+description: Software Engineer at SSW specializing in .NET, Blazor, MAUI, and cross-platform development. Building enterprise solutions with a focus on automation and process optimization.
 blocks:
   - tagline: Software Engineer
     headline: Brady Stroud

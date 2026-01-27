@@ -14,13 +14,34 @@ export default function HomePage(
     data: props.data,
   });
 
+  const title = data.page.title || "Brady Stroud";
+  const description = data.page.description || "Software Engineer at SSW specializing in .NET, Blazor, MAUI, and cross-platform development.";
+  const canonicalUrl = data.page.canonicalUrl || "https://bradystroud.dev";
+  const ogImageUrl = `https://bradystroud.dev/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
+
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>
       <Head>
-        <link rel="canonical" href={data.page.canonicalUrl} key="canonical" />
-        <meta property="og:title" content="Brady Stroud" />
-        <title>Brady Stroud</title>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonicalUrl} key="canonical" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="Brady Stroud" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImageUrl} />
       </Head>
       <Blocks {...data.page} />
     </Layout>

@@ -1,6 +1,7 @@
 ---
 canonicalUrl: 'https://bradystroud.dev/about'
 title: About
+description: Senior Software Engineer with expertise in .NET, Blazor, and MAUI. Certified Scrum Master focused on cross-platform solutions, AI advocacy, and business-minded engineering.
 blocks:
   - eyebrow: More than code
     heading: Brady Stroud
