@@ -97,8 +97,6 @@ Here's a snippet from my `docs/ai-tasks/refactor-plan.md`:
 - 🔴 src/WebApi/Features/Billing/Endpoints/VoidInvoiceEndpoint.cs (Remove try-catch)
 ```
 
-![Refactor plan showing traffic light status indicators](/uploads/easy-ai-refactors/vscode-refactor-plan-edits.png)
-
 Then I opened three separate OpenCode sessions, each in a different terminal window:
 
 - **Session 1:** "Complete Phase 3 and Phase 7 (Timesheets) following `/docs/refactor-plan.md`"  
@@ -109,9 +107,10 @@ All three agents read the same plan. All three understood the same transformatio
 
 **The speed improvement was immediate.** What took 45 minutes with one agent now took 15 minutes with three.
 
-![Three OpenCode sessions with multiple sub-agents working in parallel](/uploads/easy-ai-refactors/open-code-subagents.png)
-
 And the checklist prevented coordination issues. Because each phase had explicit file paths, agents couldn't accidentally work on the same files. The markdown file acted as a distributed lock - when Session 1 marked Phase 3 items as 🟢 Done, Session 2 knew to stay in its lane.
+
+![Refactor plan showing traffic light status indicators](/uploads/easy-ai-refactors/vscode-refactor-plan-edits.png)
+**Figure: Refactor plan in progress with checklist - the agents are keeping track of what's done, in progress, and not started**
 
 ---
 
@@ -209,6 +208,10 @@ Each of my 3 main sessions spawned 3-5 sub-agents to handle their assigned modul
 I effectively had ~15 AI agents working on the same refactor simultaneously.
 
 The entire refactor completed in under 20 minutes.
+
+![Three OpenCode sessions with multiple sub-agents working in parallel](/uploads/easy-ai-refactors/open-code-subagents.png)
+**Figure: Three OpenCode sessions each spawning multiple sub-agents to work in parallel on different phases of the refactor.**
+
 
 ---
 
