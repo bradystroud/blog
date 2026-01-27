@@ -34,8 +34,17 @@ export default function Blog(
   if (data && data.blog) {
     const title = `${data.blog.title} | Brady Stroud`;
     const description = data.blog.description || `Read ${data.blog.title} by Brady Stroud`;
-    const ogImageUrl = data.blog.coverImage 
-      ? `https://bradystroud.dev/api/og?title=${encodeURIComponent(data.blog.title)}&description=${encodeURIComponent(description)}&coverImage=${encodeURIComponent(`https://bradystroud.dev${data.blog.coverImage}`)}`
+    
+    // Handle cover image URL - check if it's already a full URL (from TinaCMS CDN) or a relative path
+    let coverImageUrl = "";
+    if (data.blog.coverImage) {
+      coverImageUrl = data.blog.coverImage.startsWith('http') 
+        ? data.blog.coverImage 
+        : `https://bradystroud.dev${data.blog.coverImage}`;
+    }
+    
+    const ogImageUrl = coverImageUrl
+      ? `https://bradystroud.dev/api/og?title=${encodeURIComponent(data.blog.title)}&description=${encodeURIComponent(description)}&coverImage=${encodeURIComponent(coverImageUrl)}`
       : `https://bradystroud.dev/api/og?title=${encodeURIComponent(data.blog.title)}&description=${encodeURIComponent(description)}`;
 
     return (
