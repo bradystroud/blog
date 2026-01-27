@@ -31,6 +31,16 @@ export const BlogCollection: Collection = {
       required: true,
     },
     {
+      type: "string",
+      name: "description",
+      label: "Meta Description",
+      description: "Short description for SEO and social media (150-160 characters recommended)",
+      required: false,
+      ui: {
+        component: "textarea",
+      },
+    },
+    {
       type: "datetime",
       label: "Posted Date",
       name: "date",

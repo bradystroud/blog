@@ -244,6 +244,7 @@ export const heroBlockSchema: Template = {
 ---
 canonicalUrl: "https://bradystroud.dev/blogs/[slug]"
 title: "Post Title"
+description: "SEO meta description (150-160 chars recommended)"  # Optional but recommended
 date: 2025-01-22T12:00:00.000Z
 tags:
   - tag1
@@ -253,16 +254,41 @@ aiCollaboration: true             # Optional
 ---
 ```
 
+## SEO & Open Graph
+
+**OG Image Generation:**
+- Dynamic OG images generated via `/api/og` edge function using `@vercel/og`
+- Images are 1200x630px (optimal for social media)
+- Uses cover images as backgrounds when available, falls back to gradients
+- Automatically includes title, description, and site branding
+
+**Meta Tags (Auto-generated):**
+```tsx
+// In blog pages, these are automatically generated:
+<meta name="description" content={description} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="article:published_time" content={date} />
+```
+
+**Best Practices:**
+- Always include a `description` field in blog frontmatter (150-160 characters)
+- Use descriptive, compelling meta descriptions for social sharing
+- Ensure `coverImage` paths are correct for best OG image quality
+
 ## Deployment & Production Notes
 
-- **Platform**: Vercel (serverless functions)
+- **Platform**: Vercel (serverless functions + edge functions for OG images)
 - **Filesystem**: Cannot write to filesystem in production (cache disabled)
 - **Timeouts**: 10s serverless timeout - implement 8s app timeouts as safety
 - **Build**: `tinacms build` → `next build` → RSS generation → sitemap
 - **ISR**: Blog pages use `fallback: false` for static generation
 - **Analytics**: Vercel Analytics and Speed Insights included
+- **OG Images**: Generated on-demand via edge runtime (no caching needed)
 
 ---
 
-**Last Updated**: 2026-01-22  
-**Codebase Version**: Next.js 16, TinaCMS 3, React 19
+**Last Updated**: 2026-01-27  
+**Codebase Version**: Next.js 16, TinaCMS 3, React 19, @vercel/og 0.8.6

@@ -33,13 +33,41 @@ export default function Blog(
 
   if (data && data.blog) {
     const title = `${data.blog.title} | Brady Stroud`;
+    const description = data.blog.description || `Read ${data.blog.title} by Brady Stroud`;
+    const ogImageUrl = data.blog.coverImage 
+      ? `https://bradystroud.dev/api/og?title=${encodeURIComponent(data.blog.title)}&description=${encodeURIComponent(description)}&coverImage=${encodeURIComponent(`https://bradystroud.dev${data.blog.coverImage}`)}`
+      : `https://bradystroud.dev/api/og?title=${encodeURIComponent(data.blog.title)}&description=${encodeURIComponent(description)}`;
 
     return (
       <Layout data={data.global as any}>
         <Head>
           <title>{title}</title>
+          <meta name="description" content={description} />
           <link rel="canonical" href={data.blog.canonicalUrl} key="canonical" />
-          <meta property="og:title" content={title} />
+          
+          {/* Open Graph */}
+          <meta property="og:title" content={data.blog.title} />
+          <meta property="og:description" content={description} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={data.blog.canonicalUrl} />
+          <meta property="og:image" content={ogImageUrl} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:site_name" content="Brady Stroud" />
+          
+          {/* Twitter Card */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={data.blog.title} />
+          <meta name="twitter:description" content={description} />
+          <meta name="twitter:image" content={ogImageUrl} />
+          
+          {/* Article metadata */}
+          {data.blog.date && (
+            <meta property="article:published_time" content={data.blog.date} />
+          )}
+          {data.blog.tags && data.blog.tags.filter((tag): tag is string => tag !== null).map((tag) => (
+            <meta key={tag} property="article:tag" content={tag} />
+          ))}
         </Head>
         <Section className="flex-1">
           <Container width="small" className="flex-1 pb-2" size="large">
