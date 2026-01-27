@@ -9,7 +9,7 @@ tags:
   - opencode
   - architecture
   - productivity
-coverImage: /uploads/ai-refactors.png
+coverImage: /uploads/easy-ai-refactors/ai-refactors.png
 ---
 
 Large-scale refactors used to be a nightmare. The kind of work that makes you question your career choices. But I just completed a cross-cutting refactor across a modular monolith using 15 AI agents working in parallel, and it changed how I thought about code maintenance.
@@ -97,6 +97,8 @@ Here's a snippet from my `docs/ai-tasks/refactor-plan.md`:
 - 🔴 src/WebApi/Features/Billing/Endpoints/VoidInvoiceEndpoint.cs (Remove try-catch)
 ```
 
+![Refactor plan showing traffic light status indicators](/uploads/easy-ai-refactors/vscode-refactor-plan-edits.png)
+
 Then I opened three separate OpenCode sessions, each in a different terminal window:
 
 - **Session 1:** "Complete Phase 3 and Phase 7 (Timesheets) following `/docs/refactor-plan.md`"  
@@ -106,6 +108,8 @@ Then I opened three separate OpenCode sessions, each in a different terminal win
 All three agents read the same plan. All three understood the same transformation rules (exception-based → Result). All three worked independently on their assigned phases.
 
 **The speed improvement was immediate.** What took 45 minutes with one agent now took 15 minutes with three.
+
+![Three OpenCode sessions with multiple sub-agents working in parallel](/uploads/easy-ai-refactors/open-code-subagents.png)
 
 And the checklist prevented coordination issues. Because each phase had explicit file paths, agents couldn't accidentally work on the same files. The markdown file acted as a distributed lock - when Session 1 marked Phase 3 items as 🟢 Done, Session 2 knew to stay in its lane.
 
@@ -170,7 +174,7 @@ public Result<Success> Stop()
 
 Now instead of explaining the refactor to each session, I could just say:
 
-"/result-refactor Phase 3"
+"@result-refactor Phase 3"
 
 The agent would:
 1. Read the refactor plan
