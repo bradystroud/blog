@@ -1,0 +1,43 @@
+# Bun Configuration for bradystroud.dev
+# https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Generate text-based lockfile for better Git diffs
+saveTextLockfile = true
+
+# Install all dependency types
+optional = true
+dev = true
+peer = true
+
+# Production mode (false for development)
+production = false
+
+# Use caret ranges for dependencies (like pnpm default)
+exact = false
+
+[install.cache]
+# Cache directory for faster installs
+dir = "~/.bun/install/cache"
+
+# Enable cache
+disable = false
+
+# Always resolve latest versions from registry
+disableManifest = false
+
+[run]
+# Auto-alias 'node' to 'bun' for all scripts
+# This ensures maximum performance for Next.js and TinaCMS
+bun = true
+
+# Use Bun's shell instead of system shell
+shell = "bun"
+
+# Show command being run (helpful for debugging)
+silent = false
+
+[test]
+# Test configuration (for future use)
+root = "."
+coverage = false

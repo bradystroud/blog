@@ -6,109 +6,116 @@
    <description>Latest posts from Brady Stroud</description>
    
    <item>
+   <title>Make Large-Scale Refactors Easy with Parallel AI Agents</title>
+   <link>https://bradystroud.dev/blogs/easy-ai-refactors</link>
+   <guid>https://bradystroud.dev/blogs/easy-ai-refactors</guid>
+   <pubDate>Tue, 27 Jan 2026 12:00:00 GMT</pubDate>
+   <description>Learn how to turn week-long refactors into 20-minute tasks using 15 AI agents working in parallel. A practical guide to distributed AI orchestration for large-scale code changes.</description>
+   </item>
+   <item>
    <title>Word Doc to PDF: Evaluating Tools and Landing on PowerAutomate</title>
    <link>https://bradystroud.dev/blogs/word-doc-to-pdf</link>
    <guid>https://bradystroud.dev/blogs/word-doc-to-pdf</guid>
    <pubDate>Sun, 19 Oct 2025 17:30:00 GMT</pubDate>
-   <description>Converting Microsoft Word documents into pixel-perfect PDFs sounds trivial until you try to automate it. This post documents the journey I went through: researching the commercial landscape, trialling Foxit PDF and IronPDF, and eventually rolling my own approach with Microsoft Power Automate.</description>
+   <description>Automated Word to PDF conversion is harder than it looks. Learn from our trials with Foxit PDF and IronPDF, and why Microsoft Power Automate won for pixel-perfect fidelity.</description>
    </item>
    <item>
    <title>OpenAI Chat Model Cheat Sheet - Decoding the Chaos</title>
    <link>https://bradystroud.dev/blogs/openai-model-cheatsheet</link>
    <guid>https://bradystroud.dev/blogs/openai-model-cheatsheet</guid>
    <pubDate>Fri, 10 Oct 2025 10:00:00 GMT</pubDate>
-   <description>OpenAI’s model names e. g., o4, 4o, 4.1 are confusing and change often. This is my quick reference for picking the right model for any task 🧠⚡️</description>
+   <description>OpenAI model names (o4, 4o, 4.1) are confusing. Quick reference guide to GPT-5, GPT-4.1, mini, nano, and legacy models with strengths, trade-offs, and best use cases.</description>
    </item>
    <item>
    <title>Fixing the &#39;PowerShell session not found&#39; issue in VS Code</title>
    <link>https://bradystroud.dev/blogs/vscode-powershell-session-fix</link>
    <guid>https://bradystroud.dev/blogs/vscode-powershell-session-fix</guid>
    <pubDate>Fri, 03 Oct 2025 00:00:00 GMT</pubDate>
-   <description>Recently, I was working with some PowerShell scripts in VS Code and ran into a frustrating error:</description>
+   <description>Fix the &#39;PowerShell session not found&#39; error in VS Code by manually setting the PowerShell executable path. Quick solution for macOS users with Homebrew installations.</description>
    </item>
    <item>
    <title>Connecting Windows VMs to Mac-Hosted APIs</title>
    <link>https://bradystroud.dev/blogs/connect-windows-vm-to-mac-apis</link>
    <guid>https://bradystroud.dev/blogs/connect-windows-vm-to-mac-apis</guid>
    <pubDate>Tue, 30 Sep 2025 00:00:00 GMT</pubDate>
-   <description>Part 2 of the Windows VM + Mac series. This is the ultimate solution for connecting Windows VMs to Mac-hosted services. For the foundational Docker context approach, see Part 1: Running . NET Aspire in a Windows VM./aspire-windows-vm.</description>
+   <description>Securely connect Windows VM apps to Mac-hosted APIs using SSH tunnels and dev certificates. Complete guide for Parallels development with .NET and IdentityServer.</description>
    </item>
    <item>
    <title>.NET Aspire in Windows VM using Docker on the Mac Host</title>
    <link>https://bradystroud.dev/blogs/aspire-windows-vm</link>
    <guid>https://bradystroud.dev/blogs/aspire-windows-vm</guid>
    <pubDate>Mon, 29 Sep 2025 00:00:00 GMT</pubDate>
-   <description>This article shows the initial Docker context approach. For the ultimate solution with SSH tunnels, certificates, and port forwarding, see Part 2: Connecting Windows VMs to Mac-Hosted APIs./connect-windows-vm-to-mac-apis.</description>
+   <description>Run .NET Aspire in a Windows VM while leveraging macOS Docker daemon via SSH context. Avoid nested virtualization and Docker duplication on Apple Silicon Macs.</description>
    </item>
    <item>
    <title>Cocona - Clean console apps in .NET</title>
    <link>https://bradystroud.dev/blogs/cocona-console-apps</link>
    <guid>https://bradystroud.dev/blogs/cocona-console-apps</guid>
    <pubDate>Tue, 01 Jul 2025 10:00:00 GMT</pubDate>
-   <description>Coconahttps://github. com/amybarga/cocona is a small framework that simplifies building command line applications in . NET. It handles parsing, help pages, dependency injection and more, so you can focus on your app&#39;s logic. It makes it easy to build well-structured vertically sliced commands.</description>
+   <description>Build clean .NET CLI apps with Cocona framework. Automatic help pages, dependency injection, and command parsing make console applications simple and maintainable.</description>
    </item>
    <item>
    <title>.NET MAUI setup on macOS - build once, run everywhere</title>
    <link>https://bradystroud.dev/blogs/maui-setup-macos</link>
    <guid>https://bradystroud.dev/blogs/maui-setup-macos</guid>
    <pubDate>Tue, 01 Jul 2025 10:00:00 GMT</pubDate>
-   <description>Getting started with . NET MAUI on macOS is straight forward once you know the tooling you need. With a single installation you can build and debug on iOS, Android, macOS.</description>
+   <description>Complete .NET MAUI setup guide for macOS. Install workload, Xcode, and Android Studio to build cross-platform apps for iOS, Android, and Mac with one codebase.</description>
    </item>
    <item>
    <title>Your Data Is Power - Even Your Search History</title>
    <link>https://bradystroud.dev/blogs/your-data-is-power</link>
    <guid>https://bradystroud.dev/blogs/your-data-is-power</guid>
    <pubDate>Mon, 30 Jun 2025 14:30:00 GMT</pubDate>
-   <description>We live in a world where data is power. Companies know it. Governments know it. And honestly, you should know it too.</description>
+   <description>Companies combine your data for insights. Learn how to take back control by tracking your own Safari browser history with a simple macOS script and SQLite queries.</description>
    </item>
    <item>
    <title>RAID - Rapid AI Development</title>
    <link>https://bradystroud.dev/blogs/raid</link>
    <guid>https://bradystroud.dev/blogs/raid</guid>
    <pubDate>Thu, 17 Apr 2025 10:00:00 GMT</pubDate>
-   <description>Normally, when building things, we need to balance quality and speed. You could spend all day polishing and optimizing a single feature, or you could call it “good enough” and move on to the next thing. When developers decide something is good enough but want to improve it later, we call this “technical debt” and record it in the backlog for another time.</description>
+   <description>Use AI to build features fast, then replace with optimized code later. RAID approach lets you ship quickly while managing technical debt strategically.</description>
    </item>
    <item>
    <title>🚦 Loading Guards in Blazor - Stop Writing Null-Checks Everywhere</title>
    <link>https://bradystroud.dev/blogs/loading-guards-in-blazor</link>
    <guid>https://bradystroud.dev/blogs/loading-guards-in-blazor</guid>
    <pubDate>Tue, 15 Apr 2025 10:00:00 GMT</pubDate>
-   <description>When building UI with Blazor, every data-fetching async call leaves you sprinkling if data == null or if IsLoaded around the page. It bloats markup, hides the real UI, and is easy to forget in a big component tree.</description>
+   <description>Eliminate scattered null-checks in Blazor with loading guard components. Clean pattern for handling async data loading with skeletons and progressive UI rendering.</description>
    </item>
    <item>
    <title>The Right Mobile App Framework - Comprehensive Decision Tree</title>
    <link>https://bradystroud.dev/blogs/app-framework-decision-tree</link>
    <guid>https://bradystroud.dev/blogs/app-framework-decision-tree</guid>
    <pubDate>Wed, 12 Mar 2025 07:30:00 GMT</pubDate>
-   <description>A colleague recently introduced me to Expohttps://expo. dev. I read a bit about it and realized it was just another React Native wrapper. Similar to Reacthttps://react. dev, React Nativehttps://reactnative. dev is just a library with a bunch of frameworks built on top of it that all have their strengths and weaknesses.</description>
+   <description>Choose the right mobile framework with this decision tree. Compare PWA, React Native, Flutter, .NET MAUI, and native development based on your team and requirements.</description>
    </item>
    <item>
    <title>Guide to professional Growth</title>
    <link>https://bradystroud.dev/blogs/professional-growth</link>
    <guid>https://bradystroud.dev/blogs/professional-growth</guid>
    <pubDate>Sun, 28 Jul 2024 14:30:00 GMT</pubDate>
-   <description>I&#39;ve often given the same advice to friends, family, and colleagues, so I decided to document it.</description>
+   <description>Transition from developer to management with 4 proven strategies. Be visible, understand company goals, be memorable, and do the job you want before you have it.</description>
    </item>
    <item>
    <title>Cultural Exchange - 2 Months with SSW France</title>
    <link>https://bradystroud.dev/blogs/cultural-exchange</link>
    <guid>https://bradystroud.dev/blogs/cultural-exchange</guid>
    <pubDate>Sat, 27 Jul 2024 14:30:00 GMT</pubDate>
-   <description>In 2024 I had the opportunity to spend 2 months living and working in France.</description>
+   <description>Two months living and working in Strasbourg with SSW France. First solo travel experience across 5 European countries with valuable lessons in independence and adaptability.</description>
    </item>
    <item>
    <title>.NET MAUI Blazor template - Build your UI once</title>
    <link>https://bradystroud.dev/blogs/maui-blazor</link>
    <guid>https://bradystroud.dev/blogs/maui-blazor</guid>
    <pubDate>Wed, 27 Jul 2022 14:30:00 GMT</pubDate>
-   <description>Another post for Matt Goldman&#39;s . NET MAUI UI July . NET MAUI UI Julyhttps://goforgoldman. com/2022/05/19/maui-ui-july. html</description>
+   <description>Build cross-platform apps with one shared Blazor UI codebase. Run on Android, iOS, Windows, macOS, and web using .NET MAUI and Blazor hybrid architecture.</description>
    </item>
    <item>
    <title>.NET MAUI vs Flutter - Multi-platform frameworks showdown</title>
    <link>https://bradystroud.dev/blogs/maui-vs-flutter</link>
    <guid>https://bradystroud.dev/blogs/maui-vs-flutter</guid>
    <pubDate>Fri, 22 Jul 2022 14:30:00 GMT</pubDate>
-   <description>Here it is - my post for . NET MAUI Julyhttps://goforgoldman. com/2022/05/19/maui-ui-july. html</description>
+   <description>A hands-on comparison of .NET MAUI and Flutter for cross-platform development. Compare native UI, markup languages, and developer experience to choose the right framework.</description>
    </item>
    </channel>
    </rss>

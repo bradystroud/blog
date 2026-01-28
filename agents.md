@@ -277,6 +277,25 @@ aiCollaboration: true             # Optional
 - Always include a `description` field in blog frontmatter (150-160 characters)
 - Use descriptive, compelling meta descriptions for social sharing
 - Ensure `coverImage` paths are correct for best OG image quality
+- Cover images can be relative paths (`/uploads/image.webp`) or TinaCMS CDN URLs (`https://assets.tina.io/...`)
+
+## Git Workflow
+
+**IMPORTANT: Always ask the user before committing and pushing changes.**
+
+When making changes:
+1. Make the necessary code edits
+2. Explain what was changed to the user
+3. **Ask permission** before running `git commit` and `git push`
+4. Only proceed with commit/push after explicit user approval
+
+Example interaction:
+```
+Agent: "I've made the following changes: [list changes]. 
+       Would you like me to commit and push these changes?"
+User: "yes" / "sure" / "go ahead"
+Agent: [proceeds with git commit && git push]
+```
 
 ## Deployment & Production Notes
 

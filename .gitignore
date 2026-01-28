@@ -4,6 +4,9 @@
 /.pnp
 .pnp.js
 
+# package manager artifacts
+pnpm-lock.yaml
+
 # testing
 /coverage
 
