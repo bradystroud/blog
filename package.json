@@ -4,11 +4,11 @@
   "packageManager": "bun@1.3.7",
   "scripts": {
     "postinstall": "bun scripts/patch-tinacms.js || true",
-    "dev": "bun --bun tinacms dev -c \"next dev\"",
-    "build": "bun --bun tinacms build && bun --bun next build && bun run scripts/generate-rss.ts && bun --bun next-sitemap --config next-sitemap.config.js",
+    "dev": "bun run --bun tinacms dev -c \"next dev\"",
+    "build": "bun run --bun tinacms build && bun run --bun next build && bun run scripts/generate-rss.ts && bun run --bun next-sitemap --config next-sitemap.config.js",
     "generate-rss": "bun run scripts/generate-rss.ts",
-    "start": "bun --bun tinacms build && bun --bun next start",
-    "export": "bun run build && bun --bun next export",
+    "start": "bun run --bun tinacms build && bun run --bun next start",
+    "export": "bun run build && bun run --bun next export",
     "lint": "eslint . --ext .ts,.tsx"
   },
   "devDependencies": {
