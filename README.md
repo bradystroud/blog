@@ -12,11 +12,11 @@ Built with Next.js, TinaCMS and Tailwind.
 ## Dev
 
 1. Clone
-2. Run `pnpm` to install packages
+2. Run `bun install` to install packages
 3. Copy `.env.example` to `.env.local` and add your environment variables:
    - `OPENAI_API_KEY`: Required for AI blog generation feature
    - Other TinaCMS variables as needed
-4. `pnpm dev` to run the project
+4. `bun dev` to run the project
 
 ## AI Blog Generation
 

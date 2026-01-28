@@ -13,7 +13,7 @@ peer = true
 # Production mode (false for development)
 production = false
 
-# Use caret ranges for dependencies (like pnpm default)
+# Use caret ranges for dependencies (default behavior)
 exact = false
 
 [install.cache]

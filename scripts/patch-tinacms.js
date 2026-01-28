@@ -6,27 +6,17 @@
  * This script patches the tinacms package to use default import instead of named imports
  * for the color-string module, which is a CommonJS module that doesn't properly support
  * named exports in ESM contexts.
+ * 
+ * Works with Bun's flat node_modules structure.
  */
 
 const fs = require('fs');
 const path = require('path');
 
-// Find all possible tinacms locations in node_modules
+// Find tinacms location in node_modules (Bun uses flat structure)
 const possiblePaths = [
   'node_modules/tinacms/dist/index.js',
-  'node_modules/.pnpm/tinacms@3.2.0/node_modules/tinacms/dist/index.js',
 ];
-
-// Also search for any tinacms installation in .pnpm directory
-const pnpmDir = 'node_modules/.pnpm';
-if (fs.existsSync(pnpmDir)) {
-  const pnpmContents = fs.readdirSync(pnpmDir);
-  pnpmContents.forEach(dir => {
-    if (dir.startsWith('tinacms@')) {
-      possiblePaths.push(path.join(pnpmDir, dir, 'node_modules/tinacms/dist/index.js'));
-    }
-  });
-}
 
 let patched = false;
 

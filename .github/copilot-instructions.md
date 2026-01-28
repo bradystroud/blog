@@ -4,10 +4,10 @@
 This is Brady Stroud's personal website built with Next.js, TinaCMS, and Tailwind CSS. The site serves as a blog and portfolio showcasing Brady's work as a Software Engineer at SSW, with a focus on .NET, MAUI, Blazor, and cross-platform development.
 
 ## Architecture & Tech Stack
-- **Framework**: Next.js 15 with TypeScript
+- **Framework**: Next.js 16 with TypeScript
 - **CMS**: TinaCMS for content management
 - **Styling**: Tailwind CSS with PostCSS
-- **Package Manager**: pnpm
+- **Package Manager**: bun
 - **Deployment**: Vercel (with analytics and speed insights)
 - **Content**: MDX files for blogs, structured data for pages
 
@@ -61,7 +61,7 @@ This is Brady Stroud's personal website built with Next.js, TinaCMS, and Tailwin
 - **Features**: Feature highlight sections
 
 ## Build & Deployment
-- Run `pnpm dev` for development
+- Run `bun dev` for development
 - TinaCMS admin available at `/admin`
 - RSS feed generated automatically
 - Sitemap generated via next-sitemap
