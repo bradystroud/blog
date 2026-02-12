@@ -3,6 +3,7 @@ canonicalUrl: "https://bradystroud.dev/blogs/copilot-usage-raycast"
 title: Tracking Copilot Usage Without an API (Raycast + Month Progress)
 description: GitHub Copilot has no public API for usage tracking. Here's how I built a 2-keystroke solution using Raycast Script Commands to avoid burning quota early in the month.
 date: 2026-02-09T12:00:00.000Z
+coverImage: /uploads/copilot-usage-raycast/copilot-usage-page.png
 aiCollaboration: true
 tags:
   - productivity
@@ -21,26 +22,15 @@ I needed a fast, low-friction way to sanity-check my usage without opening brows
 ## The Problem
 
 **GitHub Copilot's limitations:**
-- Usage data lives only in the UI at `github.com/settings/copilot`
+- Usage data lives only in the UI at `github.com/settings/copilot/features`
 - No public API for remaining credits or usage percentage
 - Easy to burn quota early in the month without realizing it
 - Checking requires: open browser → navigate to settings → find Copilot → read chart
 
 **What I needed:**
 - Fast feedback (1-2 keystrokes)
-- "Good enough" accuracy (calendar days, not perfect billing cycles)
 - Zero maintenance (no scraping, no auth tokens)
 - Mental model: "I'm 42% through the month → usage bar should roughly match"
-
----
-
-## Why Not Just Use the API?
-
-Because there isn't one.
-
-GitHub exposes **org-level Copilot metrics** via the REST API, but **personal usage** is UI-only. Scraping the settings page is possible, but it's fragile (HTML changes break it), requires auth tokens, and violates ToS.
-
-I wanted something that would work in 2027 without breaking.
 
 ---
 
@@ -63,58 +53,9 @@ I wanted something that would work in 2027 without breaking.
 
 ## Implementation
 
-Here's the complete script. Save it as `~/.config/raycast/scripts/copilot-usage.sh`:
+The script is available on GitHub. Save it as `~/.config/raycast/scripts/copilot-usage.sh`.
 
 If you want to share/fork it, it's in this repo: https://github.com/bradystroud/raycast-scripts/blob/main/copilot-usage.sh
-
-```bash
-#!/bin/bash
-
-# Required parameters:
-# @raycast.schemaVersion 1
-# @raycast.title Copilot Usage
-# @raycast.mode silent
-# @raycast.packageName Developer Utils
-
-# Optional parameters:
-# @raycast.icon 🤖
-# @raycast.description Check GitHub Copilot usage vs month progress
-
-# Calculate % through the month using Python
-MONTH_PERCENT=$(python3 <<EOF
-from datetime import datetime
-now = datetime.now()
-day = now.day
-
-# Get the last day of the current month
-if now.month == 12:
-    next_month = datetime(now.year + 1, 1, 1)
-else:
-    next_month = datetime(now.year, now.month + 1, 1)
-
-from datetime import timedelta
-last_day = (next_month - timedelta(days=1)).day
-
-percent = (day / last_day) * 100
-print(f"{percent:.1f}% (day {day}/{last_day})")
-EOF
-)
-
-# Show notification
-osascript -e "display notification \"Month Progress: $MONTH_PERCENT\" with title \"Copilot Usage Check\""
-
-# Open Copilot usage page
-open "https://github.com/settings/copilot"
-
-echo "Month Progress: $MONTH_PERCENT"
-```
-
-**Make it executable:**
-```bash
-chmod +x ~/.config/raycast/scripts/copilot-usage.sh
-```
-
----
 
 ## UX Flow
 
