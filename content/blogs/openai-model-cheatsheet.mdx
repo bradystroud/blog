@@ -1,7 +1,7 @@
 ---
 canonicalUrl: "https://bradystroud.dev/blogs/openai-model-cheatsheet"
 title: OpenAI Chat Model Cheat Sheet - Decoding the Chaos
-description: OpenAI model names (o4, 4o, 4.1) are confusing. Quick reference guide to GPT-5, GPT-4.1, mini, nano, and legacy models with strengths, trade-offs, and best use cases.
+description: OpenAI model names are confusing. Quick reference guide to GPT-5.2/5.1/5, Codex models, GPT-4.1, GPT-4o, o-series (o3/o4-mini), mini/nano/pro, and legacy models.
 date: 2025-10-10T10:00:00.000Z
 aiCollaboration: true
 tags:
@@ -13,7 +13,7 @@ tags:
 coverImage: null
 ---
 
-OpenAI’s model names (e.g., o4, 4o, 4.1) are confusing and change often.  
+OpenAI’s model names (e.g., o3, 4o, 4.1, 5.2) are confusing and change often.  
 This is my quick reference for picking the right model for any task 🧠⚡️
 
 This is a living document - if you spot mistakes or missing models,  
@@ -22,46 +22,79 @@ This page lives in GitHub Markdown via [TinaCMS 🦙](https://tina.io)
 
 ---
 
-## OpenAI Chat Model Cheat-Sheet (Updated October 2025)
+## OpenAI Chat Model Cheat-Sheet (Updated February 2026)
 
 **Legend:**  
 - 🟢 current & recommended  
-- 🟡 active but phasing out  
+- 🟡 supported but not first-choice  
 - 🔴 legacy / deprecated  
 
 | Status | Model | Release / Change | Strengths / Best Use-Cases | Trade-offs / Notes |
 | --- | --- | --- | --- | --- |
-| 🟢 | **GPT-5** | Aug 2025 | Unified “smart” (fast) + “thinking” (deep) routing model. Best for general work, reasoning, coding, and RAG. | Variable latency; cost scales with reasoning depth. |
-| 🟢 | **GPT-4.1** | 14 Apr 2025 | Flagship API model - top coding, logic, and 1 M token context. | Pricier than mini/nano. |
-| 🟢 | **GPT-4.1 mini** | 14 Apr 2025 | ~90 % of 4.1 accuracy at lower price/latency; great default. | Slightly less reasoning depth. |
-| 🟢 | **GPT-4.1 nano** | 14 Apr 2025 | Ultra-fast and cheap; still supports 1 M context. Perfect for classification / autocomplete. | Loses nuance and creativity. |
-| 🟡 | **GPT-4o / 4o mini** | May-Jul 2024 | Multimodal (text + image + audio) real-time chat. | Slightly weaker reasoning than 4.1 series. |
-| 🟡 | **GPT-4 Turbo / 3.5 Turbo** | 2023-2024 | Older “Turbo” line optimized for speed & cost. | Sunsetting by late 2025. |
-| 🟡 / 🔴 | **GPT-4.5 (“Orion”)** | Feb 2025 → retired mid-2025 | Bridge between 4o and 4.1; good reasoning. | Deprecated for GPT-5 and 4.1. |
-| 🔴 | **GPT-4 (base)** | 14 Mar 2023 | Original 4-series model (text-only). | Retired Apr 2025. |
-| 🔴 | **GPT-3.5 (base)** | 2022 | Early RLHF (ChatGPT v1). | Obsolete; small context. |
-| 🔴 | **GPT-3 / 2 / 1** | 2018 - 2020 | Historical models for context. | Too limited for modern tasks. |
+| 🟡 | **GPT-5.3-Codex** | Feb 2026 | Newest Codex flagship for agentic coding + broader professional work on a computer. | Available in Codex for paid ChatGPT plans; API access is not broadly available yet (no stable public API model ID to pin). |
+| 🟡 | **GPT-5.3-Codex-Spark** | Feb 2026 | Ultra-fast, real-time coding (tight interactive loop; minimal targeted edits by default). | Research preview for Codex users; API access limited to select design partners. |
+| 🟢 | **GPT-5.2** (`gpt-5.2`) | Dec 2025 | Current flagship “thinking” model for professional work, long-horizon agents, and hard coding/reasoning. | Higher latency/cost; pick smaller variants when you don’t need max capability. |
+| 🟢 | **GPT-5.2-Codex** (`gpt-5.2-codex`) | 2025-2026 | Most intelligent coding model; optimized for long-horizon, agentic coding tasks (Codex-style). | Coding-specialized; prefer general GPT models for writing/analysis-heavy work. |
+| 🟢 | **GPT-5.2 Pro** (`gpt-5.2-pro`) | Dec 2025 | Highest-quality GPT-5.2 option when correctness is worth the wait (deep reasoning, fewer major errors). | Much more expensive; overkill for routine tasks. |
+| 🟢 | **GPT-5.1** (`gpt-5.1`) | Nov 2025 | Strong general reasoning model with configurable/adaptive reasoning effort. | Usually superseded by 5.2 for frontier work. |
+| 🟢 | **GPT-5** (`gpt-5`) | Aug 2025 | First GPT-5 release; still solid for general reasoning/coding. | Generally behind 5.1/5.2 on capability. |
+| 🟢 | **GPT-5 mini** (`gpt-5-mini`) | 2025-2026 | Faster, cost-efficient GPT-5 family model for well-defined tasks and high throughput. | Less headroom on complex reasoning. |
+| 🟢 | **GPT-5 nano** (`gpt-5-nano`) | 2025-2026 | Fastest/cheapest GPT-5 family model for simple tasks (classification, routing, autocomplete). | Limited nuance; brittle on long reasoning chains. |
+| 🟢 | **GPT-4.1** (`gpt-4.1`) | 14 Apr 2025 | Smartest non-reasoning model; excellent for coding, instruction following, and long context (1M tokens). | Usually weaker on “think hard” problems vs GPT-5.x or o-series reasoning models. |
+| 🟢 | **GPT-4.1 mini** (`gpt-4.1-mini`) | 14 Apr 2025 | Smaller, faster 4.1; great quality/price default when you don’t need frontier reasoning. | Less capable than full 4.1. |
+| 🟢 | **GPT-4.1 nano** (`gpt-4.1-nano`) | 14 Apr 2025 | Ultra-fast/cheap; still supports long context; ideal for extraction, tagging, and lightweight copilots. | Loses nuance and robustness. |
+| 🟡 | **GPT-5.1-Codex-Max** (`gpt-5.1-codex-max`) | 2025-2026 | Codex variant tuned for longer-running agentic coding tasks. | Older generation vs 5.2-Codex; Responses API only. |
+| 🟡 | **GPT-5.1-Codex** (`gpt-5.1-codex`) | 2025-2026 | Codex-optimized agentic coding model (good default for Codex flows). | Older generation vs 5.2-Codex; Responses API only. |
+| 🟡 | **GPT-5.1 Codex mini** (`gpt-5.1-codex-mini`) | 2025-2026 | Cheaper/smaller Codex variant for fast coding iterations. | Less capable than larger Codex models. |
+| 🟡 | **GPT-5-Codex** (`gpt-5-codex`) | 2025-2026 | Earlier Codex family model for agentic coding. | Superseded by newer Codex variants; Responses API only. |
+| 🟡 | **OpenAI o3** (`o3`) | Apr 2025 | Strong reasoning model (math/science/coding) and agentic tool use. | Marked as “succeeded by GPT-5” in the API docs; use when you specifically want o-series behavior. |
+| 🟡 | **OpenAI o4-mini** (`o4-mini`) | Apr 2025 | Cost-efficient reasoning when you want real “thinking” but need speed/volume. | Marked as “succeeded by GPT-5 mini” in the API docs. |
+| 🟡 | **GPT-4o / GPT-4o mini** (`gpt-4o`, `gpt-4o-mini`) | 2024-2025 | Versatile multimodal (text + image) general model family; strong for everyday chat + vision. | Not the newest frontier; typically behind GPT-4.1 and GPT-5.x on pure coding/reasoning. |
+| 🟡 | **GPT-4 Turbo / GPT-4** (`gpt-4-turbo`, `gpt-4`) | 2023-2024 | Older but still usable for compatibility and legacy behaviors. | Prefer newer families unless you need an exact legacy behavior/snapshot. |
+| 🔴 | **GPT-4.5 Preview** (`gpt-4.5-preview`) | Feb 2025 | Research preview model (not intended as a long-term default). | Marked deprecated in the API docs. |
+| 🔴 | **codex-mini-latest** (`codex-mini-latest`) | 2024-2025 | Deprecated Codex-CLI-focused model (fine-tuned from `o4-mini`). | Deprecated; docs recommend starting with `gpt-4.1` for direct API use. |
+| 🔴 | **GPT-3.5 Turbo** (`gpt-3.5-turbo`) | 2023-2024 | Legacy cheap chat model for simple tasks. | Outclassed by newer mini/nano models. |
 
 ---
 
 ### Decoding the Names
 
 - **GPT** = _Generative Pre-trained Transformer_  
-- **Major number** (3, 4, 5) → architecture generation  
-- **.1 / .5** → mid-cycle refresh or fine-tune  
-- **o** → **o**mni (multimodal I/O line)  
-- **mini / nano / high** → size vs accuracy trade-off  
-- **Turbo** → throughput-optimized snapshot  
-- **MMDD** in ID (e.g. `gpt-4-0613`) → training-snapshot date  
+- **Major number** (3, 4, 5) → generation  
+- **.1 / .2 / .5** → iterative upgrade within a generation  
+- **o-series** (e.g. `o3`, `o4-mini`) → reasoning-first models (trained to “think longer”)  
+- **4o** → “omni” GPT model family (multimodal inputs)  
+- **mini / nano** → smaller, faster, cheaper variants  
+- **pro** → more compute for higher-quality answers  
+- **codex** → coding-optimized variant (agentic coding focus)  
+- **-chat-latest** → ChatGPT-flavored alias (convenience/compat; not always recommended for stable production)  
+- **YYYY-MM-DD** in ID (e.g. `gpt-4o-2024-11-20`) → a snapshot you can pin for stability  
+
+---
+
+### ChatGPT Names vs API Model IDs
+
+ChatGPT’s picker labels don’t always match what you pass to the API.
+
+| ChatGPT label | API model ID |
+| --- | --- |
+| ChatGPT-5.2 Instant | `gpt-5.2-chat-latest` |
+| ChatGPT-5.2 Thinking | `gpt-5.2` |
+| ChatGPT-5.2 Pro | `gpt-5.2-pro` |
 
 ---
 
 ### References
 
-- [OpenAI - Introducing GPT-5](https://openai.com/index/introducing-gpt-5/?utm_source=chatgpt.com)  
-- [OpenAI - GPT-4.1 Overview](https://openai.com/index/gpt-4-1/?utm_source=chatgpt.com)  
-- [Platform Docs - GPT-4.1 Nano](https://platform.openai.com/docs/models/gpt-4-1-nano?utm_source=chatgpt.com)  
-- [Wikipedia - GPT-4.5](https://en.wikipedia.org/wiki/GPT-4.5?utm_source=chatgpt.com)  
-- [Business Insider - Altman on Naming Confusion](https://www.businessinsider.com/sam-altman-openai-fix-confusing-ai-model-names-gpt-2025-4?utm_source=chatgpt.com)  
+- [OpenAI API Docs - Models](https://platform.openai.com/docs/models)  
+- [OpenAI Cookbook - Codex Prompting Guide](https://cookbook.openai.com/examples/gpt-5/codex_prompting_guide)  
+- [OpenAI - Introducing GPT-5](https://openai.com/index/introducing-gpt-5/)  
+- [OpenAI - GPT-5.1](https://openai.com/index/gpt-5-1/)  
+- [OpenAI - Introducing GPT-5.2](https://openai.com/index/introducing-gpt-5-2/)  
+- [OpenAI - Introducing GPT-5.3-Codex](https://openai.com/index/introducing-gpt-5-3-codex/)  
+- [OpenAI - Introducing GPT-5.3-Codex-Spark](https://openai.com/index/introducing-gpt-5-3-codex-spark/)  
+- [OpenAI - Introducing GPT-4.1 in the API](https://openai.com/index/gpt-4-1/)  
+- [OpenAI - Introducing OpenAI o3 and o4-mini](https://openai.com/index/introducing-o3-and-o4-mini/)  
+- [OpenAI - Introducing GPT-4.5](https://openai.com/index/introducing-gpt-4-5/)  
 
 ---
