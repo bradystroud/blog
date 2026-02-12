@@ -1,0 +1,130 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/copilot-usage-raycast"
+title: Tracking Copilot Usage Without an API (Raycast + Month Progress)
+description: GitHub Copilot has no public API for usage tracking. Here's how I built a 2-keystroke solution using Raycast Script Commands to avoid burning quota early in the month.
+date: 2026-02-09T12:00:00.000Z
+aiCollaboration: true
+tags:
+  - productivity
+  - raycast
+  - github-copilot
+  - automation
+  - developer-tools
+---
+
+GitHub Copilot shows usage only in the UI. No API, no programmatic access, just a bar chart buried in settings. Easy to burn through your monthly quota by day 13 when you can't quickly check where you stand.
+
+I needed a fast, low-friction way to sanity-check my usage without opening browsers or scraping brittle HTML. Here's how I solved it with Raycast Script Commands and a mental model based on calendar progress.
+
+---
+
+## The Problem
+
+**GitHub Copilot's limitations:**
+- Usage data lives only in the UI at `github.com/settings/copilot`
+- No public API for remaining credits or usage percentage
+- Easy to burn quota early in the month without realizing it
+- Checking requires: open browser → navigate to settings → find Copilot → read chart
+
+**What I needed:**
+- Fast feedback (1-2 keystrokes)
+- "Good enough" accuracy (calendar days, not perfect billing cycles)
+- Zero maintenance (no scraping, no auth tokens)
+- Mental model: "I'm 42% through the month → usage bar should roughly match"
+
+---
+
+## Why Not Just Use the API?
+
+Because there isn't one.
+
+GitHub exposes **org-level Copilot metrics** via the REST API, but **personal usage** is UI-only. Scraping the settings page is possible, but it's fragile (HTML changes break it), requires auth tokens, and violates ToS.
+
+I wanted something that would work in 2027 without breaking.
+
+---
+
+## Solution: Raycast Script Commands
+
+[Raycast](https://www.raycast.com/) is a macOS launcher (like Spotlight or Alfred). Script Commands let you run bash scripts with hotkeys.
+
+**My approach:**
+1. Calculate % through the current month (calendar days)
+2. Show a macOS notification with the percentage
+3. Auto-open the Copilot usage page in the browser
+4. Quick visual sanity check: "42% through month → usage should be ~40-45%"
+
+**Why Raycast instead of a CLI alias?**
+- Always available (global hotkey)
+- Notifications > terminal output
+- Dead simple to install (drop script in `~/.config/raycast/scripts/`)
+
+---
+
+## Implementation
+
+Here's the complete script. Save it as `~/.config/raycast/scripts/copilot-usage.sh`:
+
+If you want to share/fork it, it's in this repo: https://github.com/bradystroud/raycast-scripts/blob/main/copilot-usage.sh
+
+```bash
+#!/bin/bash
+
+# Required parameters:
+# @raycast.schemaVersion 1
+# @raycast.title Copilot Usage
+# @raycast.mode silent
+# @raycast.packageName Developer Utils
+
+# Optional parameters:
+# @raycast.icon 🤖
+# @raycast.description Check GitHub Copilot usage vs month progress
+
+# Calculate % through the month using Python
+MONTH_PERCENT=$(python3 <<EOF
+from datetime import datetime
+now = datetime.now()
+day = now.day
+
+# Get the last day of the current month
+if now.month == 12:
+    next_month = datetime(now.year + 1, 1, 1)
+else:
+    next_month = datetime(now.year, now.month + 1, 1)
+
+from datetime import timedelta
+last_day = (next_month - timedelta(days=1)).day
+
+percent = (day / last_day) * 100
+print(f"{percent:.1f}% (day {day}/{last_day})")
+EOF
+)
+
+# Show notification
+osascript -e "display notification \"Month Progress: $MONTH_PERCENT\" with title \"Copilot Usage Check\""
+
+# Open Copilot usage page
+open "https://github.com/settings/copilot"
+
+echo "Month Progress: $MONTH_PERCENT"
+```
+
+**Make it executable:**
+```bash
+chmod +x ~/.config/raycast/scripts/copilot-usage.sh
+```
+
+---
+
+## UX Flow
+
+1. **Hit hotkey** (I use `Cmd+Space` → type "copilot")
+2. **Notification appears:** "Month Progress: 42.0% (day 13/31)"
+3. **Browser opens** to `github.com/settings/copilot`
+4. **Quick sanity check:** Usage bar at ~45%? I need to pace myself...
+5. **Done** - Close tab, back to work.
+
+
+![Raycast results after typing "copilot" showing the "Copilot Month % Check" Script Command](/uploads/copilot-usage-raycast/raycast-copilot-automation.png)
+
+![GitHub Copilot usage page after running the Script Command, with the month-progress notification visible](/uploads/copilot-usage-raycast/copilot-usage-page.png)
