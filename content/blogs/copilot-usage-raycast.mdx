@@ -47,22 +47,29 @@ I needed a fast, low-friction way to sanity-check my usage without opening brows
 **Why Raycast instead of a CLI alias?**
 - Always available (global hotkey)
 - Notifications > terminal output
-- Dead simple to install (drop script in `~/.config/raycast/scripts/`)
+- Easy to trigger once configured correctly
 
 ---
 
 ## Implementation
 
-The script is available on GitHub. Save it as `~/.config/raycast/scripts/copilot-month-%-check.sh`.
+The script is available on GitHub: https://github.com/bradystroud/raycast-scripts/blob/main/copilot-month-%25-check.sh
 
-If you want to share/fork it, it's in this repo: https://github.com/bradystroud/raycast-scripts/blob/main/copilot-month-%25-check.sh
+**Important Raycast setup details (this is where things can feel broken):**
+
+1. In Raycast, set your Script Directory in `Raycast Settings -> Extensions -> Script Commands -> Script Directory`.
+2. Use Raycast's `Create Script Command` action.
+3. Open the file Raycast creates and paste in the script content.
+4. Save and run `Reload Script Directory`.
+
+Raycast is supposed to discover scripts from your Script Directory, and `Reload Script Directory` should refresh them. In practice, manually copying a script file into the folder often does not get picked up reliably. Creating the command via Raycast first, then pasting content into that generated file, consistently works.
 
 ## UX Flow
 
 1. **Hit hotkey** (I use `Cmd+Space` → type "copilot")
 2. **Notification appears:** "Month Progress: 42.0% (day 13/31)"
 3. **Browser opens** to `github.com/settings/copilot`
-4. **Quick sanity check:** Usage bar at ~45%? I need to pace myself...
+4. **Quick sanity check 🤔:** Usage bar at ~45%? I need to pace myself... 
 5. **Done** - Close tab, back to work.
 
 
