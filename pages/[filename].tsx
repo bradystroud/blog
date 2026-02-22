@@ -40,7 +40,7 @@ export default function HomePage(
       "https://www.instagram.com/bradystroud",
       "https://www.youtube.com/@bradystroud"
     ],
-    "knowsAbout": [".NET", "C#", "Blazor", "MAUI", "React", "TypeScript", "AI", "Cross-platform development"]
+    "knowsAbout": ["Business Optimzation", "LLMS", ".NET", "C#", "Blazor", "MAUI", "React", "TypeScript", "AI", "Cross-platform development"]
   };
 
   return (
