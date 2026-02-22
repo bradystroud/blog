@@ -16,6 +16,7 @@ export const Layout = ({ data = layoutData, children }) => {
         <meta property="og:type" content="website" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <meta name="robots" content="index, follow" />{" "}
+        <link rel="alternate" type="application/rss+xml" title="Brady Stroud's Blog" href="/rss.xml" />
       </Head>
       <div suppressHydrationWarning>
         <Header data={data?.header} />

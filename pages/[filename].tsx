@@ -19,6 +19,30 @@ export default function HomePage(
   const canonicalUrl = data.page.canonicalUrl || "https://bradystroud.dev";
   const ogImageUrl = `https://bradystroud.dev/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
 
+  const isHomePage = canonicalUrl === "https://bradystroud.dev";
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Brady Stroud",
+    "url": "https://bradystroud.dev",
+    "image": "https://bradystroud.dev/uploads/brady-beach.webp",
+    "jobTitle": "Senior Software Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "SSW",
+      "url": "https://www.ssw.com.au"
+    },
+    "description": "Senior Software Engineer at SSW specializing in .NET, Blazor, MAUI, and cross-platform development.",
+    "sameAs": [
+      "https://github.com/bradystroud",
+      "https://www.linkedin.com/in/bradystroud",
+      "https://twitter.com/bradystroud_",
+      "https://www.instagram.com/bradystroud",
+      "https://www.youtube.com/@bradystroud"
+    ],
+    "knowsAbout": ["Business Optimzation", "LLMS", ".NET", "C#", "Blazor", "MAUI", "React", "TypeScript", "AI", "Cross-platform development"]
+  };
+
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>
@@ -42,6 +66,14 @@ export default function HomePage(
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={ogImageUrl} />
+
+        {/* JSON-LD Person structured data for home page */}
+        {isHomePage && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+          />
+        )}
       </Head>
       <Blocks {...data.page} />
     </Layout>

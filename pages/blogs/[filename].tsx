@@ -47,11 +47,32 @@ export default function Blog(
       ? `https://bradystroud.dev/api/og?title=${encodeURIComponent(data.blog.title)}&description=${encodeURIComponent(description)}&coverImage=${encodeURIComponent(coverImageUrl)}`
       : `https://bradystroud.dev/api/og?title=${encodeURIComponent(data.blog.title)}&description=${encodeURIComponent(description)}`;
 
+    const articleSchema = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": data.blog.title,
+      "description": description,
+      "url": data.blog.canonicalUrl,
+      ...(data.blog.date ? { "datePublished": data.blog.date } : {}),
+      ...(coverImageUrl ? { "image": coverImageUrl } : {}),
+      "author": {
+        "@type": "Person",
+        "name": "Brady Stroud",
+        "url": "https://bradystroud.dev"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Brady Stroud",
+        "url": "https://bradystroud.dev"
+      }
+    };
+
     return (
       <Layout data={data.global as any}>
         <Head>
           <title>{title}</title>
           <meta name="description" content={description} />
+          <meta name="author" content="Brady Stroud" />
           <link rel="canonical" href={data.blog.canonicalUrl} key="canonical" />
           
           {/* Open Graph */}
@@ -77,6 +98,12 @@ export default function Blog(
           {data.blog.tags && data.blog.tags.filter((tag): tag is string => tag !== null).map((tag) => (
             <meta key={tag} property="article:tag" content={tag} />
           ))}
+
+          {/* JSON-LD Article structured data */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+          />
         </Head>
         <Section className="flex-1">
           <Container width="small" className="flex-1 pb-2" size="large">
