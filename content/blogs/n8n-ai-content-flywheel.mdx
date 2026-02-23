@@ -1,0 +1,42 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/n8n-ai-content-generator"
+title: I Built an n8n Content Flywheel That Writes My Next Blog Ideas and Social Posts
+description: A practical n8n automation that researches topics, analyzes recent blogs, generates new post ideas, drafts social content, and emails everything in one clean digest.
+date: 2026-02-23T12:30:00.000Z
+coverImage: /uploads/n8n-ai-content-generator/workflow.png
+aiCollaboration: true
+tags:
+  - automation
+  - n8n
+  - ai
+  - content
+  - productivity
+  - llms
+---
+
+I built an [n8n](https://n8n.io/) workflow to help me generate new blog post ideas and social media content based on my recent writing.
+
+The goal is to help me publish more quality content and create more backlinks to build domain authority over time.
+
+The workflow does the following:
+1. Researches topics
+2. Pulls my recent blog posts (from my RSS feed + looking at files in my repo)
+3. Sends everything through AI for new blog suggestions
+4. Sends it through AI again for tweet/LinkedIn post suggestions that link back to recent blogs (building backlinks 🙂)
+5. Emails me a clean digest
+
+Normally I'd build this as a code-first solution with a GitHub Actions cron job, and some simple scripts.
+But I wanted to do it in n8n because that's what I'd usually recommend for a client, as they can maintain it themselves.
+
+It runs daily at 4:00 AM, so when I wake up, the digest is already waiting for review.
+
+
+## Learnings
+
+- I was expecting a fully no-code solution, but I ended up writing bits of JS inside n8n to parse and transform data from APIs and AI outputs.
+- n8n has an AI workflow builder, this helped me get started but chose the wrong nodes in some scenarios
+- n8n loops - its not clear when if there are multiple outputs from a previous node (e.g. list of tweet ideas) the next node will run for each item (e.g. send an email for each tweet idea) or if it will run once with the whole list (e.g. send one email with all the tweet ideas). To fix this I aggregated all the data before the next step.
+
+![Figure: n8n AI Content Generator Workflow](/uploads/n8n-ai-content-generator/workflow.png)
+
+![Figure: email output example](/uploads/n8n-ai-content-generator/email.png)

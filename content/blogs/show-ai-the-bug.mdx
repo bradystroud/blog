@@ -1,0 +1,74 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/show-ai-the-bug"
+title: Stop Explaining Bugs to AI - Show It the Bug
+description: UI bugs are hard for AI agents to reproduce directly, but you can still debug fast by logging user actions to a file and letting AI inspect the evidence.
+date: 2026-02-23T12:00:00.000Z
+coverImage: /uploads/show-ai-the-bug/showing-the-robot-guy.png
+aiCollaboration: true
+tags:
+  - ai
+  - debugging
+  - mcp
+  - aspire
+  - observability
+---
+
+I found a better way to debug bugs with AI.
+
+AI is brilliant at code-level reasoning, but sometimes its painful to provice enough context of a bug to get a useful output.
+So if you're trying to debug by describing the bug in chat, you can waste a lot of time.
+
+A better approach is to stop explaining and start showing.
+
+## The Pattern That Works
+
+When the AI can't reliably drive your UI, do this:
+
+1. Tell the UI to Add targeted logs around the action path
+  It knows what to log, and where to put it
+2. Reproduce the bug yourself in the app.
+3. Write the logs to a file.
+4. Let the AI read the file and debug from facts, not guesses.
+
+This works well, lately I've fixed heaps of bugs this way.
+
+My prompt
+> "There is a bug with xxx feature where yyy happens
+>  1. Add logs in that area - log to a local file
+>  2. Ask me to reproduce the bug a few times
+>  3. Read the logs and find the bug 
+>  4. Fix the bug then I'll test again
+
+"
+
+UI issues are usually timing + state + sequence problems:
+
+- "Clicked save twice in 400ms"
+- "Request B completed before Request A"
+- "State changed after unmount"
+- "Token refreshed mid-flight"
+
+Those are hard to communicate in plain English, but obvious in logs.
+
+When you give AI a real event trail, it can:
+
+- reconstruct the execution path,
+- identify ordering/race issues,
+- map symptoms to likely code paths,
+- and suggest fixes grounded in actual evidence.
+
+---
+
+## Can AI Just Use the UI?
+
+Sometimes, yes.
+
+With MCP-based tooling, you can give agents browser automation abilities.
+For example, Playwright MCP exposes browser actions to AI agents.
+
+So UI-driving is possible, but even with good tools, it's not always the fastest path for tricky bugs.
+
+And if you're using Aspire, there is a built in MCP server that can give agents rich app context.
+https://aspire.dev/get-started/configure-mcp/
+
+- `aspire mcp init` can configure MCP integration for supported assistants.
