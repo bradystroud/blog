@@ -6,6 +6,18 @@ const siteUrl = 'https://bradystroud.dev';
 const blogsDir = path.resolve(process.cwd(), 'content', 'blogs');
 const outFile = path.resolve(process.cwd(), 'public', 'rss.xml');
 
+const toAbsolutePostUrl = (canonicalUrl: unknown, slug: string) => {
+    if (typeof canonicalUrl !== 'string' || !canonicalUrl.trim()) {
+        return `${siteUrl}/blogs/${slug}`;
+    }
+
+    try {
+        return new URL(canonicalUrl, siteUrl).toString();
+    } catch {
+        return `${siteUrl}/blogs/${slug}`;
+    }
+};
+
 const xmlEscape = (s: string) =>
     s.replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -43,7 +55,7 @@ const items: RssItem[] = files.flatMap(file => {
         title: data.title as string,
         date: data.date as string,
         description: desc,
-        url: `${siteUrl}/blogs/${slug}`,
+        url: toAbsolutePostUrl(data.canonicalUrl, slug),
     }];
 });
 

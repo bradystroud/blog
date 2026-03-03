@@ -8,6 +8,7 @@ import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Head from "next/head";
+import Giscus from "@giscus/react";
 
 export default function Blog(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -161,22 +162,21 @@ export default function Blog(
               <TinaMarkdown content={data.blog._body} />
             </div>
             <div className="mt-8">
-              {/* TODO: Reconfigure Giscus */}
-              {/* <Giscus
+              <Giscus
                 id="comments"
-                repo="bradystroud/bradystroud.dev"
+                repo="bradystroud/blog"
                 repoId="R_kgDOHYKKTg"
                 category="Announcements"
                 categoryId="DIC_kwDOHYKKTs4CfxYs"
                 mapping="pathname"
-                term="Welcome to giscus!"
+                strict="0"
                 reactionsEnabled="1"
                 emitMetadata="0"
                 inputPosition="top"
-                theme="preferred_color_scheme"
+                theme="light"
                 lang="en"
                 loading="lazy"
-              /> */}
+              />
             </div>
           </Container>
         </Section>

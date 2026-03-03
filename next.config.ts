@@ -3,6 +3,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   serverExternalPackages: ['color-string', 'color'],
   turbopack: {
+    root: __dirname,
     resolveExtensions: ['.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
   },
   transpilePackages: ['tinacms'],

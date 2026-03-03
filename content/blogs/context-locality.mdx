@@ -1,0 +1,226 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/context-locality"
+title: "Context Locality: Structuring Code for AI-Assisted Development"
+description: Code structure impacts AI coding quality. Context locality keeps related intent close, making tools and humans faster, safer, and less reliant on scavenger hunts.
+date: 2026-02-17T12:00:00.000Z
+aiCollaboration: true
+tags:
+  - ai
+  - architecture
+  - refactoring
+  - documentation
+  - productivity
+coverImage: null
+---
+
+AI coding tools are changing how we write software. But there's a problem most teams don't think about: your codebase structure directly impacts how effective these tools can be.
+
+If anything, AI makes software architecture and vertical design more important, not less. The clearer your boundaries and slices are, the easier it is for both humans and tools to stay accurate.
+
+I saw a tweet a while back (before "AI-assisted development" was the norm) that went something like:
+
+> Humans like lots of small files. AI prefers one big file. Therefore: architecture is optional now.
+
+It stuck with me because it didn't *feel* right, and it isn't.
+
+AI doesn't prefer one giant file. What it prefers is **coherent, nearby context** and **obvious paths to follow**. Humans want that too. The difference is that humans compensate with intuition ("it's probably in Billing/"), while AI tools often need explicit breadcrumbs to reliably traverse a codebase.
+
+That's what I mean by **context locality**.
+
+**Context locality is how much of the relevant information is reachable from where you're working, with minimal jumping and minimal guessing.**
+
+If the AI has to bounce across files, folders, modules, repos, and conventions to answer a single question, it will:
+- miss a file entirely,
+- waste its limited context on navigation,
+- or (worst) assume what's in the missing file and confidently hallucinate.
+
+This isn't an argument for monolith files. It's an argument for **making the codebase's dependency graph legible**.
+
+Here are practical patterns that make a real difference.
+
+---
+
+## The Myth: "AI Wants One Big File"
+
+It helps to be precise about what actually goes wrong:
+
+- Modern AI coding tools can read multiple files just fine.
+- The failure mode is **retrieval**, not **reasoning**: the tool doesn't know *which* files matter, *where* conventions live, or *how* an action flows through the system.
+- When a codebase is decomposed into many small files **without strong signposting**, you get a scavenger hunt.
+
+So the goal isn't "fewer files". The goal is **fewer unknowns**.
+
+## 2. Tests in a Separate Directory Tree
+
+Many ecosystems (especially .NET and Java) put tests in a completely separate directory tree:
+
+```txt
+src/
+  Modules/
+    Orders/
+      Orders/Features/CreateOrder/CreateOrderHandler.cs
+tests/
+  Modules/
+    Orders/
+      Orders.UnitTests/CreateOrder/CreateOrderHandlerTests.cs
+```
+
+When an AI modifies `CreateOrderHandler.cs`, there's no local signal that tests exist, where they live, or what the naming convention is.
+
+```md
+## Test locations
+- Tests for `src/Modules/X/` live at `tests/Modules/X/X.UnitTests/` and `X.IntegrationTests/`
+- Test naming: `{ClassName}Tests.cs`
+```
+
+This is cheap, durable context.
+
+---
+
+## 3. Services That Import Half the Codebase
+
+Some services become natural aggregation points. They pull data from many different modules to do their job:
+
+```csharp
+using Modules.Auditing.Contracts;
+using Modules.Organisation.Contracts.Staff;
+using Modules.Clients.Contracts.Queries;
+using Modules.Email.Contracts.Commands;
+using Modules.FileSystem.Contracts;
+using Modules.Templates.Contracts;
+using Modules.Billing.Contracts;
+```
+
+When an AI edits this file, "being correct" may require understanding the contracts of seven modules. Tools rarely load all that context automatically, so they guess.
+
+Fix: **reduce the surface area** the service depends on.
+
+Instead of reaching into 7 modules directly, create a focused interface that gathers exactly what you need:
+
+```csharp
+// Before: service reaches into 7 modules
+public class OrderEmailService
+{
+    public OrderEmailService(
+        ISender sender, // sends queries to 7 different modules
+        IEmailClient emailClient) { }
+}
+
+// After: one dependency encapsulates the data gathering
+public class OrderEmailService
+{
+    public OrderEmailService(
+        IOrderEmailDataProvider dataProvider, // one interface, one module boundary
+        IEmailClient emailClient) { }
+}
+```
+
+Now the AI (and humans) can reason about one seam instead of seven.
+
+---
+
+## 4. Cross-Module Contract Dependencies
+
+In modular systems, "Contracts" projects define the public API for a module. Problems appear when contracts reference other modules' contracts:
+
+```csharp
+// In Clients.Contracts -- this shouldn't know about Orders
+global using Modules.Orders.Contracts.Models;
+```
+
+This creates hidden coupling. An AI working in `Clients` won't expect `Orders` types to be globally available, and may accidentally deepen the coupling by using those types everywhere.
+
+Fix: **keep contracts self-contained**.
+- Use primitives, shared kernel types, or module-owned DTOs at the boundary.
+- Map to domain-specific types in the implementation layer.
+
+---
+
+## 5. Deep Inheritance Across Files
+
+When a class inherits from a base that inherits from another base, the tool needs the whole chain to understand behavior:
+
+```txt
+Entity.cs          -> defines Id, CreatedAt
+  AggregateRoot.cs -> defines DomainEvents, AddEvent()
+    Order.cs       -> actual business logic
+```
+
+Three files just to answer "what methods does `Order` have?" If the bases live in a shared library, it's even more jumping.
+
+Fix: **favor composition over deep hierarchies**.
+If inheritance is necessary, keep it shallow (2 levels max) and keep base classes small.
+
+---
+
+## 6. Missing Architectural Maps
+
+Most codebases have documentation, but it's usually far away from where you work:
+
+```txt
+docs/
+  adr/
+    001-chose-event-driven-architecture.md
+    002-realtime-sync-approach.md
+src/
+  Modules/
+    Notifications/   # AI exploring here won't find the ADRs
+```
+
+Fix: **put a short README in each module**. Not a novel, just enough to orient.
+
+```md
+# Notifications Module
+
+Handles real-time updates via SignalR. Consumes integration events
+from other modules and pushes updates to connected clients.
+
+## Key decisions
+- See ADR-002: ../../docs/adr/002-realtime-sync-approach.md
+
+## Event flow
+Orders -> OrderStatusChangedIntegration -> Notifications -> SignalR -> UI
+```
+
+This is architecture that's *discoverable*.
+
+---
+
+## 7. Vertical Slices and Architecture Become More Prominent
+
+As AI-assisted development becomes normal, architecture work stops being "nice to have" and becomes core delivery work.
+
+Why: AI works best when a feature can be followed through a clear vertical slice:
+- one entrypoint,
+- one feature boundary,
+- obvious data flow,
+- and nearby tests/docs.
+
+In that world, good architecture is no longer abstract polish. It's retrieval infrastructure.
+
+Patterns that become more valuable:
+- Vertical slice organization (`Features/Orders/Create`, `Features/Orders/Update`) over horizontal "bucket" folders.
+- Explicit module boundaries with clear contracts.
+- Thin cross-cutting layers that don't hide core behavior behind deep indirection.
+- Feature-level READMEs that explain intent, flow, and tradeoffs.
+
+So yes, with AI in the loop, vertical thinking and architecture become more prominent. Not because AI is replacing design, but because it amplifies the cost of unclear design.
+
+---
+
+## The General Principle
+
+Every time you force the AI to jump to another file, there's a cost:
+- it might not find the file,
+- it burns context on navigation,
+- it may hallucinate instead of reading.
+
+So the goal isn't "one big file". The goal is **locality + signposts**:
+
+- Document flows where they start (events, commands, entrypoints)
+- Teach conventions once (tests, folder structure, naming)
+- Reduce import surfaces (fewer cross-module dependencies)
+- Keep related things together (if two files always change together, make that obvious)
+- Add lightweight architectural context at the module root (README beats a distant doc folder)
+
+You don't need to restructure the world overnight. The highest ROI change is usually an instruction file plus a few strategic "flow map" comments.

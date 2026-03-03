@@ -6,6 +6,34 @@
    <description>Latest posts from Brady Stroud</description>
    
    <item>
+   <title>n8n Workflow - Generating Blog Ideas and Social Posts</title>
+   <link>https://bradystroud.dev/blogs/n8n-ai-content-generator</link>
+   <guid>https://bradystroud.dev/blogs/n8n-ai-content-generator</guid>
+   <pubDate>Mon, 23 Feb 2026 12:30:00 GMT</pubDate>
+   <description>A practical n8n automation that researches topics, analyzes recent blogs, generates new post ideas, drafts social content, and emails everything in one clean digest.</description>
+   </item>
+   <item>
+   <title>Stop Explaining Bugs to AI - Show It the Bug</title>
+   <link>https://bradystroud.dev/blogs/show-ai-the-bug</link>
+   <guid>https://bradystroud.dev/blogs/show-ai-the-bug</guid>
+   <pubDate>Mon, 23 Feb 2026 12:00:00 GMT</pubDate>
+   <description>UI bugs are hard for AI agents to reproduce directly, but you can still debug fast by logging user actions to a file and letting AI inspect the evidence.</description>
+   </item>
+   <item>
+   <title>Context Locality: Structuring Code for AI-Assisted Development</title>
+   <link>https://bradystroud.dev/blogs/context-locality</link>
+   <guid>https://bradystroud.dev/blogs/context-locality</guid>
+   <pubDate>Tue, 17 Feb 2026 12:00:00 GMT</pubDate>
+   <description>Code structure impacts AI coding quality. Context locality keeps related intent close, making tools and humans faster, safer, and less reliant on scavenger hunts.</description>
+   </item>
+   <item>
+   <title>Tracking Copilot Usage Without an API (Raycast + Month Progress)</title>
+   <link>https://bradystroud.dev/blogs/copilot-usage-raycast</link>
+   <guid>https://bradystroud.dev/blogs/copilot-usage-raycast</guid>
+   <pubDate>Mon, 09 Feb 2026 12:00:00 GMT</pubDate>
+   <description>GitHub Copilot has no public API for usage tracking. Here&#39;s how I built a 2-keystroke solution using Raycast Script Commands to avoid burning quota early in the month.</description>
+   </item>
+   <item>
    <title>Make Large-Scale Refactors Easy with Parallel AI Agents</title>
    <link>https://bradystroud.dev/blogs/easy-ai-refactors</link>
    <guid>https://bradystroud.dev/blogs/easy-ai-refactors</guid>
@@ -24,7 +52,7 @@
    <link>https://bradystroud.dev/blogs/openai-model-cheatsheet</link>
    <guid>https://bradystroud.dev/blogs/openai-model-cheatsheet</guid>
    <pubDate>Fri, 10 Oct 2025 10:00:00 GMT</pubDate>
-   <description>OpenAI model names (o4, 4o, 4.1) are confusing. Quick reference guide to GPT-5, GPT-4.1, mini, nano, and legacy models with strengths, trade-offs, and best use cases.</description>
+   <description>OpenAI model names are confusing. Quick reference guide to GPT-5.2/5.1/5, Codex models, GPT-4.1, GPT-4o, o-series (o3/o4-mini), mini/nano/pro, and legacy models.</description>
    </item>
    <item>
    <title>Fixing the &#39;PowerShell session not found&#39; issue in VS Code</title>
