@@ -95,28 +95,22 @@ export const Blogs: React.FC<BlogsProps> = ({ data }) => {
             <Link
               key={post._sys.filename}
               href={`/blogs/` + post._sys.filename}
-              passHref
-              legacyBehavior
+              className="group relative flex h-full flex-col rounded-2xl border border-gray-200/80 bg-white/70 p-8 shadow-sm ring-1 ring-gray-900/5 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-blue-400/50 dark:border-gray-800/70 dark:bg-gray-900/60 dark:shadow-none dark:ring-white/5 dark:hover:border-blue-500/40 dark:hover:bg-gray-900/80"
             >
-              <a
-                key={post.id || post._sys.filename}
-                className="group relative flex h-full flex-col rounded-2xl border border-gray-200/80 bg-white/70 p-8 shadow-sm ring-1 ring-gray-900/5 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-blue-400/50 dark:border-gray-800/70 dark:bg-gray-900/60 dark:shadow-none dark:ring-white/5 dark:hover:border-blue-500/40 dark:hover:bg-gray-900/80"
-              >
-                <span className="absolute inset-x-8 top-0 h-px bg-linear-to-r from-transparent via-blue-400/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                <h2 className="mt-4 text-2xl font-semibold text-gray-800 transition-colors duration-200 group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-300">
-                  {post.title}
-                </h2>
-                <div className="mt-4 flex items-center gap-3 text-sm text-gray-500 transition-colors duration-200 group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-gray-200">
-                  {formattedDate && (
-                    <time dateTime={post.date || undefined}>{formattedDate}</time>
-                  )}
-                  <span className="hidden h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600 sm:inline-block" />
-                  <span className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.2em] text-blue-500/80 dark:text-blue-300/80">
-                    Read story
-                    <BsArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                </div>
-              </a>
+              <span className="absolute inset-x-8 top-0 h-px bg-linear-to-r from-transparent via-blue-400/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <h2 className="mt-4 text-2xl font-semibold text-gray-800 transition-colors duration-200 group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-300">
+                {post.title}
+              </h2>
+              <div className="mt-4 flex items-center gap-3 text-sm text-gray-500 transition-colors duration-200 group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-gray-200">
+                {formattedDate && (
+                  <time dateTime={post.date || undefined}>{formattedDate}</time>
+                )}
+                <span className="hidden h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600 sm:inline-block" />
+                <span className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.2em] text-blue-500/80 dark:text-blue-300/80">
+                  Read story
+                  <BsArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </div>
             </Link>
           );
         })}

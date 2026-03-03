@@ -9,18 +9,16 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
         actions.map(function (action, index) {
           if (action.type === "button") {
             return (
-              <Link key={index} href={action.link ? action.link : "/"} legacyBehavior>
-                <button
-                  data-tinafield={`${parentField}.${index}`}
-                  className={`z-10 relative flex items-center px-7 py-3 font-semibold text-lg transition duration-150 ease-out rounded-lg transform focus:shadow-outline focus:outline-hidden focus:ring-2 ring-offset-current ring-offset-2 whitespace-nowrap hover:opacity-80 bg-linear-to-br from-blue-600 to-blue-800 text-white shadow-md hover:shadow-lg`}
-                >
-                  {action.label}
-                  {action.icon && (
-                    <BiRightArrowAlt
-                      className={`ml-1 -mr-1 w-6 h-6 opacity-80`}
-                    />
-                  )}
-                </button>
+              <Link
+                key={index}
+                href={action.link ? action.link : "/"}
+                data-tinafield={`${parentField}.${index}`}
+                className={`z-10 relative flex items-center px-7 py-3 font-semibold text-lg transition duration-150 ease-out rounded-lg transform focus:shadow-outline focus:outline-hidden focus:ring-2 ring-offset-current ring-offset-2 whitespace-nowrap hover:opacity-80 bg-linear-to-br from-blue-600 to-blue-800 text-white shadow-md hover:shadow-lg`}
+              >
+                {action.label}
+                {action.icon && (
+                  <BiRightArrowAlt className={`ml-1 -mr-1 w-6 h-6 opacity-80`} />
+                )}
               </Link>
             );
           }
@@ -29,23 +27,16 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
               <Link
                 key={index}
                 href={action.link ? action.link : "/"}
-                passHref
-                legacyBehavior
+                data-tinafield={`${parentField}.${index}`}
+                className={`group inline-flex items-center font-semibold text-lg transition duration-150 ease-out hover:opacity-70`}
+                style={{
+                  textShadow: `0 3px 7px rgba(var(--color-rgb-blue-400),0.2)`,
+                }}
               >
-                <a
-                  data-tinafield={`${parentField}.${index}`}
-                  className={`group inline-flex items-center font-semibold text-lg transition duration-150 ease-out hover:opacity-70`}
-                  style={{
-                    textShadow: `0 3px 7px rgba(var(--color-rgb-blue-400),0.2)`,
-                  }}
-                >
-                  {action.label}
-                  {action.icon && (
-                    <BiRightArrowAlt
-                      className={`ml-0 mr-0 w-6 h-6 opacity-80`}
-                    />
-                  )}
-                </a>
+                {action.label}
+                {action.icon && (
+                  <BiRightArrowAlt className={`ml-0 mr-0 w-6 h-6 opacity-80`} />
+                )}
               </Link>
             );
           }
