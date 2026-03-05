@@ -165,9 +165,9 @@ export default function Blog(
               <Giscus
                 id="comments"
                 repo="bradystroud/blog"
-                repoId="R_kgDOHYKKTg"
-                category="Announcements"
-                categoryId="DIC_kwDOHYKKTs4CfxYs"
+                repoId="R_kgDOMG3w4Q"
+                category="Comments"
+                categoryId="DIC_kwDOMG3w4c4ChPCN"
                 mapping="pathname"
                 strict="0"
                 reactionsEnabled="1"
