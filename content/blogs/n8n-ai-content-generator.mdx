@@ -35,7 +35,7 @@ It runs daily at 4:00 AM, so when I wake up, the digest is already waiting for r
 
 - I was expecting a fully no-code solution, but I ended up writing bits of JS inside n8n to parse and transform data from APIs and AI outputs.
 - n8n has an AI workflow builder, this helped me get started but chose the wrong nodes in some scenarios
-- n8n loops - its not clear when if there are multiple outputs from a previous node (e.g. list of tweet ideas) the next node will run for each item (e.g. send an email for each tweet idea) or if it will run once with the whole list (e.g. send one email with all the tweet ideas). To fix this I aggregated all the data before the next step.
+- n8n loops - it's not clear if there are multiple outputs from a previous node (e.g. list of tweet ideas) the next node will run for each item (e.g. send an email for each tweet idea) or if it will run once with the whole list (e.g. send one email with all the tweet ideas). To fix this I aggregated all the data before the next step.
 
 ![Figure: n8n AI Content Generator Workflow](/uploads/n8n-ai-content-generator/workflow.png)
 

@@ -5,7 +5,7 @@ description: Senior Software Engineer with expertise in .NET, Blazor, and MAUI. 
 blocks:
   - eyebrow: More than code
     heading: Brady Stroud
-    subheading: Problem solver at heart - software engineering is my my tool of choice.
+    subheading: Problem solver at heart - software engineering is my tool of choice.
     body: >
       I’m a software engineer because I love solving problems and building
       things that work better. Code is just the medium - what really excites me
