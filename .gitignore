@@ -28,6 +28,9 @@ yarn-error.log*
 # AI blog cache
 .ai-blog-cache/
 
+# Separate project
+bunnings-mcp/
+
 
 
 ~/
