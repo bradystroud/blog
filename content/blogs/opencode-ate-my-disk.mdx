@@ -1,0 +1,98 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/opencode-ate-my-disk"
+title: Opencode ate my disk - How I found it
+description: My Mac ran out of storage overnight. macOS blamed "Documents" but the real culprit was a runaway AI coding tool snapshot. Here's how I tracked it down.
+date: 2026-03-06T12:00:00.000Z
+aiCollaboration: true
+tags:
+  - macos
+  - developer-tools
+  - ai
+  - debugging
+  - productivity
+---
+
+I sat down to work and my Mac was basically unusable. Builds failing, apps crashing, the works. I checked storage and had **2.7GB free** on a 926GB drive. A few days earlier I had over 400GB available.
+
+macOS System Settings pointed the finger at "Documents" — 614GB. But `~/Documents` was only 1.9GB. Something else was going on.
+
+## macOS "Documents" Is Misleading
+
+Here's the thing most people don't realize: the "Documents" category in System Settings doesn't just mean your Documents folder. It includes `~/Library`, all your dotfiles and dotfolders, and basically everything in your home directory that macOS can't categorize as Applications, Developer, Photos, etc.
+
+So when it says "Documents: 614GB", that could be anything.
+
+## Hunting Down the Space Hog
+
+I started with a top-level sweep of my home directory:
+
+```bash
+du -d1 -h ~ 2>/dev/null | sort -hr | head -20
+```
+
+Most things looked normal — `~/Library` at 103GB (large but expected), `~/Developer` at 76GB. But then:
+
+```
+427G    /Users/bradystroud/.local
+```
+
+427GB in a hidden folder. That's not normal.
+
+## Drilling Down
+
+```bash
+du -d1 -h ~/.local/share | sort -hr | head -5
+```
+
+```
+427G    /Users/bradystroud/.local/share/opencode
+```
+
+[opencode](https://github.com/opencode-ai/opencode) is an AI-powered coding tool I'd been trying out. It has a snapshot feature that tracks file changes using git under the hood.
+
+```bash
+du -sh ~/.local/share/opencode/snapshot/* | sort -hr
+```
+
+```
+424G    .../snapshot/global
+1.2G    .../snapshot/a36e09...
+164M    .../snapshot/17143e...
+```
+
+The `global` snapshot directory was a bare git repo with **401GB of pack files**. It had initialized a `.git` repo in my home directory and was snapshotting everything — binaries, caches, node_modules, NuGet packages, the lot.
+
+## The Fix
+
+Straightforward once I knew where the problem was:
+
+```bash
+# Delete the bloated snapshot
+find ~/.local/share/opencode/snapshot/global -type f -delete
+find ~/.local/share/opencode/snapshot/global -type d -empty -delete
+
+# Remove the git repo it created in home directory
+rm -rf ~/.git
+```
+
+While I was at it, I cleaned up other accumulated junk:
+
+| Item | Size |
+|------|------|
+| NuGet cache (`~/.nuget`) | 39 GB |
+| JetBrains caches + logs | 22 GB |
+| pnpm store | ~10 GB |
+| npm cache | 5.3 GB |
+| All `node_modules` in ~/Developer | ~22 GB |
+| Misc caches (Homebrew, pip, Graphisoft) | ~5 GB |
+
+**Result: 2.7GB free → 533GB free.**
+
+## Lessons Learned
+
+1. **Don't trust macOS storage categories.** "Documents" is a catch-all. Use `du` to find what's actually eating your disk.
+2. **AI coding tools can be sneaky.** Snapshot/checkpoint features sound great until they silently consume hundreds of gigabytes. Check what they're storing and where.
+3. **Audit your dotfiles occasionally.** Hidden directories like `.local`, `.nuget`, `.npm`, and `.cache` accumulate garbage over time. A periodic cleanup goes a long way.
+4. **Your home directory shouldn't be a git repo.** If a tool initializes one there, that's a red flag — it could end up tracking (and storing) everything.
+
+If your Mac suddenly runs out of space and you can't figure out why, start with `du -d1 -h ~ | sort -hr`. The answer is almost always hiding in a dotfolder.
