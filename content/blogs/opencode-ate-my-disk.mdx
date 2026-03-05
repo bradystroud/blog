@@ -16,6 +16,8 @@ I sat down to work and my Mac was basically unusable. Builds failing, apps crash
 
 macOS System Settings pointed the finger at "Documents" — 614GB. But `~/Documents` was only 1.9GB. Something else was going on.
 
+I wasn't sure where to look so I told Claude the situation and let it cook.
+
 ## macOS "Documents" Is Misleading
 
 Here's the thing most people don't realize: the "Documents" category in System Settings doesn't just mean your Documents folder. It includes `~/Library`, all your dotfiles and dotfolders, and basically everything in your home directory that macOS can't categorize as Applications, Developer, Photos, etc.
@@ -24,13 +26,13 @@ So when it says "Documents: 614GB", that could be anything.
 
 ## Hunting Down the Space Hog
 
-I started with a top-level sweep of my home directory:
+Claude started with a top-level sweep of my home directory:
 
 ```bash
 du -d1 -h ~ 2>/dev/null | sort -hr | head -20
 ```
 
-Most things looked normal — `~/Library` at 103GB (large but expected), `~/Developer` at 76GB. But then:
+Most things looked normal — `~/Library` at 103GB (large but expected), `~/Developer` at 76GB. But then it found:
 
 ```
 427G    /Users/bradystroud/.local
@@ -39,6 +41,8 @@ Most things looked normal — `~/Library` at 103GB (large but expected), `~/Deve
 427GB in a hidden folder. That's not normal.
 
 ## Drilling Down
+
+Claude kept digging:
 
 ```bash
 du -d1 -h ~/.local/share | sort -hr | head -5
@@ -64,7 +68,7 @@ The `global` snapshot directory was a bare git repo with **401GB of pack files**
 
 ## The Fix
 
-Straightforward once I knew where the problem was:
+Straightforward once Claude found the culprit:
 
 ```bash
 # Delete the bloated snapshot
@@ -75,7 +79,7 @@ find ~/.local/share/opencode/snapshot/global -type d -empty -delete
 rm -rf ~/.git
 ```
 
-While I was at it, I cleaned up other accumulated junk:
+While it was at it, Claude cleaned up other accumulated junk:
 
 | Item | Size |
 |------|------|
