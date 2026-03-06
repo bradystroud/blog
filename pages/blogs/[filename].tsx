@@ -131,7 +131,7 @@ export default function Blog(
               <div className="flex items-center">
                 <div className="flex-shrink-0 mx-6">
                   <Image
-                    className="rounded-full w-10 h-10"
+                    className="rounded-full w-10 h-10 object-cover"
                     src="/uploads/brady-beach-blur.webp"
                     alt="Brady Stroud"
                     width={40}
