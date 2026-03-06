@@ -23,7 +23,6 @@ export default async function handler(req: NextRequest) {
             flexDirection: "column",
             alignItems: "flex-start",
             justifyContent: "space-between",
-            backgroundColor: "#fff",
             backgroundImage: coverImage
               ? `url(${coverImage})`
               : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
