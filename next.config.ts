@@ -39,6 +39,15 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: "/blogs/opencode-ate-my-disk",
+        destination: "/blogs/opencode-ate-my-storage",
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
