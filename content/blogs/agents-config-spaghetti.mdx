@@ -1,0 +1,212 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/agents-config-spaghetti"
+title: Solving Agents Config Spaghetti - Making .agents the Source of Truth
+description: I got sick of duplicating skills and agent instructions across tools, so I made .agents the source of truth and mapped everything else back to it.
+date: 2026-03-17T12:00:00.000Z
+aiCollaboration: true
+coverImage: /uploads/agents-config-spaghetti/robot-spagetti.png
+tags:
+  - ai
+  - developer-tools
+  - productivity
+  - opencode
+  - claude
+  - mcp
+---
+
+I have been slowly accumulating more AI tools, more skills, more config, and more little bits of setup.
+
+And I ended up creating a config spagetti.
+
+I had skills in one place, other skills in another place, instructions duplicated across tools, and just enough drift that I could never be fully sure which version was the real one, and whicha agents had which config.
+
+So I finally fixed it by making one folder the source of truth:
+
+```text
+~/.agents
+```
+
+That folder now acts as the canonical home for my shared agent setup.
+
+## The Problem With Multi-Agent Setups
+
+Once you start using multiple agent tools, the setup gets messy fast.
+
+You end up with things like:
+
+- Claude looking in one directory for skills
+- another tool looking somewhere else
+- slightly different global instructions per tool
+- random symlinks
+
+It works... until it doesn't.
+
+The real problem is not that any one tool is wrong. The problem is that if you have to update the same idea in three places, one of them will go stale.
+
+## The Approach
+
+I wanted one obvious place to manage the shared stuff:
+
+- agent instructions
+- shared skills
+- project map ("where does Brady keep things?")
+
+So I made this structure the canonical one:
+
+```text
+~/.agents/
+  AGENTS.md
+  PROJECT-MAP.md
+  skills/
+```
+
+That means:
+
+- `~/.agents/AGENTS.md` is the shared instruction source of truth
+- `~/.agents/PROJECT-MAP.md` is the shared high-level project map
+- `~/.agents/skills/` is the shared skills directory
+
+Everything else should either:
+
+- import from there,
+- symlink to there,
+- or stay out of the way.
+
+And importantly: if there is another skills folder (e.g., `~/.claude/skills/`), I leave a `README.md` there explaining what is going on.
+
+That sounds small, but it matters.
+Future-me should be able to open any of these folders and immediately understand:
+
+- whether this location is canonical,
+- whether it is just a compatibility shim,
+- and where the real thing lives.
+
+## How I Wired It Up
+
+### Claude
+
+[Claude Code](https://www.anthropic.com/claude-code) does not automatically behave the way I want here, so it needs a bit of mapping.
+
+I keep Claude's local file extremely thin using symlinks:
+
+```md 
+@~/.agents/AGENTS.md
+```
+
+For skills, Claude gets a `~/.claude/skills/` folder full of symlinks pointing into:
+
+```text
+~/.agents/skills/
+```
+
+That gives Claude the shape it expects, while keeping the real source in one place.
+
+### OpenCode
+
+[OpenCode](https://github.com/opencode-ai/opencode) is nicer here.
+
+OpenCode is just a chill guy, so it's happy to look anywhere for the skills/AGENT.md's.
+
+That means I don't need to duplicate the skills into an OpenCode-owned directory just to make it work.
+I can keep the real structure in `.agents` and let OpenCode refer to it from there.
+
+## Why the Project Map Matters
+
+I don't just want my agents to know _how_ to behave.
+I also want them to know where my stuff lives.
+
+So I created:
+
+```text
+~/.agents/PROJECT-MAP.md
+```
+
+It contains things like:
+
+- code usually lives in `~/Developer`
+- personal repos usually live in `~/Developer/bradystroud/...`
+- org repos usually live in `~/Developer/<OrgName>/...`
+- my blog is `~/Developer/bradystroud/blog`
+
+That means when I say:
+
+> go update my blog
+
+...the agent has a sensible first guess instead of grepping around.
+
+It is not meant to be a giant inventory of every repo I have ever touched, just a practical map for the places that come up often.
+
+## Active Projects Make the Map Better
+
+I also like the idea of keeping the project map slightly alive.
+
+So one nice extension is scanning `~/Developer` for repos with commits in the last few months, then listing the most active ones in the map.
+
+That way the project map is not just documentation. It becomes lightweight routing logic for your agents.
+That gives the agents some bias toward the repos I am actually working on now.
+
+...the agent can prioritise the likely current targets first.
+
+## Why This Feels Better
+
+The main benefit is not technical cleverness.
+It is reducing ambiguity.
+
+When I need to change something now, the answer is simple:
+
+- update `.agents/AGENTS.md`
+- update `.agents/PROJECT-MAP.md`
+- add or edit skills in `.agents/skills/`
+
+Then let the other tools reference that.
+
+That means:
+
+- fewer duplicated instructions
+- less configuration drift
+- less "which copy is the real one?"
+- easier onboarding for future-me
+- easier experimentation with new tools
+
+## The General Pattern
+
+This pattern is useful beyond my exact setup.
+
+If you are using multiple AI tools, I think the default should be:
+
+1. Pick one human-owned folder as the canonical source.
+2. Put shared instructions there.
+3. Put shared skills there.
+4. Put environment hints there.
+5. Make each tool adapt to that source, not the other way around.
+
+The tools are temporary.
+Your workflow is the thing worth stabilising.
+
+## Next Improvement: Dotfiles in Git
+
+The next thing I want to do is put the important dotfiles behind this setup into a git repo.
+
+That way switching laptops becomes much easier:
+
+- clone repo
+- restore symlinks
+- get my agent setup back
+- keep moving
+
+[Gordon Beeming](https://gordonbeeming.com) does this and I think it's a great idea.
+
+Once the source of truth is concentrated into a small number of obvious files, putting them in git starts to feel very natural.
+
+## Final Thought
+
+The best config is not the config with the most features.
+It is the config where you know where to edit things.
+
+For me, that place is now:
+
+```text
+~/.agents
+```
+
+And honestly, that feels a lot nicer than trying to remember which AI tool owns which piece of my setup this week.
