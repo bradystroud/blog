@@ -114,7 +114,7 @@ export default function Blog(
                   src={data.blog.coverImage}
                   width={1000}
                   height={400}
-                  alt={data.blog.title}
+                  alt={`Cover image for ${data.blog.title}`}
                   className="object-cover object-center rounded-lg"
                 />
               </div>

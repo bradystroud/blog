@@ -24,28 +24,28 @@ export const Footer = ({ data }) => {
             </a>
           </p>
 
-          <div className="flex gap-4">
+          <nav aria-label="Social media links" className="flex gap-4">
             {data?.social &&
               data.social.map((social) => {
                 if (social && social.platform) {
+                  const option = options.find(
+                    (option) => option.value === social.platform
+                  );
                   return (
                     <a
-                      className="text-gray-400 hover:text-black inline-block"
+                      className="text-gray-400 hover:text-black inline-block transition ease-out duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
                       href={social.url}
                       target="_blank"
+                      rel="noopener noreferrer"
                       key={`social-link-${social.platform}`}
-                      aria-label={social.platform}
+                      aria-label={`${option?.label || social.platform} (opens in new tab)`}
                     >
-                      {
-                        options.filter(
-                          (option) => option.value === social.platform
-                        )[0].icon
-                      }
+                      {option?.icon}
                     </a>
                   );
                 }
               })}
-          </div>
+          </nav>
         </div>
         <div
           className={`absolute h-1 bg-linear-to-r from-transparent ${

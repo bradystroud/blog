@@ -18,4 +18,10 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  /* Ensure visible focus indicators for keyboard navigation (WCAG 2.4.7) */
+  :focus-visible {
+    outline: 2px solid var(--color-blue-500, #3b82f6);
+    outline-offset: 2px;
+  }
 }

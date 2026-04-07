@@ -105,10 +105,10 @@ export const Blogs: React.FC<BlogsProps> = ({ data }) => {
                 {formattedDate && (
                   <time dateTime={post.date || undefined}>{formattedDate}</time>
                 )}
-                <span className="hidden h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600 sm:inline-block" />
+                <span className="hidden h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600 sm:inline-block" aria-hidden="true" />
                 <span className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.2em] text-blue-500/80 dark:text-blue-300/80">
                   Read story
-                  <BsArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  <BsArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                 </span>
               </div>
             </Link>

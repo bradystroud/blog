@@ -25,19 +25,19 @@ const NextBreadcrumb = () => {
   const pathNames = paths.split("/").filter((path) => path);
   return (
     pathNames.length > 0 && (
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
-        <ul className="flex py-5">
+      <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto px-6 sm:px-8">
+        <ol className="flex py-5">
           <li className="hover:opacity-70 hover:underline mx-2">
-            <Link href={"/"} aria-label="Go to home page">
-              <FaHome className="mt-1" />
+            <Link href={"/"} aria-label="Home">
+              <FaHome className="mt-1" aria-hidden="true" />
             </Link>
           </li>
           {pathNames.map((link, index) => {
             const href = `/${pathNames.slice(0, index + 1).join("/")}`;
-            const itemClasses =
-              paths === href
-                ? "opacity-70 cursor-default"
-                : "hover:opacity-70 hover:underline";
+            const isCurrentPage = paths === href;
+            const itemClasses = isCurrentPage
+              ? "opacity-70 cursor-default"
+              : "hover:opacity-70 hover:underline";
 
             return (
               <React.Fragment key={index}>
@@ -45,15 +45,19 @@ const NextBreadcrumb = () => {
                   /
                 </li>
                 <li className="mx-2">
-                  <Link className={itemClasses} href={href}>
+                  <Link
+                    className={itemClasses}
+                    href={href}
+                    {...(isCurrentPage ? { "aria-current": "page" as const } : {})}
+                  >
                     {cleanUpLink(link)}
                   </Link>
                 </li>
               </React.Fragment>
             );
           })}
-        </ul>
-      </div>
+        </ol>
+      </nav>
     )
   );
 };
