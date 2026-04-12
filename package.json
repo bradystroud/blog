@@ -7,6 +7,10 @@
     "dev": "bun run --bun tinacms dev -c \"next dev\"",
     "build": "bun run --bun tinacms build && bun run --bun next build && bun run scripts/generate-rss.ts && bun run --bun next-sitemap --config next-sitemap.config.js",
     "generate-rss": "bun run scripts/generate-rss.ts",
+    "generate-blog-drafts": "bun run scripts/generate-blog-drafts.ts",
+    "rewrite-approved-blog": "bun run scripts/rewrite-approved-blog.ts",
+    "promote-draft-to-blog": "bun run scripts/promote-draft-to-blog.ts",
+    "test:blog-automation": "bun test scripts/lib/commit-to-blog.test.ts scripts/lib/approved-blog-writer.test.ts scripts/lib/draft-pipeline.test.ts scripts/lib/blog-context.test.ts utils/draft-review.test.ts",
     "start": "bun run --bun tinacms build && bun run --bun next start",
     "export": "bun run build && bun run --bun next export",
     "lint": "eslint . --ext .ts,.tsx"
@@ -36,6 +40,7 @@
     "@vercel/speed-insights": "^1.3.1",
     "gray-matter": "^4.0.3",
     "next": "16.1.4",
+    "next-auth": "^4.24.13",
     "openai": "^6.25.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

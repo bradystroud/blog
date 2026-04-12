@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
+const { isPublishedStatus } = require('./lib/commit-to-blog');
 
 const siteUrl = 'https://bradystroud.dev';
 const blogsDir = path.resolve(process.cwd(), 'content', 'blogs');
@@ -37,7 +38,7 @@ const files = fs.readdirSync(blogsDir)
 
 const items: RssItem[] = files.flatMap(file => {
     const { data, content } = matter.read(path.join(blogsDir, file));
-    if (!data.date) return [];                                // skip drafts
+    if (!data.date || !isPublishedStatus(data.status)) return []; // skip non-published posts
 
     const slug = file.replace(/\.mdx?$/, '');
 

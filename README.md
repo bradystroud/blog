@@ -18,6 +18,21 @@ Built with Next.js, TinaCMS and Tailwind.
    - Other TinaCMS variables as needed
 4. `bun dev` to run the project
 
+## Blog automation from repo activity
+
+This repo now includes a local automation that scans recent git activity and drafts blog posts.
+
+### Quick start
+
+```bash
+bun install
+bun run test:blog-automation
+bun run generate-blog-drafts --rootDir ~/Developer/bradystroud --days 30 --limit 2 --dryRun true
+bun run rewrite-approved-blog --slug why-i-built-blog
+```
+
+See [`_docs/blog-automation.md`](./_docs/blog-automation.md) for the full workflow, including the new `content/drafts` pipeline, AI rewrite step, and promotion flow into public blogs.
+
 ## AI Blog Generation
 
 The site includes an intelligent fallback for non-existent blog posts. Instead of showing a 404 page, it:

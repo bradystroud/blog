@@ -6,6 +6,7 @@ import { Layout } from "../../components/layout";
 import { Blogs } from "../../components/posts/blogs";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
+import { isPublishedStatus } from "../../utils/blog-status";
 
 export default function ReviewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -21,6 +22,7 @@ export default function ReviewPage(
     .filter((edge): edge is Exclude<typeof edge, null> => 
       edge !== null && edge.node !== null && edge.node !== undefined
     )
+    .filter((edge) => isPublishedStatus((edge.node as { status?: string | null }).status))
     .map(edge => ({
       node: {
         _sys: edge.node!._sys,

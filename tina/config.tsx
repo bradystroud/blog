@@ -2,6 +2,7 @@
 import { defineConfig } from "tinacms";
 
 import { BlogCollection } from "./collections/blog";
+import { DraftCollection } from "./collections/draft";
 import { GlobalCollection } from "./collections/global";
 import { PageCollection } from "./collections/page";
 import { TagCollection } from "./collections/tag";
@@ -27,6 +28,7 @@ const config = defineConfig({
   schema: {
     collections: [
       BlogCollection,
+      DraftCollection,
       GlobalCollection,
       TagCollection,
       PageCollection,

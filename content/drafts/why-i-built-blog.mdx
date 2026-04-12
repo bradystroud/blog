@@ -1,0 +1,131 @@
+---
+canonicalUrl: 'https://bradystroud.dev/blogs/why-i-built-this-blog'
+title: Why I built Blog
+description: >-
+  Blog: New project: what blog is, why it exists, and the implementation choices
+  behind its first commits.
+date: 2026-03-10T12:00:00.000Z
+aiCollaboration: true
+status: review
+tags:
+  - ai
+  - automation
+  - debugging
+  - architecture
+  - productivity
+slug: why-i-built-blog
+stage: blog-draft
+score: 43
+sourceRepos:
+  - blog
+sourceCommits:
+  - 225381a
+  - 9d132ec
+  - 48294c1
+  - ce240c7
+  - bb1843e
+  - 64964b6
+  - ee09c5a
+  - a6f1240
+  - '238e082'
+  - b93829e
+  - f191619
+  - 66944bb
+  - 87b8d3f
+  - aa60089
+  - e36687a
+  - 7bfab44
+  - 95ef5c7
+  - 83d767b
+  - 224d554
+  - 6add862
+  - e107b97
+  - b549c7f
+  - 7f2f1df
+  - 5b87018
+  - fd219bf
+approvedForWriting: true
+feedback: ''
+generationCount: 1
+createdAt: '2026-03-10T00:17:38.764Z'
+updatedAt: '2026-03-10T00:18:26.397Z'
+lastGeneratedAt: '2026-03-10T00:18:26.397Z'
+---
+
+I created a new blog repo and the first 25 commits touched 59 files. That should tell you the story right there: the work wasn't a single feature, it was a hundred small, practical fixes that make the site behave like a real piece of engineering instead of a weekend demo.
+
+This post walks through the concrete problems I found, the fixes I made, and the lessons that matter if you're shipping content-driven projects.
+
+What changed (short list)
+- Layout/CSS: fixed a squished profile photo on blog posts (commit: "Fix squished profile photo on blog posts").
+- Open Graph images: fixed a white background that was hiding the gradient in the generated OG images (file: pages/api/og.tsx).
+- Redirects & canonical URLs: added a redirect from an old URL and corrected canonical frontmatter for consistency (content/blogs/opencode-ate-my-storage.mdx and content/blogs/opencode-ate-my-disk.mdx).
+- Comments: updated giscus configuration (repoId and categoryId) so comment embeds point to the right repo/category.
+- Content hygiene: a bunch of small typo and grammar fixes across multiple markdown files.
+- Build/config: small updates to next.config.ts and pages/blogs/[filename].tsx to support the above.
+
+Why these small things matter
+People don't read release notes for small fixes. They notice when:
+- Social previews look off (bad OG images).
+- Old links 404 (no redirects).
+- The comment widget doesn't load (misconfigured IDs).
+- Profile photos look broken on the post (layout and padding issues).
+All of those are trust issues that silently degrade the reader experience.
+
+The most interesting implementation detail: OG images and canonical hygiene
+Two problems appeared together: social previews looked wrong and a post had two competing URLs.
+
+1) OG image generation
+The repo includes a server-side OG generator (pages/api/og.tsx). The OG image renderer had a white background by default which hid an intended gradient. Social platforms cache previews aggressively; if your generated image is subtly wrong you'll look unpolished for a while.
+
+What I did:
+- Adjusted the OG generator so the canvas uses the intended background/gradient rather than a flat white fallback.
+- Rebuilt and visually validated the image locally before pushing.
+- Fixed the post frontmatter where the OG image or canonical URL pointed to the wrong slug.
+
+Why it's worth doing properly
+A crisp, consistent social preview matters more than you think. It's the first impression for link clicks and it's tedious to undo once a platform caches the wrong image. Make your OG generation deterministic and keep a way to preview it locally.
+
+2) Canonical URLs + redirects
+There were two filenames for the same post (opencode-ate-my-disk vs opencode-ate-my-storage). I:
+- Chose one canonical URL and fixed the frontmatter in the MDX file.
+- Added an explicit redirect so old links keep working (commit: "Add redirect from old opencode-ate-my-disk URL").
+
+Reasoning:
+- Fixing canonical URLs avoids duplicate-content signals and makes analytics meaningful.
+- Adding a straightforward redirect preserves inbound links and avoids 404s — cheaper than updating every external link.
+
+Giscus comments: small config, big effect
+One commit updated giscus repoId and categoryId. Those values are opaque and easy to miss when you copy/paste the embed. If they're wrong the comment box silently fails. When you set up a comment system:
+- Treat embed config as critical infra, not cosmetic.
+- Document where repoId/categoryId come from so future maintainers don't guess.
+
+Content hygiene wins
+There were a bunch of tiny typo fixes ("simlar" → "similar", "Don't try run" → "Don't try to run", extra "my", spacing issues). Why mention them? Because:
+- Small copy mistakes accumulate and make the site look amateur.
+- They're cheap to fix one-by-one in small commits, and cheaper than a big content cleanup later.
+
+How I worked (practical workflow)
+- Fix one problem at a time. Each commit addresses a single UX regression (OG image, redirect, comment config, typo).
+- Keep canonical/frontmatter fixes near the content change. If you touch an MDX file to change its slug, update the canonical URL in the same diff.
+- Preview OG images locally before pushing. Hit /api/og locally (or the site preview) so you don't rely on remote caches for validation.
+- Add redirects for renamed slugs instead of trying to update external links.
+
+Trade-offs and things I avoided
+- I didn't try to be clever and rewrite the whole content structure. This was an iterative "ship small fixes" effort.
+- I didn't add a content linter or CI check in this sprint. That's a next-step I recommend, but it would have delayed these quick, high-impact fixes.
+
+What I'd do next
+- Add a simple content CI check: spellcheck and frontmatter required fields (canonicalUrl, date, tags). These catch a bunch of the tiny fixes in PRs.
+- Add a deterministic OG image preview endpoint for CI so previews can be validated automatically.
+- Add a short docs/README for contributors that explains canonical URLs, redirects, and where to get giscus IDs.
+
+Takeaways
+- First impressions are small things: OG images, comment widgets, redirects, and tiny typos. Fix them early.
+- Keep changes incremental and focused. One UX problem per commit makes reviews trivial.
+- Canonical URLs + redirects are cheap insurance for SEO and link rot.
+- Document opaque bits (giscus IDs, how to regenerate OGs) so your future self doesn't guess.
+
+If you want the diff-by-diff details, look at these files in the repo: pages/api/og.tsx, pages/blogs/[filename].tsx, next.config.ts, and the MDX files under content/blogs. The commits show the tiny, practical work that takes a site from demo to usable.
+
+If you're running a content site: prioritize the things readers actually see. The rest follows.

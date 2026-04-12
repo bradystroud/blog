@@ -9,6 +9,7 @@ import { InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Head from "next/head";
 import Giscus from "@giscus/react";
+import { normaliseBlogStatus } from "../../utils/blog-status";
 
 export default function Blog(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -35,6 +36,8 @@ export default function Blog(
   if (data && data.blog) {
     const title = `${data.blog.title} | Brady Stroud`;
     const description = data.blog.description || `Read ${data.blog.title} by Brady Stroud`;
+    const blogStatus = normaliseBlogStatus((data.blog as { status?: string | null }).status);
+    const isDraftLike = blogStatus !== "published";
     
     // Handle cover image URL - check if it's already a full URL (from TinaCMS CDN) or a relative path
     let coverImageUrl = "";
@@ -145,6 +148,18 @@ export default function Blog(
                 </div>
               </div>
             </div>
+            {isDraftLike ? (
+              <div className="mb-6 flex justify-center">
+                <div className="flex items-start gap-3 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm font-semibold text-sky-900 shadow-sm dark:border-sky-400/40 dark:bg-sky-500/10 dark:text-sky-100">
+                  <span aria-hidden className="text-lg leading-none">
+                    {blogStatus === "draft" ? "🛠️" : "👀"}
+                  </span>
+                  <p>
+                    This post is currently in <strong>{blogStatus}</strong> mode. It is intentionally hidden from the public blog index and RSS so you can preview it directly before publishing.
+                  </p>
+                </div>
+              </div>
+            ) : null}
             {data.blog.aiCollaboration ? (
               <div className="mb-8 flex justify-center">
                 <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 shadow-sm dark:border-amber-400/40 dark:bg-amber-500/10 dark:text-amber-100">

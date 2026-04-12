@@ -1,0 +1,98 @@
+---
+canonicalUrl: 'https://bradystroud.dev/blogs/one-keystroke-workspace-ghostty-raycast'
+title: 'One Keystroke: Automating Project Startup with Ghostty and Raycast'
+description: I was tired of wasting the first 5–10 minutes getting terminals, panes, and an IDE arranged. Daddyshome wires Ghostty workspaces, a stable 2×2 terminal layout, and a Raycast launcher so you can start a project in one keystroke.
+date: 2026-03-10T12:00:00.000Z
+aiCollaboration: true
+stage: research
+status: review
+tags:
+  - debugging
+  - productivity
+  - raycast
+  - ghostty
+  - developer-tools
+---
+
+Note on the name: "Daddyshome" is a cheeky nod to Tony Stark's "Okay, Daddy's home" moment when his house setup comes online. If that helps, here's the scene I mean: https://www.youtube.com/watch?v=Qav7NJIsKL4
+
+![Placeholder for the Tony Stark scene or visual demo](https://www.google.com/url?sa=t&source=web&rct=j&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DQav7NJIsKL4&ved=0CBYQjRxqFwoTCMjDwYmRlJMDFQAAAAAdAAAAABAH&opi=89978449)
+
+Hook: opening a project is the most painful part of small edits
+
+Sometimes the change you want to make is a single-line fix. But before you can edit, you spend 5–10 minutes doing choreography: create a terminal workspace, split panes, start the app, tail logs, open the editor, arrange windows. That friction kills momentum.
+
+I automated that friction. The result: one keystroke (Raycast) → a stable Ghostty workspace (true 2×2 panes) → IDE opens → terminals and editor tiled where I like them. It’s not glamorous, but it saves minutes every day and keeps you in flow.
+
+What Daddyshome actually does
+
+- Creates a Ghostty session with an explicit 2×2 pane layout (not nested splits).
+- Runs the right commands in each pane (app, logs, tests, REPL).
+- Opens your IDE of choice after the session is ready (initial support added for Rider).
+- Exposes the workflow as a Raycast command so you can launch it instantly.
+
+Why this felt worth building
+
+- The steps were repeatable and boring; automation is the right tool.
+- Small gains compound — saving a few minutes every time you switch tasks is valuable.
+- It’s also an AI-friendly dev workflow: have the environment ready before you hand a task to an assistant or start debugging.
+
+What I changed (concrete repo evidence)
+
+I kept the work incremental and pragmatic — scaffold, iterate, polish. Look at these focal commits for the story:
+
+- fix: build ghostty panes as true 2x2 (68b47bd) — important bugfix: panes get stable identities so later automation can target them reliably.
+- Added Rider IDE support (39e2bb5) — launcher can open your preferred editor.
+- Raycast UI and launcher (9b5aed5) — a discoverable, one-keystroke surface with an icon so it’s not ignored.
+- Local dev & CLI path fixes for Raycast (8ecd198, b57d304) — iterating on the extension was blocked until the CLI path/install quirks were handled.
+
+Files to inspect if you want the core logic
+
+- scripts/daddyshome.js — orchestration: create session, build panes explicitly, run commands, launch IDE.
+- raycast/src/launch-project.tsx and raycast/src/daddyshome.ts — the Raycast trigger and light UI glue.
+- raycast/README.md and docs/setup.md — notes for installing and developing the Raycast extension locally.
+- raycast/assets/daddyshome-icon.png — small but important: a visible icon makes the command discoverable.
+
+The important implementation detail: treat the 2×2 as first-class
+
+A lot of multiplexer scripts try to "split then split again" to fake a grid. That leaves panes with nested relationships that change when you close or recreate one — which makes targeting panes brittle.
+
+I made the 2×2 layout explicit:
+
+- Create four top-level panes with stable identifiers.
+- Run the intended startup commands in the named panes (so "tail logs" always lands in the same spot).
+- Avoid nested splits so pane identity survives restarts and can be targeted deterministically.
+
+This small choice removed a class of flaky bugs where automation ran the wrong command in the wrong pane.
+
+Raycast as the minimal UI
+
+Raycast is intentionally just a fast trigger and tiny UI. Everything heavy lives in the script. Two practical lessons:
+
+- Keep the extension thin. Let the script do orchestration; Raycast just prompts and calls it.
+- Local dev ergonomics matter. I had to add explicit CLI path handling and documentation so I could iterate on the extension quickly. If your launcher requires developer setup, document it or you’ll spend more time fighting tooling than building.
+
+Trade-offs I chose intentionally
+
+- macOS only (Raycast) — I wanted a fast, polished UX on my machine first. If you need cross-platform, use a different launcher.
+- Ghostty-focused — I favored repeatability now over making a universal multiplexer adapter. If your team uses tmux or something else, you’ll need adapters.
+- Not "set-and-forget" forever — window-management and IDE launchers can break with OS or IDE updates. The goal: 80% faster today and maintainable with small follow-ups.
+
+Small usage notes
+
+- Raycast calls the TypeScript extension which invokes scripts/daddyshome.js.
+- The script constructs the Ghostty session and then opens the configured IDE.
+- If you run the Raycast extension locally, check raycast/README.md for CLI path setup — that saved me a lot of iteration time.
+
+What I’d do next (practical, prioritized)
+
+1. Idempotency: detect an existing session and either attach or recreate safely.
+2. Pluggable IDE mappings: a tiny config file so users add VS Code, WebStorm, etc.
+3. Smoke checks: verify panes and commands are running after startup to catch OS regressions.
+4. A cross-platform adapter layer (tmux) — once the core workflow is stable.
+
+Takeaway
+
+If you repeat the same startup steps, automate them. Focus on the brittle parts first — in my case, stable pane identities — and expose a fast trigger (Raycast) so activation is one keystroke. Small investments here compound: you get minutes back and you keep momentum when you actually want to write code.
+
+If you want to poke around: start with scripts/daddyshome.js and raycast/src/launch-project.tsx — that’s where the orchestration meets the UI.

@@ -50,6 +50,17 @@ export const BlogCollection: Collection = {
       },
     },
     {
+      type: "string",
+      name: "status",
+      label: "Status",
+      required: false,
+      options: [
+        { label: "Draft", value: "draft" },
+        { label: "In review", value: "review" },
+        { label: "Published", value: "published" },
+      ],
+    },
+    {
       type: "boolean",
       name: "aiCollaboration",
       label: "AI Collaboration",

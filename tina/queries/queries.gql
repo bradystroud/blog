@@ -10,7 +10,7 @@ query blogPageQuery {
         id
         title
         date
-        date
+        status
         _sys {
           filename
         }

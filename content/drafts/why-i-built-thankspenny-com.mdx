@@ -1,0 +1,86 @@
+---
+canonicalUrl: 'https://bradystroud.dev/blogs/why-i-built-thankspenny-com'
+title: Why I built ThanksPenny.Com
+description: >-
+  ThanksPenny.Com: New project: what ThanksPenny.com is, why it exists, and the
+  implementation choices behind its first commits.
+date: 2026-03-10T00:24:50.456Z
+aiCollaboration: true
+status: review
+tags:
+  - ai
+slug: why-i-built-thankspenny-com
+stage: blog-draft
+score: 20
+sourceRepos:
+  - ThanksPenny.com
+sourceCommits:
+  - 078fee2
+approvedForWriting: true
+feedback: test
+generationCount: 1
+createdAt: '2026-03-10T00:24:50.456Z'
+updatedAt: '2026-03-10T00:40:08.199Z'
+lastGeneratedAt: '2026-03-10T00:40:08.199Z'
+---
+
+I noticed a new repo pop up with a handful of commits that told a clear story: the maintainer shipped a visual refresh, improved a content page, and upgraded an on-site chatbot — then added docs so future contributors wouldn't guess how the AI bits worked. Small site work, but the pattern is one I keep coming back to: do the user-visible thing, tidy the internals, and document the weird parts.
+
+Here’s what changed, why it mattered, and the practical lessons I took away.
+
+What I actually saw in the commits
+- A site redesign. Changes to app/layout.tsx and app/globals.css indicate a coordinated visual refresh.
+- An improved content page. app/international-womens-day/page.tsx was updated — someone cared enough to make that page better.
+- A focused chatbot upgrade. app/components/ChatBot.tsx was added/changed.
+- Developer documentation for AI tooling. AGENTS.md and CLAUDE.md shipped alongside the code.
+- Project-level housekeeping: .yarnrc.yml, package.json, and yarn.lock were touched, implying dependency and package manager decisions.
+
+Why this pattern matters
+Most projects stall when the visible feature is done but the internal pieces are left messy. This repo didn’t do that. The author shipped the UX change (redesign + content) and then immediately addressed developer experience: componentize the chatbot, centralize styles, and add docs for the AI parts.
+
+That sequence — UX → componentization → docs — is the difference between “works for one person” and “works for the next contributor.” It’s boring work that pays dividends fast.
+
+What changed (concrete)
+- Layout & styling: app/layout.tsx + app/globals.css
+  - The layout file suggests a single, consistent shell for the site (header/footer/global metadata). Updating both layout and globals.css is the right place to make a site-wide visual change without editing every page.
+  - Trade-off: global CSS changes are fast, but if the site grows you’ll want a design token system or CSS variables to avoid repeating adjustments.
+
+- A targeted content refresh: app/international-womens-day/page.tsx
+  - Fixing or enhancing a single page is low cost and high value. It’s the kind of change that improves visitor experience without risky cross-cutting effects.
+  - Keep content and presentational logic separated so future content edits don’t touch layout or behaviour.
+
+- Chatbot component: app/components/ChatBot.tsx
+  - Moving the bot into its own component is the right move. Componentization makes the UI testable and allows swapping the backend without changing the rest of the app.
+  - The repository also added AI docs (AGENTS.md, CLAUDE.md). That tells me the chatbot isn’t a black box — there’s guidance for other engineers to understand the agent model and integration points.
+
+- Developer tooling and package management
+  - .yarnrc.yml and yarn.lock are present, so the repo is using a Yarn-managed workflow (likely Yarn modern configs). That’s a signal for contributors: use the repo’s package manager and versions, not whatever’s local on your machine.
+  - package.json changes usually mean dependency bumps or new scripts. Small sites benefit from pinning versions and commit-friendly scripts (build, dev, lint).
+
+The interesting implementation decision
+The most important, practical choice here is not whether there’s a chatbot — it’s that the team documented the AI pieces with AGENTS.md and CLAUDE.md in the repo root. I’ve seen many teams glue an LLM or agent into a UI and then lose track of how it’s configured, leading to surprises and debugging pain.
+
+Two small rules that make this approach work:
+1. Treat AI pieces like infrastructure: document expected inputs, outputs, and how to run them locally. A one‑page README reduces guessing during reviews and on-boarding.
+2. Keep UI and provider concerns separated: make the ChatBot component handle presentation, and keep provider-specific code and configuration in a documented, isolated area (the presence of CLAUDE.md suggests doing exactly that).
+
+Trade-offs and constraints
+- Fast UI changes are great, but global CSS edits can create drag later. If this project expands, refactor globals into variables or a token system early.
+- Parallel edits to content, styles, and AI docs are efficient but raise review complexity. When you change multiple layers at once, prefer focused PRs or clear PR descriptions so reviewers can follow intent.
+- Adding AI docs is low cost and high value — but don’t hard-code secrets into examples. Document the shape of requests, expected errors, and how to run the thing locally with dummy credentials.
+
+What I would do next
+- Add a short README or a one-paragraph “How the bot works” near app/components/ChatBot.tsx that links to AGENTS.md and CLAUDE.md. Right now docs live in the repo root; a pointer beside the component makes discovery immediate.
+- Introduce a small set of automated checks:
+  - A lint script and CI workflow that runs build and basic checks (so visual and content commits don’t unintentionally break the site).
+  - A smoke test for the ChatBot component to assert it renders and responds to basic inputs (mocking the AI provider).
+- Start tracking design tokens (colors, spacing) so future redesigns are surgical, not global surgery.
+
+Takeaways
+- Small, visible wins (a refreshed page, a neat chatbot) are worth the extra five minutes of cleanup: componentize, centralize styles, and document.
+- When you add AI to a site, document the agent boundaries. The repo’s AGENTS.md and CLAUDE.md are the right move — they make follow-up work predictable instead of accidental.
+- If you care about sustainability, follow the sequence: deliver the feature, make it modular, then document the exceptions. It keeps the repo friendly for the next person — which is usually you.
+
+If you’re working on a small site and thinking about adding a chatbot: componentize now, document immediately, and keep provider logic isolated. You’ll thank yourself when the next redesign or provider migration shows up.
+
+Questions or want a quick checklist I use when adding AI features to a site? Say the word and I’ll post the checklist I actually use during PR reviews.
