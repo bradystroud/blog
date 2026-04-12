@@ -21,8 +21,13 @@ blocks:
       brings to innovation.
 
 
+      Check out my [SSW People
+      profile](https://www.ssw.com.au/people/brady-stroud/) for more about what
+      I do at work.
+
+
       Beyond the keyboard, you’ll usually find me far from my laptop - running,
-      mountain biking, climbing, or wakeboarding. Recently, I've been loving
+      mountain biking, climbing, or wakeboarding. Recently, I’ve been loving
       working on some renovation/new house construction projects with friends.
     highlights:
       - title: Cross-platform solutions

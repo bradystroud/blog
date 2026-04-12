@@ -25,7 +25,7 @@ const NextBreadcrumb = () => {
   const pathNames = paths.split("/").filter((path) => path);
   return (
     pathNames.length > 0 && (
-      <div className="mx-20">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <ul className="flex py-5">
           <li className="hover:opacity-70 hover:underline mx-2">
             <Link href={"/"} aria-label="Go to home page">
