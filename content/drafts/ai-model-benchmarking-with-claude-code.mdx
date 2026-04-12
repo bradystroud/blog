@@ -1,0 +1,193 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/ai-model-benchmarking-with-claude-code"
+title: How I Benchmark AI Models in Every Project with an Agent Skill
+description: I built a reusable agent skill that discovers how your project uses AI, writes targeted benchmarks, runs them across providers, and produces a comparison report. Here's how it works.
+date: 2026-04-13T12:00:00.000Z
+aiCollaboration: true
+tags:
+  - ai
+  - claude-code
+  - benchmarking
+  - skills
+  - vercel-ai-sdk
+coverImage: /uploads/ai-model-benchmarking/cover.png
+---
+
+Most projects that use AI pick a model once and never revisit it.
+
+The model you chose 3 months ago might not be the best option today. New models drop constantly, pricing changes, and the task your AI does might suit a completely different provider than what you started with.
+
+I wanted a way to answer: **"Which model is actually best for what my app does?"** — without rebuilding benchmarks from scratch every time.
+
+So I built an [agent skill](https://docs.anthropic.com/en/docs/claude-code/skills) that does it for me.
+
+## The Problem
+
+I have a chatbot app that does two main AI tasks:
+
+1. **Chat reasoning** — answering domain-specific questions where the model needs to do calculations and apply rules correctly
+2. **Structured extraction** — reading uploaded documents (PDFs) and extracting structured data via vision
+
+I wanted to know: does GPT-5.4 Nano handle the chat task well enough, or am I leaving quality on the table? Is Claude Sonnet overkill for document extraction when Gemini Flash might be 80% as good at 1/10th the cost?
+
+Manually setting up benchmarks for each task, each model, each provider... it's tedious. And the next project would need the same thing again.
+
+## The Approach
+
+I built benchmark infrastructure directly in the project, then extracted the patterns into a reusable agent skill.
+
+### Chat Reasoning Benchmarks
+
+For chat tasks, I use a **required/desired/forbidden content** scoring system:
+
+- **Required content** (3 points each): Strings that MUST appear. These test core correctness — did the model get the arithmetic right? Did it mention the key concept?
+- **Desired content** (1 point each): Strings that SHOULD appear for a thorough response — did it explain itself clearly?
+- **Forbidden content** (-2 points each): Strings that MUST NOT appear — catching hallucinations and confidently wrong answers.
+
+Here's what a scenario looks like:
+
+```typescript
+{
+  id: "calculation-check",
+  description: "Model should show correct arithmetic",
+  userMessage: "Given these inputs: width 15m, depth 30m, with 6m front offset, 1.5m rear, 1.5m each side. What's the usable area?",
+  requiredContent: [
+    "12",    // 15 - 1.5 - 1.5 = 12m
+    "22.5",  // 30 - 6 - 1.5 = 22.5m
+    "270",   // 12 * 22.5 = 270 sqm
+  ],
+  desiredContent: ["usable width", "usable depth", "usable area"],
+  forbiddenContent: [],
+}
+```
+
+The arithmetic is non-negotiable — if a model can't get 15 - 1.5 - 1.5 = 12, it shouldn't be doing this job. The desired content checks whether it communicates the answer clearly.
+
+### Structured Extraction Benchmarks
+
+For the document extraction task, I use **tolerance-based field comparison**:
+
+Each field has an expected value and a tolerance. The model extracts structured data, and I compare field-by-field:
+
+```typescript
+expectedFields: {
+  width: { expected: 15.0, tolerance: 0.1 },
+  depth: { expected: 30.0, tolerance: 0.1 },
+  frontOffset: { expected: 6.0, tolerance: 0.5 },
+}
+```
+
+Plus a **completeness score** weighted by field importance. Extracting critical derived values scores 3 points, while extracting a basic input dimension scores 1.
+
+### The Models I Test
+
+Every benchmark runs against the same set of models across three providers:
+
+| Provider | Models |
+| --- | --- |
+| Anthropic | Claude Haiku 4.5, Claude Sonnet 4.5 |
+| OpenAI | GPT-5.4 Nano, GPT-5.4 Mini, GPT-5.4, o4-mini |
+| Google | Gemini 2.5 Flash, Gemini 2.5 Pro |
+
+All using the [Vercel AI SDK](https://sdk.vercel.ai), which makes swapping providers a one-line change.
+
+## Real Results
+
+Here's actual data from the chat reasoning benchmark — 10 scenarios across 8 models, run March 30 2026:
+
+| Rank | Model | Provider | Score | Avg Latency | Errors |
+| ---: | --- | --- | ---: | ---: | ---: |
+| 1 | Claude Sonnet 4.5 | Anthropic | 94% | 9,178ms | 0 |
+| 2 | GPT-5.4 | OpenAI | 94% | 7,099ms | 1 |
+| 3 | GPT-5.4 Nano | OpenAI | 92% | 3,094ms | 0 |
+| 4 | Claude Haiku 4.5 | Anthropic | 91% | 4,644ms | 0 |
+| 5 | GPT-5.4 Mini | OpenAI | 87% | 3,641ms | 1 |
+| 6 | Gemini 2.5 Flash | Google | 84% | 5,370ms | 0 |
+| 7 | o4-mini | OpenAI | 65% | 11,958ms | 1 |
+| 8 | Gemini 2.5 Pro | Google | 57% | 9,470ms | 0 |
+
+Some things that jumped out:
+
+**GPT-5.4 Nano scored 92% at 3 seconds average.** That's 2 points behind Sonnet 4.5, at a third of the latency and a fraction of the cost. For a chatbot where response speed matters, that's a no-brainer.
+
+**o4-mini and Gemini 2.5 Pro tanked.** The reasoning-optimized models scored 65% and 57% respectively — dead last. These models are great at complex multi-step reasoning puzzles, but for domain-specific chat with a system prompt, they over-think and miss the simple stuff.
+
+**The top 4 models are within 3% of each other.** Sonnet 4.5, GPT-5.4, Nano, and Haiku 4.5 all scored 91-94%. At that point, the tiebreaker is latency and cost — and the cheap models win.
+
+**But these results are specific to this task.** That's the whole point. A model that scores 57% on domain chat might be the best option for a different task — tool calling, code generation, complex multi-step planning, or structured JSON output. o4-mini would probably crush a benchmark that tests multi-hop reasoning or mathematical proofs. Gemini 2.5 Pro might dominate a vision extraction benchmark. Public leaderboards can't tell you which model is best for *your* app because they're testing generic capabilities, not your specific workload. That's why benchmarking your actual use case matters — the rankings change completely depending on what you're testing.
+
+This makes model selection a data-driven decision instead of vibes.
+
+## Making It Reusable: The Agent Skill
+
+The patterns are general enough to work on any project that uses an LLM. So I packaged them into an agent skill that works with Claude Code, OpenCode, or any tool that supports the skills convention.
+
+The skill follows a 5-phase workflow:
+
+### Phase 1: Discovery
+
+The skill searches your project for AI SDK imports (`ai`, `openai`, `@anthropic-ai/sdk`, `langchain`, etc.), identifies what each AI call does (chat, extraction, classification, etc.), and maps out the system prompts, input/output formats, and current models.
+
+### Phase 2: Scaffold
+
+Creates benchmark infrastructure adapted to your project's stack — TypeScript with Vercel AI SDK, Python with the native SDKs, whatever fits. Adds `bench:ai` and `bench:ai:report` scripts to your `package.json`.
+
+### Phase 3: Write Scenarios
+
+Generates test scenarios based on your project's actual AI usage. Uses the real system prompt, tests real user inputs, includes edge cases. This is the key differentiator — it's not generic benchmarks, it's benchmarks tailored to what your AI actually does.
+
+### Phase 4: Run
+
+Executes all scenarios across all configured models. Handles missing API keys gracefully (skips providers you don't have keys for), runs sequentially for fair latency comparison.
+
+### Phase 5: Report
+
+Produces the markdown comparison report with the summary table, per-scenario breakdowns, best-model-by-category analysis, and recommendations.
+
+## The Skill Structure
+
+The full skill is on GitHub: [bradystroud/ai-benchmark-skill](https://github.com/bradystroud/ai-benchmark-skill)
+
+Following the same pattern as my other agent skills, it splits into focused files:
+
+```
+~/.agents/skills/ai-benchmark/
+├── SKILL.md                    # Workflow orchestration
+├── references/
+│   ├── discovery.md            # How to find AI usage in any project
+│   ├── scoring.md              # Scoring algorithms
+│   ├── models.md               # Default model list + cost estimates
+│   └── report-format.md        # Report template
+└── scripts/
+    └── scaffold-benchmark.sh   # Dependency installer
+```
+
+The SKILL.md stays lean — just the workflow phases. Reference files are loaded on demand when the agent needs the detail. This keeps the context window efficient and means the agent only loads what it needs for each phase.
+
+## Using It
+
+On any project:
+
+```
+/ai-benchmark
+```
+
+The skill discovers how your project uses AI, confirms the plan with you, then builds and runs everything.
+
+## What I Learned
+
+**Cheap models are surprisingly capable for narrow tasks.** GPT-5.4 Nano at $0.10/1M input tokens scored 92% — 2 points behind the best model at a fraction of the cost. The gap only shows up on complex edge cases.
+
+**"Reasoning" models aren't always better.** o4-mini scored 65% on my chat benchmark — worse than every non-reasoning model. It's optimized for different tasks. Benchmarking your actual use case catches this.
+
+**The top models cluster together.** Four models scored 91-94%. Without benchmarks, I would have defaulted to the most expensive one. With data, I can pick the cheapest model in the cluster and save money.
+
+**Running benchmarks regularly catches regressions.** Models get updated, APIs change behavior. A benchmark that passed last month might not pass today. Having the infrastructure to re-run with `pnpm bench:ai` makes this easy to catch.
+
+**The hardest part is writing good scenarios.** The benchmark infrastructure is boilerplate. Writing scenarios that actually distinguish between model quality — that requires understanding what your AI needs to do well. The required/desired/forbidden framework forces you to think about this precisely.
+
+## Try It
+
+If you use an AI coding agent, you can build a similar skill for your projects. The key insight: **benchmark your actual AI tasks, not generic benchmarks**. A model that tops the public leaderboards might be mediocre at your specific use case.
+
+The scoring patterns — required/desired/forbidden for chat, tolerance-based field comparison for extraction — are simple to implement and surprisingly effective at ranking models for real tasks.
