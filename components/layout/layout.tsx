@@ -19,8 +19,14 @@ export const Layout = ({ data = layoutData, children }) => {
         <link rel="alternate" type="application/rss+xml" title="Brady Stroud's Blog" href="/rss.xml" />
       </Head>
       <div suppressHydrationWarning>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-blue-600 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         <Header data={data?.header} />
-        <main role="main" className="flex-1 text-gray-800 flex flex-col">
+        <main id="main-content" className="flex-1 text-gray-800 flex flex-col">
           <NextBreadcrumb />
           {children}
         </main>

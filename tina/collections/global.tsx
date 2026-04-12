@@ -11,32 +11,32 @@ export const options = [
   {
     value: "twitter",
     label: "Twitter",
-    icon: <FaXTwitter className={`${socialIconClasses}`} />,
+    icon: <FaXTwitter className={`${socialIconClasses}`} aria-hidden="true" />,
   },
   {
     value: "instagram",
     label: "Instagram",
-    icon: <AiFillInstagram className={socialIconClasses} />,
+    icon: <AiFillInstagram className={socialIconClasses} aria-hidden="true" />,
   },
   {
     value: "github",
     label: "GitHub",
-    icon: <FaGithub className={socialIconClasses} />,
+    icon: <FaGithub className={socialIconClasses} aria-hidden="true" />,
   },
   {
     value: "facebook",
     label: "FaceBook",
-    icon: <FaFacebook className={socialIconClasses} />,
+    icon: <FaFacebook className={socialIconClasses} aria-hidden="true" />,
   },
   {
     value: "linkedin",
     label: "LinkedIn",
-    icon: <FaLinkedin className={socialIconClasses} />,
+    icon: <FaLinkedin className={socialIconClasses} aria-hidden="true" />,
   },
   {
     value: "youtube",
     label: "YouTube",
-    icon: <FaYoutube className={socialIconClasses} />,
+    icon: <FaYoutube className={socialIconClasses} aria-hidden="true" />,
   },
 ];
 
@@ -56,6 +56,9 @@ const CustomDropdown = ({ selected, setSelected, onChange }) => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="bg-white border border-gray-300 px-4 py-2 flex items-center justify-between w-40 rounded-md"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-label="Select social platform"
       >
         <span className="flex items-center">
           {selected?.icon}
@@ -64,12 +67,25 @@ const CustomDropdown = ({ selected, setSelected, onChange }) => {
         </span>
       </button>
       {isOpen && (
-        <ul className="absolute left-0 top-full mt-1 bg-white border border-gray-300 shadow-lg w-full z-10 rounded-md">
+        <ul
+          role="listbox"
+          aria-label="Social platforms"
+          className="absolute left-0 top-full mt-1 bg-white border border-gray-300 shadow-lg w-full z-10 rounded-md"
+        >
           {options.map((option) => (
             <li
               key={option?.value}
+              role="option"
+              aria-selected={selected?.value === option.value}
               onClick={() => handleOptionClick(option)}
-              className="px-4 py-2 cursor-pointer flex items-center hover:bg-gray-100"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleOptionClick(option);
+                }
+              }}
+              tabIndex={0}
+              className="px-4 py-2 cursor-pointer flex items-center hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
             >
               {option.icon}
               <span className="ml-2">{option?.label}</span>

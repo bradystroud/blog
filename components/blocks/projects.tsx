@@ -37,7 +37,8 @@ export const Project = ({ data, tinaField, index }) => {
         )}
         {data.url && (
           <div className="mt-auto flex items-center text-xs opacity-80 leading-relaxed hover:text-gray-900 hover:opacity-100">
-            <p className="mr-1">View project</p> <FaExternalLinkAlt />
+            <p className="mr-1">View project</p> <FaExternalLinkAlt aria-hidden="true" />
+            <span className="sr-only">{data.title} (opens in new tab)</span>
           </div>
         )}
       </HoverCard>
@@ -61,6 +62,7 @@ export const Projects = ({ data, parentField }) => {
             data.items.map(function (block, i: number) {
               return (
                 <Project
+                  key={i}
                   tinaField={`${parentField}.items.${i}`}
                   index={i}
                   data={block}

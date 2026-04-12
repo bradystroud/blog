@@ -23,34 +23,37 @@ export const Header = ({ data }) => {
   }, [expanded]);
 
   return (
-    <div className={`relative overflow-hidden bg-linear-to-b`}>
+    <header className={`relative overflow-hidden bg-linear-to-b`}>
       <Container size="custom" className="py-0 relative z-10 max-w-8xl">
-        <nav className="flex items-center justify-between flex-wrap p-6">
+        <nav className="flex items-center justify-between flex-wrap p-6" aria-label="Main navigation">
           <div className="flex items-center shrink-0 text-white mr-6">
-            <FaSearchLocation className="fill-current h-8 w-8 mr-2" />{" "}
+            <FaSearchLocation className="fill-current h-8 w-8 mr-2" aria-hidden="true" />{" "}
             {/* Weird stuff happens when i removed the above line, so it stays */}
             <span className="font-semibold text-xl tracking-tight text-black ">
               <Link href="/" className="flex items-center">
-                <FaLaptopCode className="fill-current h-8 w-8 mr-2" />
+                <FaLaptopCode className="fill-current h-8 w-8 mr-2" aria-hidden="true" />
                 <span>Brady Stroud</span>
               </Link>
             </span>
           </div>
           <div className="block md:hidden">
             <button
-              className="flex items-center px-3 py-2 text-teal-20 hover:text-gray-400"
-              aria-label="menu"
+              className="flex items-center px-3 py-2 text-teal-20 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+              aria-label={expanded ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={expanded}
+              onClick={() => setExpanded(!expanded)}
             >
               {expanded ? (
-                <FaTimes onClick={() => setExpanded(!expanded)} />
+                <FaTimes aria-hidden="true" />
               ) : (
-                <FaBars onClick={() => setExpanded(!expanded)} />
+                <FaBars aria-hidden="true" />
               )}
             </button>
           </div>
           <div
             className={`w-full block md:items-center md:w-auto ${expanded ? "" : "hidden md:flex"
               }`}
+            id="nav-menu"
           >
             <div className="text-sm lg:grow mx-10">
               {data?.nav &&
@@ -66,6 +69,7 @@ export const Header = ({ data }) => {
                       href={"/" + item.href}
                       className={`block mt-4 md:inline-block md:mt-0 hover:text-blue-600 mr-4 ${activeItem ? "opacity-50" : ""
                         }`}
+                      {...(activeItem ? { "aria-current": "page" as const } : {})}
                     >
                       {item.label}
                     </Link>
@@ -78,6 +82,6 @@ export const Header = ({ data }) => {
           className={`absolute h-1 bg-linear-to-r from-transparent via-black to-transparent bottom-0 left-4 right-4 -z-1 opacity-5`}
         />
       </Container>
-    </div>
+    </header>
   );
 };
