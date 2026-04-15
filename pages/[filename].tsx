@@ -4,6 +4,7 @@ import { Layout } from "../components/layout";
 import { client } from "../tina/__generated__/client";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
+import { LatestPosts } from "../components/posts/latestPosts";
 
 export default function HomePage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -57,8 +58,11 @@ export default function HomePage(
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:secure_url" content={ogImageUrl} />
+        <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={title} />
         <meta property="og:site_name" content="Brady Stroud" />
         
         {/* Twitter Card */}
@@ -76,6 +80,9 @@ export default function HomePage(
         )}
       </Head>
       <Blocks {...data.page} />
+      {isHomePage && props.latestPosts && props.latestPosts.length > 0 && (
+        <LatestPosts posts={props.latestPosts} />
+      )}
     </Layout>
   );
 }
@@ -85,11 +92,41 @@ export const getStaticProps = async ({ params }) => {
     relativePath: `${params.filename}.md`,
   });
 
+  let latestPosts: {
+    filename: string;
+    title: string;
+    date?: string;
+    tags?: string[];
+  }[] = [];
+
+  if (params.filename === "home") {
+    const blogData = await client.queries.blogPageQuery();
+    latestPosts = (blogData.data.blogConnection.edges ?? [])
+      .filter(
+        (edge): edge is Exclude<typeof edge, null> =>
+          edge !== null && edge.node !== null && edge.node !== undefined
+      )
+      .map((edge) => ({
+        filename: edge.node!._sys.filename,
+        title: edge.node!.title,
+        date: edge.node!.date ?? undefined,
+        tags: (edge.node!.tags ?? []).filter(
+          (t): t is string => typeof t === "string"
+        ),
+      }))
+      .sort(
+        (a, b) =>
+          new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
+      )
+      .slice(0, 5);
+  }
+
   return {
     props: {
       data: tinaProps.data,
       query: tinaProps.query,
       variables: tinaProps.variables,
+      latestPosts,
     },
   };
 };

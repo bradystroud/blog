@@ -27,6 +27,7 @@ export default function ReviewPage(
         id: edge.node!.id,
         title: edge.node!.title,
         date: edge.node!.date ?? undefined,
+        tags: (edge.node!.tags ?? []).filter((t): t is string => typeof t === "string"),
       }
     }))
     .sort((a, b) => {
@@ -48,8 +49,11 @@ export default function ReviewPage(
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:secure_url" content={ogImageUrl} />
+        <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Brady Stroud's Blog" />
         <meta property="og:site_name" content="Brady Stroud" />
         
         {/* Twitter Card */}
@@ -60,13 +64,19 @@ export default function ReviewPage(
       </Head>
       <Section className="flex-1">
         <Container size="large" width="small">
-          <div className="flex justify-between items-center">
-            <h1 className="text-4xl title-font mb-4">Blogs</h1>
+          <div className="mb-14 max-w-3xl">
+            <h1
+              className="title-font text-5xl sm:text-6xl lg:text-7xl leading-[1.02] mb-6"
+              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
+            >
+              Notes from <span className="italic">in&nbsp;the&nbsp;trenches</span>.
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-xl leading-relaxed">
+              Learning from your own mistakes is useful. Learning from someone
+              else&rsquo;s is cheaper. A running collection on .NET, MAUI,
+              Blazor, AI, and the boring engineering that keeps them upright.
+            </p>
           </div>
-          <p className="text-gray-600 text-lg pb-5 italic">
-            Learning from your mistakes is cool, but if you can learn from
-            other peoples mistakes, that's even cooler. Thats why you should read my blogs - a collection of past learnings.
-          </p>
           <Blogs data={sortedBlogs} />
         </Container>
       </Section>

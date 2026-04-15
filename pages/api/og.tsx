@@ -103,6 +103,10 @@ export default async function handler(req: NextRequest) {
       {
         width: 1200,
         height: 630,
+        headers: {
+          "Cache-Control": "public, immutable, no-transform, max-age=31536000, s-maxage=31536000",
+          "Content-Type": "image/png",
+        },
       }
     );
   } catch (e) {
