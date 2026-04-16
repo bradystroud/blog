@@ -27,7 +27,6 @@ export default function ReviewPage(
         id: edge.node!.id,
         title: edge.node!.title,
         date: edge.node!.date ?? undefined,
-        tags: (edge.node!.tags ?? []).filter((t): t is string => typeof t === "string"),
       }
     }))
     .sort((a, b) => {
@@ -64,19 +63,13 @@ export default function ReviewPage(
       </Head>
       <Section className="flex-1">
         <Container size="large" width="small">
-          <div className="mb-14 max-w-3xl">
-            <h1
-              className="title-font text-5xl sm:text-6xl lg:text-7xl leading-[1.02] mb-6"
-              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
-            >
-              Notes from <span className="italic">in&nbsp;the&nbsp;trenches</span>.
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-xl leading-relaxed">
-              Learning from your own mistakes is useful. Learning from someone
-              else&rsquo;s is cheaper. A running collection on .NET, MAUI,
-              Blazor, AI, and the boring engineering that keeps them upright.
-            </p>
+          <div className="flex justify-between items-center">
+            <h1 className="text-4xl title-font mb-4">Blogs</h1>
           </div>
+          <p className="text-gray-600 text-lg pb-5 italic">
+            Learning from your mistakes is cool, but if you can learn from
+            other peoples mistakes, that's even cooler. Thats why you should read my blogs - a collection of past learnings.
+          </p>
           <Blogs data={sortedBlogs} />
         </Container>
       </Section>
