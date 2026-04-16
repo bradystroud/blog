@@ -28,7 +28,7 @@ export default async function handler(req: NextRequest) {
               : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            padding: "60px",
+            padding: "80px",
           }}
         >
           {coverImage && (
@@ -54,7 +54,7 @@ export default async function handler(req: NextRequest) {
           >
             <div
               style={{
-                fontSize: 60,
+                fontSize: 80,
                 fontWeight: 800,
                 color: coverImage ? "#fff" : "#fff",
                 lineHeight: 1.2,
@@ -66,7 +66,7 @@ export default async function handler(req: NextRequest) {
             {description && (
               <div
                 style={{
-                  fontSize: 28,
+                  fontSize: 37,
                   color: coverImage ? "#f0f0f0" : "#f0f0f0",
                   lineHeight: 1.4,
                   textShadow: coverImage
@@ -89,7 +89,7 @@ export default async function handler(req: NextRequest) {
           >
             <div
               style={{
-                fontSize: 28,
+                fontSize: 37,
                 fontWeight: 600,
                 color: coverImage ? "#fff" : "#fff",
                 textShadow: coverImage ? "0 2px 10px rgba(0,0,0,0.3)" : "none",
@@ -101,8 +101,8 @@ export default async function handler(req: NextRequest) {
         </div>
       ),
       {
-        width: 1200,
-        height: 630,
+        width: 1600,
+        height: 836,
         headers: {
           "Cache-Control": "public, immutable, no-transform, max-age=31536000, s-maxage=31536000",
           "Content-Type": "image/png",
