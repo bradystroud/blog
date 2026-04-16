@@ -4,7 +4,6 @@ import { Layout } from "../components/layout";
 import { client } from "../tina/__generated__/client";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
-import { LatestPosts } from "../components/posts/latestPosts";
 
 export default function HomePage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -80,9 +79,6 @@ export default function HomePage(
         )}
       </Head>
       <Blocks {...data.page} />
-      {isHomePage && props.latestPosts && props.latestPosts.length > 0 && (
-        <LatestPosts posts={props.latestPosts} />
-      )}
     </Layout>
   );
 }
@@ -92,41 +88,11 @@ export const getStaticProps = async ({ params }) => {
     relativePath: `${params.filename}.md`,
   });
 
-  let latestPosts: {
-    filename: string;
-    title: string;
-    date?: string;
-    tags?: string[];
-  }[] = [];
-
-  if (params.filename === "home") {
-    const blogData = await client.queries.blogPageQuery();
-    latestPosts = (blogData.data.blogConnection.edges ?? [])
-      .filter(
-        (edge): edge is Exclude<typeof edge, null> =>
-          edge !== null && edge.node !== null && edge.node !== undefined
-      )
-      .map((edge) => ({
-        filename: edge.node!._sys.filename,
-        title: edge.node!.title,
-        date: edge.node!.date ?? undefined,
-        tags: (edge.node!.tags ?? []).filter(
-          (t): t is string => typeof t === "string"
-        ),
-      }))
-      .sort(
-        (a, b) =>
-          new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
-      )
-      .slice(0, 5);
-  }
-
   return {
     props: {
       data: tinaProps.data,
       query: tinaProps.query,
       variables: tinaProps.variables,
-      latestPosts,
     },
   };
 };
