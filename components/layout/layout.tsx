@@ -11,9 +11,6 @@ export const Layout = ({ data = layoutData, children }) => {
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="Brady Stroud" key="desc" />
-        <meta property="og:site_name" content="Brady Stroud" />
-        <meta property="og:url" content="https://bradystroud.dev/" />
-        <meta property="og:type" content="website" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <meta name="robots" content="index, follow" />{" "}
         <link rel="alternate" type="application/rss+xml" title="Brady Stroud's Blog" href="/rss.xml" />
