@@ -1,0 +1,60 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/mac-ipv6-toggle"
+title: When Your VPN Hates IPv6: A Quick macOS Menu Bar Fix
+description: I built a small Swift menu bar application that lets you quickly turn IPv6 on or off for Wi-Fi. It's a lifesaver if you deal with VPNs that hate IPv6.
+date: 2026-05-05T10:00:00.000Z
+tags:
+  - macOS
+  - swift
+  - networking
+  - open-source
+  - vpn
+coverImage: null
+---
+
+If you rely on a VPN for work or privacy, you've probably hit this exact wall: a lot of VPN clients absolutely lose their minds if IPv6 is enabled on your Wi-Fi interface. Connections drop, routing gets weird, and suddenly nothing loads.
+
+Dealing with this usually means digging through five layers of macOS menus—**System Settings -> Network -> Wi-Fi -> Details -> TCP/IP**—just to flip a single switch. Doing that multiple times a day gets old *fast*.
+
+So, I spent a few minutes writing a tiny macOS menu bar app to fix it. 
+
+## The IPv6 Toggle App
+
+The app just lives in your menu bar, tells you if IPv6 is ON or OFF, and gives you a one-click way to toggle it.
+
+Because changing network interface configurations requires admin privileges on macOS, you'll still get prompted for your password or Touch ID when you switch it, but that still beats clicking through settings.
+
+## How it works under the hood
+
+Under the hood, it's really a Swift wrapper around the macOS `networksetup` CLI tool. I used AppKit to throw it together quickly.
+
+To check the current status, it runs:
+```bash
+networksetup -getinfo Wi-Fi
+```
+
+When you toggle it off, it fires:
+```bash
+networksetup -setv6off Wi-Fi
+```
+
+And to turn it back to automatic:
+```bash
+networksetup -setv6automatic Wi-Fi
+```
+
+I also added a basic `Timer` that polls the status every few seconds, just in case macOS or another app changes the setting in the background.
+
+## Grab the code
+
+I've thrown the code up on GitHub. It's literally just a single `main.swift` file, but it gets the job done. 
+
+Check it out here: **[github.com/bradystroud/ipv6-toggle](https://github.com/bradystroud/ipv6-toggle)**
+
+If you want to try it out, you don't even need Xcode. Just clone the repo and compile the Swift file directly from your terminal:
+
+```bash
+swiftc main.swift -o IPv6Toggle
+```
+
+Then you can run `./IPv6Toggle` or drag the executable straight into your Applications folder. Let me know if it saves you a few clicks!
