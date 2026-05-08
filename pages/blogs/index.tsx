@@ -16,9 +16,8 @@ export default function ReviewPage(
   const canonicalUrl = "https://bradystroud.dev/blogs";
   const ogImageUrl = `https://bradystroud.dev/api/og?title=Blog&description=${encodeURIComponent(description)}`;
 
-  // Filter out null edges and sort by date (newest first)  
   const sortedBlogs = blogs
-    .filter((edge): edge is Exclude<typeof edge, null> => 
+    .filter((edge): edge is Exclude<typeof edge, null> =>
       edge !== null && edge.node !== null && edge.node !== undefined
     )
     .map(edge => ({
@@ -27,6 +26,7 @@ export default function ReviewPage(
         id: edge.node!.id,
         title: edge.node!.title,
         date: edge.node!.date ?? undefined,
+        tags: edge.node!.tags?.filter((t): t is string => typeof t === "string") ?? undefined,
       }
     }))
     .sort((a, b) => {
@@ -61,15 +61,26 @@ export default function ReviewPage(
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={ogImageUrl} />
       </Head>
-      <Section className="flex-1">
+      <Section>
         <Container size="large" width="small">
-          <div className="flex justify-between items-center">
-            <h1 className="text-4xl title-font mb-4">Blogs</h1>
+          <div className="mb-12">
+            <div className="mono mb-8 text-xs uppercase tracking-[0.18em] text-ink-mute flex items-center gap-3">
+              <span aria-hidden="true" className="h-px w-8 bg-current opacity-40" />
+              Writing
+            </div>
+            <h1
+              className="title-font text-5xl sm:text-6xl lg:text-7xl leading-[1.02] text-ink mb-6"
+              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
+            >
+              Blogs
+            </h1>
+            <p
+              className="title-font text-xl sm:text-2xl italic text-ink-soft max-w-xl"
+              style={{ fontVariationSettings: '"opsz" 96, "wght" 400' }}
+            >
+              Learning from your mistakes is cool. Learning from other people&apos;s is even cooler.
+            </p>
           </div>
-          <p className="text-gray-600 text-lg pb-5 italic">
-            Learning from your mistakes is cool, but if you can learn from
-            other peoples mistakes, that's even cooler. Thats why you should read my blogs - a collection of past learnings.
-          </p>
           <Blogs data={sortedBlogs} />
         </Container>
       </Section>

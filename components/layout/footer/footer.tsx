@@ -3,55 +3,47 @@ import { Container } from "../../util/container";
 import { options } from "../../../tina/collections/global";
 
 export const Footer = ({ data }) => {
-  const footerColor = {
-    default:
-      "text-gray-800 from-white to-gray-50 dark:from-gray-900 dark:to-gray-1000",
-  };
-
+  const year = new Date().getFullYear();
   return (
-    <footer className={`bg-linear-to-br ${footerColor.default}`}>
-      <Container className="relative" size="small">
-        <div className="flex justify-between items-center gap-6 flex-wrap">
-          <p className="text-gray-400">
-            Made with ❤️ by{" "}
-            <a
-              className="text-gray-400 hover:text-black transition ease-out duration-150"
-              href="https://github.com/bradystroud"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Brady Stroud
-            </a>
+    <footer className="rule-top mt-24">
+      <Container className="relative py-12" size="small">
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-ink-soft">
+            Built and tinkered with by Brady. Thanks for stopping by.
           </p>
-
-          <nav aria-label="Social media links" className="flex gap-4">
-            {data?.social &&
-              data.social.map((social) => {
-                if (social && social.platform) {
-                  const option = options.find(
-                    (option) => option.value === social.platform
-                  );
-                  return (
-                    <a
-                      className="text-gray-400 hover:text-black inline-block transition ease-out duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      key={`social-link-${social.platform}`}
-                      aria-label={`${option?.label || social.platform} (opens in new tab)`}
-                    >
-                      {option?.icon}
-                    </a>
-                  );
-                }
-              })}
+          <nav
+            aria-label="Social media links"
+            className="flex gap-2"
+          >
+            {data?.social?.map((social) => {
+              if (!social?.platform) return null;
+              const option = options.find((o) => o.value === social.platform);
+              return (
+                <a
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-rule text-ink-mute hover:text-accent hover:border-rule-strong motion-safe:transition-colors motion-safe:duration-300"
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={`social-link-${social.platform}`}
+                  aria-label={`${option?.label || social.platform} (opens in new tab)`}
+                >
+                  {option?.icon}
+                </a>
+              );
+            })}
           </nav>
         </div>
-        <div
-          className={`absolute h-1 bg-linear-to-r from-transparent ${
-            data?.color === "primary" ? `via-white` : `via-black dark:via-white`
-          } to-transparent top-0 left-4 right-4 opacity-5`}
-        ></div>
+
+        <div className="mt-10 pt-6 rule-top flex flex-wrap items-center justify-between gap-4 mono text-xs uppercase tracking-[0.18em] text-ink-mute">
+          <span>&copy; {year} Brady Stroud</span>
+          <span aria-hidden="true">{"//"}</span>
+          <a
+            href="/rss.xml"
+            className="hover:text-accent transition-colors"
+          >
+            RSS
+          </a>
+        </div>
       </Container>
     </footer>
   );

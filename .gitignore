@@ -34,3 +34,7 @@ bunnings-mcp/
 
 
 ~/
+
+# typescript incremental build cache
+tsconfig.tsbuildinfo
+*.tsbuildinfo

@@ -58,6 +58,7 @@ blocks:
       label: SSW Melbourne - Brainstorming day
     accentImages:
       - src: /uploads/on-stage.jpg
+        alt: SSW Melbourne brainstorming presentations
       - src: /uploads/copenhagen.jpeg
         alt: At NDC Copenhagen - The Tina and YakShaver booths
         label: At NDC Copenhagen 2025

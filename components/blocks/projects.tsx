@@ -17,12 +17,16 @@ export const Project = ({ data, tinaField, index }) => {
       <HoverCard
         href={data.url}
         target="_blank"
-        className="flex flex-col gap-6 text-center items-center lg:items-start lg:text-left h-full p-6 rounded-lg relative"
+        className="flex flex-col gap-5 text-left h-full p-6 rounded-sm relative"
       >
+        <span className="mono text-[0.65rem] uppercase tracking-[0.18em] text-ink-mute">
+          {String(index + 1).padStart(2, "0")}
+        </span>
         {data.title && (
           <h3
             data-tinafield={`${tinaField}.title`}
-            className="text-2xl font-semibold title-font"
+            className="title-font text-2xl text-ink motion-safe:transition-colors group-hover/card:text-accent"
+            style={{ fontVariationSettings: '"opsz" 96, "wght" 500' }}
           >
             {data.title}
           </h3>
@@ -30,14 +34,15 @@ export const Project = ({ data, tinaField, index }) => {
         {data.text && (
           <p
             data-tinafield={`${tinaField}.text`}
-            className="text-base opacity-80 leading-relaxed"
+            className="text-base text-ink-soft leading-relaxed"
           >
             {data.text}
           </p>
         )}
         {data.url && (
-          <div className="mt-auto flex items-center text-xs opacity-80 leading-relaxed hover:text-gray-900 hover:opacity-100">
-            <p className="mr-1">View project</p> <FaExternalLinkAlt aria-hidden="true" />
+          <div className="mt-auto inline-flex items-center gap-2 mono text-xs uppercase tracking-[0.18em] text-ink-mute group-hover/card:text-accent transition-colors">
+            View project
+            <FaExternalLinkAlt aria-hidden="true" className="h-3 w-3" />
             <span className="sr-only">{data.title} (opens in new tab)</span>
           </div>
         )}
@@ -50,14 +55,24 @@ export const Projects = ({ data, parentField }) => {
   return (
     <Section>
       <Container size="large">
-        <h2 className="text-4xl font-semibold text-center mb-9">Projects</h2>
-        <div className="w-full prose mx-auto lg:mx-0 mb-10 text-center max-w-full">
-          <TinaMarkdown
-            content={data.body}
-            data-tinafield={`${parentField}.body`}
-          />
+        <div className="mb-10 pb-6 rule-bottom">
+          <span className="mono text-xs uppercase tracking-[0.18em] text-ink-mute">
+            Selected work
+          </span>
+          <h2
+            className="title-font text-3xl sm:text-4xl leading-[1.05] text-ink mt-2"
+            style={{ fontVariationSettings: '"opsz" 144, "wght" 500' }}
+          >
+            Projects
+          </h2>
+          <div className="w-full prose mt-6 max-w-2xl text-ink-soft">
+            <TinaMarkdown
+              content={data.body}
+              data-tinafield={`${parentField}.body`}
+            />
+          </div>
         </div>
-        <div className={`flex flex-wrap gap-x-10 gap-y-8 text-left`}>
+        <div className="flex flex-wrap gap-x-8 gap-y-8 text-left">
           {data.items &&
             data.items.map(function (block, i: number) {
               return (

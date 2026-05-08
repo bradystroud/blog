@@ -1,86 +1,79 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Container } from "../util/container";
-import {
-  FaBars,
-  FaLaptopCode,
-  FaSearchLocation,
-  FaTimes,
-} from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 
 export const Header = ({ data }) => {
   const router = useRouter();
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [prefix, setPrefix] = useState("");
   const [expanded, setExpanded] = useState(false);
 
-  useEffect(() => {
-    if (window && window.location.pathname.startsWith("/admin")) {
-      setPrefix("/admin");
-    }
-  }, [expanded]);
-
   return (
-    <header className={`relative overflow-hidden bg-linear-to-b`}>
+    <header className="relative rule-bottom">
       <Container size="custom" className="py-0 relative z-10 max-w-8xl">
-        <nav className="flex items-center justify-between flex-wrap p-6" aria-label="Main navigation">
-          <div className="flex items-center shrink-0 text-white mr-6">
-            <FaSearchLocation className="fill-current h-8 w-8 mr-2" aria-hidden="true" />{" "}
-            {/* Weird stuff happens when i removed the above line, so it stays */}
-            <span className="font-semibold text-xl tracking-tight text-black ">
-              <Link href="/" className="flex items-center">
-                <FaLaptopCode className="fill-current h-8 w-8 mr-2" aria-hidden="true" />
-                <span>Brady Stroud</span>
-              </Link>
-            </span>
-          </div>
-          <div className="block md:hidden">
-            <button
-              className="flex items-center px-3 py-2 text-teal-20 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
-              aria-label={expanded ? "Close navigation menu" : "Open navigation menu"}
-              aria-expanded={expanded}
-              onClick={() => setExpanded(!expanded)}
+        <nav
+          className="flex items-center justify-between flex-wrap px-6 py-5"
+          aria-label="Main navigation"
+        >
+          <Link
+            href="/"
+            className="group flex items-baseline gap-3 shrink-0 mr-6"
+          >
+            <span
+              className="title-font text-2xl leading-none text-ink"
+              style={{ fontVariationSettings: '"opsz" 144, "wght" 560' }}
             >
-              {expanded ? (
-                <FaTimes aria-hidden="true" />
-              ) : (
-                <FaBars aria-hidden="true" />
-              )}
-            </button>
-          </div>
+              Brady Stroud
+            </span>
+            <span className="mono text-[0.65rem] uppercase tracking-[0.18em] text-ink-mute hidden sm:inline">
+              .dev
+            </span>
+          </Link>
+
+          <button
+            type="button"
+            className="md:hidden inline-flex items-center justify-center h-11 w-11 rounded-full border border-rule hover:border-rule-strong transition-colors"
+            aria-label={expanded ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={expanded}
+            aria-controls="nav-menu"
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded ? <FaTimes aria-hidden="true" /> : <FaBars aria-hidden="true" />}
+          </button>
+
           <div
-            className={`w-full block md:items-center md:w-auto ${expanded ? "" : "hidden md:flex"
-              }`}
+            className={`w-full md:w-auto ${expanded ? "" : "hidden md:flex"} md:items-center`}
             id="nav-menu"
           >
-            <div className="text-sm lg:grow mx-10">
-              {data?.nav &&
-                data.nav.map((item, i) => {
-                  const activeItem =
-                    item.href === ""
-                      ? router.asPath === "/"
-                      : router.asPath.includes(item.href);
-
-                  return (
+            <ul className="flex flex-col md:flex-row md:items-center gap-1 md:gap-8 mt-4 md:mt-0">
+              {data?.nav?.map((item, i) => {
+                const activeItem =
+                  item.href === ""
+                    ? router.asPath === "/"
+                    : router.asPath.includes(item.href);
+                return (
+                  <li key={i}>
                     <Link
-                      key={i}
                       href={"/" + item.href}
-                      className={`block mt-4 md:inline-block md:mt-0 hover:text-blue-600 mr-4 ${activeItem ? "opacity-50" : ""
-                        }`}
+                      className={`relative inline-block py-3 md:py-1 text-sm font-medium transition-colors hover:text-accent ${
+                        activeItem ? "text-accent" : "text-ink-soft"
+                      }`}
                       {...(activeItem ? { "aria-current": "page" as const } : {})}
                     >
                       {item.label}
+                      {activeItem && (
+                        <span
+                          aria-hidden="true"
+                          className="absolute -bottom-0.5 left-0 right-0 h-px bg-accent"
+                        />
+                      )}
                     </Link>
-                  );
-                })}
-            </div>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </nav>
-        <div
-          className={`absolute h-1 bg-linear-to-r from-transparent via-black to-transparent bottom-0 left-4 right-4 -z-1 opacity-5`}
-        />
       </Container>
     </header>
   );

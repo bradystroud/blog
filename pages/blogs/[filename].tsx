@@ -8,7 +8,9 @@ import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Head from "next/head";
+import Link from "next/link";
 import Giscus from "@giscus/react";
+import { BsArrowLeft } from "react-icons/bs";
 
 export default function Blog(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -109,62 +111,95 @@ export default function Blog(
             dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
           />
         </Head>
-        <Section className="flex-1">
-          <Container width="small" className="flex-1 pb-2" size="large">
+        <Section>
+          <Container width="small" size="large">
+            <Link
+              href="/blogs"
+              className="group/back inline-flex items-center gap-2 mono text-xs uppercase tracking-[0.18em] text-ink-mute hover:text-accent transition-colors mb-10"
+            >
+              <BsArrowLeft
+                className="h-3.5 w-3.5 motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover/back:-translate-x-0.5"
+                aria-hidden="true"
+              />
+              All entries
+            </Link>
+
+            <div className="mb-8 flex items-center gap-3">
+              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image
+                  src="/uploads/brady-beach-blur.webp"
+                  alt=""
+                  fill
+                  sizes="40px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span
+                  className="title-font text-base text-ink leading-tight"
+                  style={{ fontVariationSettings: '"opsz" 96, "wght" 520' }}
+                >
+                  Brady Stroud
+                </span>
+                <span className="mono text-[0.65rem] uppercase tracking-[0.18em] text-ink-mute">
+                  {formattedDate && (
+                    <time dateTime={data.blog.date || undefined} className="tabular-nums">
+                      {formattedDate}
+                    </time>
+                  )}
+                  {data.blog.tags && data.blog.tags.filter((t): t is string => !!t).length > 0 && (
+                    <>
+                      <span aria-hidden="true" className="mx-2 opacity-40">{"//"}</span>
+                      {data.blog.tags
+                        .filter((t): t is string => !!t)
+                        .join(", ")}
+                    </>
+                  )}
+                </span>
+              </div>
+            </div>
+
+            <h1
+              data-tinafield="title"
+              className="title-font mb-10 text-4xl sm:text-5xl lg:text-6xl leading-[1.05] text-ink"
+              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
+            >
+              {data.blog.title}
+            </h1>
+
             {data.blog.coverImage ? (
-              <div className="flex justify-center">
+              <div className="mb-12 overflow-hidden rounded-sm bg-paper">
                 <Image
                   src={data.blog.coverImage}
-                  width={1000}
-                  height={400}
+                  width={1200}
+                  height={630}
                   alt={`Cover image for ${data.blog.title}`}
-                  className="object-cover object-center rounded-lg"
+                  priority
+                  className="w-full h-auto object-cover saturate-[0.95]"
                 />
               </div>
             ) : null}
-            <div className="relative">
-              <h1
-                data-tinafield="title"
-                className="relative mb-8 text-4xl font-extrabold tracking-normal text-center title-font"
-              >
-                {data.blog.title}
-              </h1>
-            </div>
-            <div className="flex items-center justify-center mb-16">
-              <div className="flex items-center">
-                <div className="flex-shrink-0 mx-6">
-                  <Image
-                    className="rounded-full w-10 h-10 object-cover"
-                    src="/uploads/brady-beach-blur.webp"
-                    alt="Brady Stroud"
-                    width={40}
-                    height={40}
-                  />
-                </div>
-                <div className="mx-6">
-                  <div className="text-base text-gray-500 dark:text-gray-300">
-                    {formattedDate} by Brady Stroud
-                  </div>
-                </div>
-              </div>
-            </div>
+
             {data.blog.aiCollaboration ? (
-              <div className="mb-8 flex justify-center">
-                <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 shadow-sm dark:border-amber-400/40 dark:bg-amber-500/10 dark:text-amber-100">
-                  <span aria-hidden className="text-lg leading-none">
-                    🤝
-                  </span>
-                  <p>
-                    AI collaboration: This post was drafted with AI support,
-                    but the ideas, experiences and opinions are all my own.
-                  </p>
-                </div>
-              </div>
+              <aside
+                role="note"
+                aria-label="AI collaboration disclosure"
+                className="mb-12 border-y border-rule py-4 flex flex-wrap items-baseline gap-x-4 gap-y-1"
+              >
+                <span className="mono text-xs uppercase tracking-[0.18em] text-warm">
+                  AI collaboration
+                </span>
+                <span className="text-sm text-ink-soft">
+                  Drafted with AI support; ideas, experiences and opinions are mine.
+                </span>
+              </aside>
             ) : null}
-            <div className="prose dark:prose-dark w-full max-w-none">
+
+            <article className="prose prose-lg dark:prose-dark max-w-none text-ink-soft">
               <TinaMarkdown content={data.blog._body} />
-            </div>
-            <div className="mt-8">
+            </article>
+
+            <div className="mt-16 pt-8 rule-top">
               <Giscus
                 id="comments"
                 repo="bradystroud/blog"
@@ -188,11 +223,31 @@ export default function Blog(
   }
   return (
     <Layout>
-      <Section className="flex-1">
-        <Container className="flex-1 pb-2" size="large">
-          <div className="text-center">
-            <h1 className="text-3xl">Blog not found</h1>
+      <Section>
+        <Container size="large" width="small">
+          <div className="mono mb-8 text-xs uppercase tracking-[0.18em] text-ink-mute flex items-center gap-3">
+            <span aria-hidden="true" className="h-px w-8 bg-current opacity-40" />
+            404
           </div>
+          <h1
+            className="title-font text-5xl sm:text-6xl leading-[1.02] text-ink mb-6"
+            style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
+          >
+            Blog not found
+          </h1>
+          <p className="text-ink-soft mb-8 max-w-xl">
+            That entry doesn&apos;t exist (yet). It may have moved, or never been written.
+          </p>
+          <Link
+            href="/blogs"
+            className="group/back inline-flex items-center gap-2 mono text-xs uppercase tracking-[0.18em] text-ink-mute hover:text-accent transition-colors"
+          >
+            <BsArrowLeft
+              className="h-3.5 w-3.5 motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover/back:-translate-x-0.5"
+              aria-hidden="true"
+            />
+            All entries
+          </Link>
         </Container>
       </Section>
     </Layout>

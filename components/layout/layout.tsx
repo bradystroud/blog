@@ -18,12 +18,12 @@ export const Layout = ({ data = layoutData, children }) => {
       <div suppressHydrationWarning>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-blue-600 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-ink focus:shadow-lg"
         >
           Skip to main content
         </a>
         <Header data={data?.header} />
-        <main id="main-content" className="flex-1 text-gray-800 flex flex-col">
+        <main id="main-content" className="flex-1 text-ink flex flex-col">
           <NextBreadcrumb />
           {children}
         </main>

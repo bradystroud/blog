@@ -2,26 +2,99 @@
 
 @config './tailwind.config.js';
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+@theme {
+  --color-paper: oklch(0.985 0.004 85);
+  --color-ink: oklch(0.22 0.012 270);
+  --color-ink-soft: oklch(0.42 0.01 270);
+  --color-ink-mute: oklch(0.62 0.008 270);
+  --color-accent: oklch(0.52 0.18 252);
+  --color-accent-ink: oklch(0.985 0.004 85);
+  --color-warm: oklch(0.72 0.13 55);
+}
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
+  :root {
+    --paper: oklch(0.985 0.004 85);
+    --ink: oklch(0.22 0.012 270);
+    --ink-soft: oklch(0.42 0.01 270);
+    --ink-mute: oklch(0.62 0.008 270);
+    --rule: oklch(0.22 0.012 270 / 0.1);
+    --rule-strong: oklch(0.22 0.012 270 / 0.22);
+    --accent: oklch(0.52 0.18 252);
+    --accent-ink: oklch(0.985 0.004 85);
+    --warm: oklch(0.72 0.13 55);
+  }
+
+  html.dark {
+    --paper: oklch(0.18 0.012 270);
+    --ink: oklch(0.94 0.006 85);
+    --ink-soft: oklch(0.78 0.008 270);
+    --ink-mute: oklch(0.58 0.008 270);
+    --rule: oklch(0.94 0.006 85 / 0.12);
+    --rule-strong: oklch(0.94 0.006 85 / 0.24);
+    --accent: oklch(0.72 0.16 252);
+    --accent-ink: oklch(0.18 0.012 270);
+    --warm: oklch(0.76 0.14 55);
+    --color-paper: oklch(0.18 0.012 270);
+    --color-ink: oklch(0.94 0.006 85);
+    --color-ink-soft: oklch(0.78 0.008 270);
+    --color-ink-mute: oklch(0.58 0.008 270);
+    --color-accent: oklch(0.72 0.16 252);
+    --color-accent-ink: oklch(0.18 0.012 270);
+    --color-warm: oklch(0.76 0.14 55);
+  }
+
+  html {
+    background-color: var(--paper);
+    color: var(--ink);
+  }
+
+  body {
+    font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  }
+
+  .title-font {
+    font-family: var(--font-display, ui-serif, Georgia, serif);
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 96;
+    letter-spacing: -0.015em;
+  }
+
+  .mono {
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  }
+
+  code, pre, kbd, samp {
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  }
+
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--rule);
   }
 
-  /* Ensure visible focus indicators for keyboard navigation (WCAG 2.4.7) */
   :focus-visible {
-    outline: 2px solid var(--color-blue-500, #3b82f6);
-    outline-offset: 2px;
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
+}
+
+@utility rule-top {
+  border-top: 1px solid var(--rule);
+}
+
+@utility rule-bottom {
+  border-bottom: 1px solid var(--rule);
+}
+
+@utility border-rule {
+  border-color: var(--rule);
+}
+
+@utility border-rule-strong {
+  border-color: var(--rule-strong);
 }

@@ -23,32 +23,43 @@ export const InstagramPosts = ({ data, parentField = "" }) => {
   return (
     <Section>
       <Container size="large">
-        <h2
-          data-tinafield={`${parentField}.heading`}
-          className="text-4xl font-bold mb-8 text-center"
-        >
-          {heading}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex items-baseline justify-between gap-6 mb-10 pb-6 rule-bottom">
+          <h2
+            data-tinafield={`${parentField}.heading`}
+            className="title-font text-3xl sm:text-4xl leading-[1.05] text-ink"
+            style={{ fontVariationSettings: '"opsz" 144, "wght" 500' }}
+          >
+            {heading}
+          </h2>
+          <span className="mono text-xs uppercase tracking-[0.18em] text-ink-mute">
+            {posts.length} posts
+          </span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post, i) => (
             <div key={post.id} data-tinafield={`${parentField}.posts.${i}`}>
               <HoverCard
                 href={post.postUrl}
                 target="_blank"
-                className="rounded-lg overflow-hidden"
+                className="rounded-sm overflow-hidden"
               >
-                <div className="relative h-64 w-full">
+                <div className="relative h-64 w-full bg-paper">
                   <Image
                     src={post.imageUrl}
                     alt={post.caption}
                     fill
-                    className="object-cover"
+                    sizes="(min-width: 1200px) 33vw, (min-width: 900px) 50vw, 100vw"
+                    className="object-cover motion-safe:transition-transform motion-safe:duration-500 group-hover/card:scale-[1.02]"
                   />
                 </div>
                 <div className="p-4">
-                  <p className="text-gray-700 line-clamp-3">{post.caption}</p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    {new Date(post.date).toLocaleDateString()}
+                  <p className="text-ink-soft line-clamp-3">{post.caption}</p>
+                  <p className="mono text-xs tabular-nums text-ink-mute mt-3">
+                    {new Date(post.date).toLocaleDateString("en-US", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
                   </p>
                 </div>
               </HoverCard>

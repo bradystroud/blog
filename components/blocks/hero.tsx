@@ -11,30 +11,31 @@ export const Hero = ({ data, parentField }) => {
     <Section>
       <Container
         size="large"
-        className="grid grid-cols-1 lg:grid-cols-5 gap-14 items-center justify-center"
+        className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center"
       >
-        <div className="row-start-2 lg:row-start-1 lg:col-span-3 text-center lg:text-left">
+        <div className="row-start-2 lg:row-start-1 lg:col-span-7 text-left relative">
           {data.tagline && (
-            <h2
+            <div
               data-tinafield={`${parentField}.tagline`}
-              className="relative inline-block px-3 py-1 mb-8 text-md font-bold tracking-wide title-font z-20"
+              className="mono mb-8 text-xs uppercase tracking-[0.18em] text-ink-mute flex items-center gap-3"
             >
+              <span aria-hidden="true" className="h-px w-8 bg-current opacity-40" />
               {data.tagline}
-              <span className="absolute w-full h-full left-0 top-0 rounded-full -z-1 bg-current opacity-7"></span>
-            </h2>
+            </div>
           )}
           {data.headline && (
             <h1
               data-tinafield={`${parentField}.headline`}
-              className={`w-full relative	mb-10 text-5xl font-extrabold tracking-normal leading-tight title-font`}
+              className="title-font mb-8 text-5xl sm:text-6xl lg:text-7xl leading-[1.02] text-ink"
+              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
             >
-              <span className={`bg-clip-text`}>{data.headline}</span>
+              {data.headline}
             </h1>
           )}
           {data.text && (
             <div
               data-tinafield={`${parentField}.text`}
-              className={`prose prose-lg mx-auto lg:mx-0 mb-10 ${
+              className={`prose prose-lg max-w-xl mb-10 text-ink-soft ${
                 data.color === "primary" ? `prose-primary` : `dark:prose-dark`
               }`}
             >
@@ -44,7 +45,7 @@ export const Hero = ({ data, parentField }) => {
           {data.actions && (
             <Actions
               parentField={`${parentField}.actions`}
-              className="justify-center lg:justify-start py-2"
+              className="justify-start py-2"
               actions={data.actions}
             />
           )}
@@ -52,10 +53,10 @@ export const Hero = ({ data, parentField }) => {
         {data.image && (
           <div
             data-tinafield={`${parentField}.image`}
-            className="relative row-start-1 lg:col-span-2 flex justify-center"
+            className="relative row-start-1 lg:col-span-5 flex justify-center lg:justify-end"
           >
             <Image
-              className="relative! z-10 rounded-lg max-w-md xs:max-w-xs"
+              className="rounded-sm max-w-sm w-full saturate-[0.95]"
               alt={data.image.alt}
               src={data.image.src}
               quality={80}

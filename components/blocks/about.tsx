@@ -29,45 +29,51 @@ interface AboutBlockProps {
   parentField?: string;
 }
 
-const ImageTile = ({
+const FramedImage = ({
   image,
   parentField,
-  layoutClass,
+  aspectClass,
+  priority = false,
 }: {
   image?: AboutImage | null;
   parentField: string;
-  layoutClass?: string;
+  aspectClass: string;
+  priority?: boolean;
 }) => {
-  if (image?.src) {
+  const altText = image?.alt || image?.label || "";
+
+  if (!image?.src) {
     return (
-      <div
-        data-tinafield={parentField}
-        className={`relative overflow-hidden rounded-3xl border border-gray-200/70 dark:border-gray-800/70 shadow-lg ${layoutClass}`}
-      >
-        <Image
-          src={image.src}
-          alt={image.alt || ""}
-          fill
-          className="object-cover"
-          sizes="(min-width: 1024px) 540px, 90vw"
-          priority={false}
-        />
-        {image.label && (
-          <span className="absolute bottom-4 left-4 rounded-full bg-gray-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
-            {image.label}
-          </span>
-        )}
-      </div>
+      <figure data-tinafield={parentField} className="flex flex-col gap-3">
+        <div
+          className={`relative ${aspectClass} flex items-center justify-center rounded-sm border border-dashed border-ink-mute mono text-xs uppercase tracking-[0.18em] text-ink-mute`}
+        >
+          Awaiting image
+        </div>
+      </figure>
     );
   }
 
+  const caption = image.label || image.alt;
+
   return (
-    <div
-      data-tinafield={parentField}
-      className={`relative flex items-center justify-center overflow-hidden rounded-3xl border border-dashed border-gray-300 bg-gradient-to-tr from-blue-400/10 via-purple-400/10 to-emerald-400/10 text-center text-sm font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400 ${layoutClass}`}
-    >
-      <span>Add an image in Tina</span>
-    </div>
+    <figure data-tinafield={parentField} className="flex flex-col gap-3">
+      <div className={`relative ${aspectClass} overflow-hidden rounded-sm bg-paper`}>
+        <Image
+          src={image.src}
+          alt={altText}
+          fill
+          sizes="(min-width: 1024px) 480px, 90vw"
+          priority={priority}
+          className="object-cover saturate-[0.95]"
+        />
+      </div>
+      {caption && (
+        <figcaption className="mono text-xs uppercase tracking-[0.18em] text-ink-mute">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
   );
 };
 
@@ -77,32 +83,31 @@ export const AboutShowcase = ({
 }: AboutBlockProps) => {
   return (
     <Section>
-      <Container
-        size="large"
-        width="large"
-        className="grid gap-16 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] xl:gap-24"
-      >
-        <div className="flex flex-col gap-6 lg:pr-6">
+      <Container size="large" className="grid gap-16 lg:grid-cols-12 lg:gap-20">
+        <div className="lg:col-span-7 flex flex-col">
           {data.eyebrow && (
-            <p
+            <div
               data-tinafield={`${parentField}.eyebrow`}
-              className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-500"
+              className="mono mb-8 text-xs uppercase tracking-[0.18em] text-ink-mute flex items-center gap-3"
             >
+              <span aria-hidden="true" className="h-px w-8 bg-current opacity-40" />
               {data.eyebrow}
-            </p>
+            </div>
           )}
           {data.heading && (
-            <h2
+            <h1
               data-tinafield={`${parentField}.heading`}
-              className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-50 sm:text-5xl"
+              className="title-font mb-6 text-5xl sm:text-6xl lg:text-7xl leading-[1.02] text-ink"
+              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
             >
               {data.heading}
-            </h2>
+            </h1>
           )}
           {data.subheading && (
             <p
               data-tinafield={`${parentField}.subheading`}
-              className="text-lg font-medium text-gray-600 dark:text-gray-300"
+              className="title-font text-xl sm:text-2xl italic text-ink-soft max-w-xl mb-10"
+              style={{ fontVariationSettings: '"opsz" 96, "wght" 400' }}
             >
               {data.subheading}
             </p>
@@ -110,78 +115,70 @@ export const AboutShowcase = ({
           {data.body && (
             <div
               data-tinafield={`${parentField}.body`}
-              className="prose prose-lg max-w-none text-gray-700 dark:prose-invert"
+              className="prose prose-lg max-w-2xl text-ink-soft mb-16"
             >
               <TinaMarkdown content={data.body} />
             </div>
           )}
           {data.highlights && data.highlights.length > 0 && (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {data.highlights.map((item, index) => {
-                if (!item) return null;
-                return (
-                  <div
-                    key={index}
-                    data-tinafield={`${parentField}.highlights.${index}`}
-                    className="rounded-2xl border border-gray-200/80 bg-white/70 p-5 shadow-sm backdrop-blur dark:border-gray-800/60 dark:bg-gray-900/40"
-                  >
-                    {item.title && (
-                      <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-                        {item.title}
-                      </h3>
-                    )}
-                    {item.description && (
-                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                        {item.description}
-                      </p>
-                    )}
-                  </div>
-                );
-              })}
+            <div className="border-t border-rule">
+              <span className="mono text-xs uppercase tracking-[0.18em] text-ink-mute block mt-10 mb-2">
+                What I bring
+              </span>
+              <ol className="flex flex-col">
+                {data.highlights.map((item, index) => {
+                  if (!item) return null;
+                  return (
+                    <li
+                      key={index}
+                      data-tinafield={`${parentField}.highlights.${index}`}
+                      className="grid grid-cols-[auto_1fr] items-baseline gap-6 py-6 rule-bottom"
+                    >
+                      <span className="mono text-xs tabular-nums w-10 text-right text-ink-mute">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        {item.title && (
+                          <h2
+                            className="title-font text-2xl sm:text-3xl leading-tight text-ink"
+                            style={{ fontVariationSettings: '"opsz" 96, "wght" 480' }}
+                          >
+                            {item.title}
+                          </h2>
+                        )}
+                        {item.description && (
+                          <p className="mt-3 text-base text-ink-soft leading-relaxed max-w-xl">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
             </div>
           )}
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <ImageTile
+        <aside className="lg:col-span-5 flex flex-col gap-8 lg:sticky lg:top-12 lg:self-start">
+          <FramedImage
             image={data.mainImage}
             parentField={`${parentField}.mainImage`}
-            layoutClass="sm:col-span-2 aspect-[4/5]"
+            aspectClass="aspect-[4/5]"
+            priority
           />
-          {data.accentImages?.map((image, index) => (
-            <ImageTile
-              key={index}
-              image={image}
-              parentField={`${parentField}.accentImages.${index}`}
-              layoutClass="aspect-[5/6]"
-            />
-          ))}
-          {data.accentImages && data.accentImages.length < 2 && (
-            <>
-              {Array.from({ length: 2 - data.accentImages.length }).map(
-                (_, index) => (
-                  <ImageTile
-                    // index offset ensures key uniqueness when accentImages shorter than 2
-                    key={`placeholder-${index}`}
-                    parentField={`${parentField}.accentImages.${data.accentImages!.length + index}`}
-                    layoutClass="aspect-[5/6]"
-                  />
-                )
-              )}
-            </>
+          {data.accentImages && data.accentImages.length > 0 && (
+            <div className="grid grid-cols-2 gap-4">
+              {data.accentImages.map((image, index) => (
+                <FramedImage
+                  key={index}
+                  image={image}
+                  parentField={`${parentField}.accentImages.${index}`}
+                  aspectClass="aspect-[4/5]"
+                />
+              ))}
+            </div>
           )}
-          {!data.accentImages && (
-            <>
-              <ImageTile
-                parentField={`${parentField}.accentImages.0`}
-                layoutClass="aspect-[5/6]"
-              />
-              <ImageTile
-                parentField={`${parentField}.accentImages.1`}
-                layoutClass="aspect-[5/6]"
-              />
-            </>
-          )}
-        </div>
+        </aside>
       </Container>
     </Section>
   );
@@ -216,7 +213,7 @@ export const aboutShowcaseBlockSchema: Template = {
         },
         {
           title: "Outdoor Explorer",
-          description: "From surf to summit-fueling creativity through adventure.",
+          description: "From surf to summit, fueling creativity through adventure.",
         },
       ],
       mainImage: {

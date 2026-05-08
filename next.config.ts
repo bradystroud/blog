@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     root: __dirname,
     resolveExtensions: ['.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
   },
-  transpilePackages: ['tinacms'],
+  transpilePackages: ['tinacms', '@vercel/analytics', '@vercel/speed-insights', '@giscus/react'],
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
