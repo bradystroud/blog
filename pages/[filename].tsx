@@ -1,9 +1,12 @@
 import { Blocks } from "../components/blocks-renderer";
 import { useTina } from "tinacms/dist/react";
 import { Layout } from "../components/layout";
+import { Seo, buildOgImageUrl, SITE } from "../components/seo";
 import { client } from "../tina/__generated__/client";
 import { InferGetStaticPropsType } from "next";
-import Head from "next/head";
+
+const DEFAULT_DESCRIPTION =
+  "Software Engineer at SSW specializing in .NET, Blazor, MAUI, and cross-platform development.";
 
 export default function HomePage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -14,70 +17,58 @@ export default function HomePage(
     data: props.data,
   });
 
-  const title = data.page.title || "Brady Stroud";
-  const description = data.page.description || "Software Engineer at SSW specializing in .NET, Blazor, MAUI, and cross-platform development.";
-  const canonicalUrl = data.page.canonicalUrl || "https://bradystroud.dev";
-  const ogImageUrl = `https://bradystroud.dev/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
+  const title = data.page.title || SITE.name;
+  const description = data.page.description || DEFAULT_DESCRIPTION;
+  const canonicalUrl = data.page.canonicalUrl || SITE.url;
+  const ogImageUrl = buildOgImageUrl({ title, description });
 
-  const isHomePage = canonicalUrl === "https://bradystroud.dev";
-  const personSchema = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Brady Stroud",
-    "url": "https://bradystroud.dev",
-    "image": "https://bradystroud.dev/uploads/brady-beach.webp",
-    "jobTitle": "Senior Software Engineer",
-    "worksFor": {
-      "@type": "Organization",
-      "name": "SSW",
-      "url": "https://www.ssw.com.au"
-    },
-    "description": "Senior Software Engineer at SSW specializing in .NET, Blazor, MAUI, and cross-platform development.",
-    "sameAs": [
-      "https://github.com/bradystroud",
-      "https://www.linkedin.com/in/bradystroud",
-      "https://twitter.com/bradystroud_",
-      "https://www.instagram.com/bradystroud",
-      "https://www.youtube.com/@bradystroud"
-    ],
-    "knowsAbout": ["Business Optimzation", "LLMS", ".NET", "C#", "Blazor", "MAUI", "React", "TypeScript", "AI", "Cross-platform development"]
-  };
+  const isHomePage = canonicalUrl === SITE.url;
+  const personSchema = isHomePage
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: SITE.name,
+        url: SITE.url,
+        image: `${SITE.url}/uploads/brady-beach.webp`,
+        jobTitle: "Senior Software Engineer",
+        worksFor: {
+          "@type": "Organization",
+          name: "SSW",
+          url: "https://www.ssw.com.au",
+        },
+        description: DEFAULT_DESCRIPTION,
+        sameAs: [
+          "https://github.com/bradystroud",
+          "https://www.linkedin.com/in/bradystroud",
+          "https://twitter.com/bradystroud_",
+          "https://www.instagram.com/bradystroud",
+          "https://www.youtube.com/@bradystroud",
+        ],
+        knowsAbout: [
+          "Business Optimzation",
+          "LLMS",
+          ".NET",
+          "C#",
+          "Blazor",
+          "MAUI",
+          "React",
+          "TypeScript",
+          "AI",
+          "Cross-platform development",
+        ],
+      }
+    : undefined;
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>
-      <Head>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <link rel="canonical" href={canonicalUrl} key="canonical" />
-        
-        {/* Open Graph */}
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:image" content={ogImageUrl} />
-        <meta property="og:image:secure_url" content={ogImageUrl} />
-        <meta property="og:image:type" content="image/png" />
-        <meta property="og:image:width" content="1600" />
-        <meta property="og:image:height" content="836" />
-        <meta property="og:image:alt" content={title} />
-        <meta property="og:site_name" content="Brady Stroud" />
-        
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={ogImageUrl} />
-
-        {/* JSON-LD Person structured data for home page */}
-        {isHomePage && (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-          />
-        )}
-      </Head>
+      <Seo
+        title={title}
+        description={description}
+        canonicalUrl={canonicalUrl}
+        ogImageUrl={ogImageUrl}
+        jsonLd={personSchema}
+      />
       <Blocks {...data.page} />
     </Layout>
   );

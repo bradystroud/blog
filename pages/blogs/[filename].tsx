@@ -4,10 +4,15 @@ import { useTina } from "tinacms/dist/react";
 import { Layout } from "../../components/layout";
 import { Section } from "../../components/util/section";
 import { Container } from "../../components/util/container";
+import {
+  Seo,
+  SITE,
+  absoluteCoverImageUrl,
+  buildOgImageUrl,
+} from "../../components/seo";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
 import Image from "next/image";
-import Head from "next/head";
 import Link from "next/link";
 import Giscus from "@giscus/react";
 import { BsArrowLeft } from "react-icons/bs";
@@ -35,82 +40,43 @@ export default function Blog(
   }
 
   if (data && data.blog) {
-    const title = `${data.blog.title} | Brady Stroud`;
-    const description = data.blog.description || `Read ${data.blog.title} by Brady Stroud`;
-    
-    // Handle cover image URL - check if it's already a full URL (from TinaCMS CDN) or a relative path
-    let coverImageUrl = "";
-    if (data.blog.coverImage) {
-      coverImageUrl = data.blog.coverImage.startsWith('http') 
-        ? data.blog.coverImage 
-        : `https://bradystroud.dev${data.blog.coverImage}`;
-    }
-    
-    const ogImageUrl = coverImageUrl
-      ? `https://bradystroud.dev/api/og?title=${encodeURIComponent(data.blog.title)}&description=${encodeURIComponent(description)}&coverImage=${encodeURIComponent(coverImageUrl)}`
-      : `https://bradystroud.dev/api/og?title=${encodeURIComponent(data.blog.title)}&description=${encodeURIComponent(description)}`;
+    const description =
+      data.blog.description || `Read ${data.blog.title} by Brady Stroud`;
+    const coverImageUrl = absoluteCoverImageUrl(data.blog.coverImage);
+    const ogImageUrl = buildOgImageUrl({
+      title: data.blog.title,
+      description,
+      coverImage: coverImageUrl,
+    });
 
     const articleSchema = {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
-      "headline": data.blog.title,
-      "description": description,
-      "url": data.blog.canonicalUrl,
-      ...(data.blog.date ? { "datePublished": data.blog.date } : {}),
-      ...(coverImageUrl ? { "image": coverImageUrl } : {}),
-      "author": {
-        "@type": "Person",
-        "name": "Brady Stroud",
-        "url": "https://bradystroud.dev"
-      },
-      "publisher": {
-        "@type": "Person",
-        "name": "Brady Stroud",
-        "url": "https://bradystroud.dev"
-      }
+      headline: data.blog.title,
+      description,
+      url: data.blog.canonicalUrl,
+      ...(data.blog.date ? { datePublished: data.blog.date } : {}),
+      ...(coverImageUrl ? { image: coverImageUrl } : {}),
+      author: { "@type": "Person", name: SITE.name, url: SITE.url },
+      publisher: { "@type": "Person", name: SITE.name, url: SITE.url },
     };
+
+    const tagList =
+      data.blog.tags?.filter((t): t is string => typeof t === "string") ?? [];
 
     return (
       <Layout data={data.global as any}>
-        <Head>
-          <title>{title}</title>
-          <meta name="description" content={description} />
-          <meta name="author" content="Brady Stroud" />
-          <link rel="canonical" href={data.blog.canonicalUrl} key="canonical" />
-          
-          {/* Open Graph */}
-          <meta property="og:title" content={data.blog.title} />
-          <meta property="og:description" content={description} />
-          <meta property="og:type" content="article" />
-          <meta property="og:url" content={data.blog.canonicalUrl} />
-          <meta property="og:image" content={ogImageUrl} />
-          <meta property="og:image:secure_url" content={ogImageUrl} />
-          <meta property="og:image:type" content="image/png" />
-          <meta property="og:image:width" content="1600" />
-          <meta property="og:image:height" content="836" />
-          <meta property="og:image:alt" content={data.blog.title} />
-          <meta property="og:site_name" content="Brady Stroud" />
-          
-          {/* Twitter Card */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={data.blog.title} />
-          <meta name="twitter:description" content={description} />
-          <meta name="twitter:image" content={ogImageUrl} />
-          
-          {/* Article metadata */}
-          {data.blog.date && (
-            <meta property="article:published_time" content={data.blog.date} />
-          )}
-          {data.blog.tags && data.blog.tags.filter((tag): tag is string => tag !== null).map((tag) => (
-            <meta key={tag} property="article:tag" content={tag} />
-          ))}
-
-          {/* JSON-LD Article structured data */}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-          />
-        </Head>
+        <Seo
+          title={`${data.blog.title} | ${SITE.name}`}
+          description={description}
+          canonicalUrl={data.blog.canonicalUrl}
+          ogType="article"
+          ogImageUrl={ogImageUrl}
+          ogImageAlt={data.blog.title}
+          publishedTime={data.blog.date ?? undefined}
+          tags={tagList}
+          jsonLd={articleSchema}
+        />
         <Section>
           <Container width="small" size="large">
             <Link
@@ -147,12 +113,10 @@ export default function Blog(
                       {formattedDate}
                     </time>
                   )}
-                  {data.blog.tags && data.blog.tags.filter((t): t is string => !!t).length > 0 && (
+                  {tagList.length > 0 && (
                     <>
                       <span aria-hidden="true" className="mx-2 opacity-40">{"//"}</span>
-                      {data.blog.tags
-                        .filter((t): t is string => !!t)
-                        .join(", ")}
+                      {tagList.join(", ")}
                     </>
                   )}
                 </span>

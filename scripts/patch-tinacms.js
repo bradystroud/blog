@@ -51,5 +51,8 @@ possiblePaths.forEach(filePath => {
 });
 
 if (!patched) {
-  console.log('⚠ TinaCMS not found or already patched');
+  // Why: a silent no-match here means a future Tina upgrade silently shipped
+  // a binary that no longer matches our regex. Fail CI loudly instead.
+  console.error('✗ TinaCMS patch did not apply. The target file may have moved or the regex is stale. Investigate before continuing.');
+  process.exit(1);
 }

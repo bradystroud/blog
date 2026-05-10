@@ -7,10 +7,6 @@ const nextConfig: NextConfig = {
     resolveExtensions: ['.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
   },
   transpilePackages: ['tinacms', '@vercel/analytics', '@vercel/speed-insights', '@giscus/react'],
-  i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
-  },
   images: {
     qualities: [25, 50, 75, 80],
     remotePatterns: [

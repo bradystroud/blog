@@ -3,32 +3,7 @@
 These are important details about the project that you maintain and refer to when working on the codebase.
 
 - Never do raw CSS only use tailwind, customize with tailwind config
-- AI blog generation feature with caching implemented for non-existent blog posts
-- **STREAMING**: AI blog generation supports streaming for real-time content display with proper timeout handling
-- Streaming API endpoint accepts `stream: true` parameter for real-time generation
-- Client component handles streaming with real-time content updates and indicators
-- Server-side caching uses file system in `.ai-blog-cache/` directory with 24-hour expiry (DEV ONLY)
-- Client-side caching uses localStorage with 2-hour expiry for faster subsequent loads
-- Cache management API available at `/api/cache-management` for clearing cache
-- AI blog component shows cache status to users with ⚡ indicator and streaming status
-- Blog pages use `fallback: true` with ISR revalidation for deployment resilience
-- Graceful fallback handling when TinaCMS is unavailable in production
-- **CRITICAL**: TinaCMS useTina hook causes build failures with "Cannot read properties of null (reading 'split')" error during Next.js prerendering
-- Temporarily disabled useTina hook import and usage to prevent build failures - using static data instead
-- Build issues occur during prerendering of `/en/blogs/[filename]` routes when TinaCMS is unavailable
-- Need to investigate TinaCMS build-time compatibility or implement proper conditional loading
-- **SOLUTION**: 404 page now handles AI blog generation for non-existent blog posts, eliminating complex TinaCMS build issues
 - Header component requires null safety for `data?.nav` access to prevent undefined errors
-- **PRODUCTION**: Vercel serverless functions cannot write to filesystem - cache disabled in production/Vercel
-- **TIMEOUT**: 8-second timeout limit implemented to prevent Vercel's 10-second serverless timeout errors
-- **OPTIMIZATION**: Reduced token limits to 700 max completion tokens for faster generation
-- **FALLBACK**: Robust fallback content system when OpenAI API fails or times out
-- **ERROR HANDLING**: Comprehensive error handling prevents production crashes
-
-- New blog added: `aspire-windows-vm.mdx` (Part 1: Docker context approach for running .NET Aspire in Windows VM while using macOS Docker; motivation = Windows-only .NET Framework / legacy tooling; explains nested virtualization issues on Apple Silicon vs Intel)
-
-- New blog added: `connect-windows-vm-to-mac-apis.mdx` (Part 2: Ultimate solution for Windows VM + Mac development; SSH tunnels, dev certificate management, secure port forwarding; builds on Part 1)
-
-- Series note: Part 2 (connect-windows-vm) is the recommended ultimate solution; Part 1 (aspire-windows-vm) is the foundational Docker context approach.
-
-- Blogs listing component now supports client-side sorting (Newest default, plus Oldest and Title A–Z) with TypeScript typings added.
+- Blogs listing component supports client-side sorting (Newest default, plus Oldest and Title A–Z) with TypeScript typings.
+- Blog pages use `fallback: false` for static generation; missing posts hit the in-page 404 branch in `pages/blogs/[filename].tsx`.
+- TinaCMS has a CommonJS/ESM interop quirk with `color-string`. Worked around by `scripts/patch-tinacms.js` (postinstall), `next.config.ts` `serverExternalPackages`, and webpack `externals`. Re-test the need for these on every Tina upgrade.

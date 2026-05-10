@@ -3,22 +3,20 @@
   "version": "0.1.0",
   "packageManager": "bun@1.3.7",
   "scripts": {
-    "postinstall": "bun scripts/patch-tinacms.js || true; find node_modules -name '*.node' -exec xattr -d com.apple.quarantine {} + 2>/dev/null; true",
+    "postinstall": "bun scripts/patch-tinacms.js && (find node_modules -name '*.node' -exec xattr -d com.apple.quarantine {} + 2>/dev/null || true)",
     "dev": "bun run tinacms dev -c \"next dev\"",
     "build": "bun run --bun tinacms build && bun run --bun next build && bun run scripts/generate-rss.ts && bun run --bun next-sitemap --config next-sitemap.config.js",
     "generate-rss": "bun run scripts/generate-rss.ts",
     "start": "bun run --bun tinacms build && bun run --bun next start",
     "export": "bun run build && bun run --bun next export",
-    "lint": "eslint . --ext .ts,.tsx"
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^16.2.6",
     "@svgr/webpack": "^8.1.0",
     "@tinacms/cli": "^2.2.5",
-    "@types/js-cookie": "^3.0.6",
     "@types/node": "25.0.10",
     "@types/react": "^19.2.14",
-    "@types/styled-components": "^5.1.36",
     "@typescript-eslint/eslint-plugin": "^8.59.2",
     "@typescript-eslint/parser": "^8.59.2",
     "eslint": "9.39.2",
@@ -36,7 +34,6 @@
     "@vercel/speed-insights": "^1.3.1",
     "gray-matter": "^4.0.3",
     "next": "16.1.4",
-    "openai": "^6.37.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-icons": "^5.6.0",
