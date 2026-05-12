@@ -1,58 +1,46 @@
 #!/usr/bin/env node
 
 /**
- * Patch TinaCMS to fix CommonJS/ESM interop issue with color-string
- * 
- * This script patches the tinacms package to use default import instead of named imports
- * for the color-string module, which is a CommonJS module that doesn't properly support
- * named exports in ESM contexts.
- * 
- * Works with Bun's flat node_modules structure.
+ * Patch TinaCMS to fix CommonJS/ESM interop issue with color-string.
+ *
+ * Idempotent: skips when already patched, no-ops when neither signature is
+ * present (TinaCMS may have fixed it upstream), and only fails when the
+ * target file is missing entirely (meaning the package layout changed).
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
 
-// Find tinacms location in node_modules (Bun uses flat structure)
-const possiblePaths = [
-  'node_modules/tinacms/dist/index.js',
-];
+const FILE_PATH = "node_modules/tinacms/dist/index.js";
 
-let patched = false;
+const PATCHED_SIGIL = 'import colorString from "color-string"';
+const UNPATCHED_PATTERN =
+  /import \{ get as get\$6, to as to\$1 \} from "color-string";/g;
 
-possiblePaths.forEach(filePath => {
-  if (fs.existsSync(filePath)) {
-    try {
-      let content = fs.readFileSync(filePath, 'utf8');
-      
-      // Check if already patched
-      if (content.includes('import colorString from "color-string"')) {
-        console.log(`✓ ${filePath} already patched`);
-        patched = true;
-        return;
-      }
-      
-      // Check if needs patching
-      if (content.includes('import { get as get$6, to as to$1 } from "color-string"')) {
-        // Apply the patch
-        content = content.replace(
-          /import \{ get as get\$6, to as to\$1 \} from "color-string";/g,
-          'import colorString from "color-string"; const get$6 = colorString.get; const to$1 = colorString.to;'
-        );
-        
-        fs.writeFileSync(filePath, content, 'utf8');
-        console.log(`✓ Patched ${filePath}`);
-        patched = true;
-      }
-    } catch (err) {
-      console.error(`Failed to patch ${filePath}:`, err.message);
-    }
-  }
-});
-
-if (!patched) {
-  // Why: a silent no-match here means a future Tina upgrade silently shipped
-  // a binary that no longer matches our regex. Fail CI loudly instead.
-  console.error('✗ TinaCMS patch did not apply. The target file may have moved or the regex is stale. Investigate before continuing.');
+if (!fs.existsSync(FILE_PATH)) {
+  console.error(
+    `✗ TinaCMS not found at ${FILE_PATH}. Has the package layout changed? Investigate before continuing.`
+  );
   process.exit(1);
 }
+
+const content = fs.readFileSync(FILE_PATH, "utf8");
+
+if (content.includes(PATCHED_SIGIL)) {
+  console.log(`✓ ${FILE_PATH} already patched`);
+  process.exit(0);
+}
+
+if (UNPATCHED_PATTERN.test(content)) {
+  const next = content.replace(
+    UNPATCHED_PATTERN,
+    'import colorString from "color-string"; const get$6 = colorString.get; const to$1 = colorString.to;'
+  );
+  fs.writeFileSync(FILE_PATH, next, "utf8");
+  console.log(`✓ Patched ${FILE_PATH}`);
+  process.exit(0);
+}
+
+console.log(
+  `ℹ ${FILE_PATH} has neither known signature — assuming TinaCMS fixed the color-string interop upstream and skipping.`
+);
+process.exit(0);

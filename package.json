@@ -45,5 +45,8 @@
   "overrides": {
     "final-form": "4.20.1",
     "@types/node": "22.13.10"
+  },
+  "resolutions": {
+    "@tinacms/graphql/date-fns": "2.30.0"
   }
 }

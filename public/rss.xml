@@ -6,6 +6,34 @@
    <description>Latest posts from Brady Stroud</description>
    
    <item>
+   <title>When Your VPN doesnt Play Nice with IPv6</title>
+   <link>https://bradystroud.dev/blogs/mac-ipv6-toggle</link>
+   <guid>https://bradystroud.dev/blogs/mac-ipv6-toggle</guid>
+   <pubDate>Tue, 05 May 2026 10:00:00 GMT</pubDate>
+   <description>I built a small Swift menu bar application that lets you quickly turn IPv6 on or off for Wi-Fi. It&#39;s a lifesaver if you deal with VPNs that dont work with IPv6.</description>
+   </item>
+   <item>
+   <title>How I Benchmark AI Models in Every Project with an Agent Skill</title>
+   <link>https://bradystroud.dev/blogs/ai-model-benchmarking</link>
+   <guid>https://bradystroud.dev/blogs/ai-model-benchmarking</guid>
+   <pubDate>Mon, 13 Apr 2026 12:00:00 GMT</pubDate>
+   <description>I built a reusable agent skill that discovers how your project uses AI, writes targeted benchmarks, runs them across providers, and produces a comparison report. Here&#39;s how it works.</description>
+   </item>
+   <item>
+   <title>Solving Agents Config Spaghetti - Making .agents the Source of Truth</title>
+   <link>https://bradystroud.dev/blogs/agents-config-spaghetti</link>
+   <guid>https://bradystroud.dev/blogs/agents-config-spaghetti</guid>
+   <pubDate>Tue, 17 Mar 2026 12:00:00 GMT</pubDate>
+   <description>I got sick of duplicating skills and agent instructions across tools, so I made .agents the source of truth and mapped everything else back to it.</description>
+   </item>
+   <item>
+   <title>Opencode ate my storage - and how I fixed it</title>
+   <link>https://bradystroud.dev/blogs/opencode-ate-my-storage</link>
+   <guid>https://bradystroud.dev/blogs/opencode-ate-my-storage</guid>
+   <pubDate>Fri, 06 Mar 2026 12:00:00 GMT</pubDate>
+   <description>My Mac ran out of storage overnight. macOS blamed &quot;Documents&quot; but the real culprit was a runaway AI coding tool snapshot. Here&#39;s how I tracked it down.</description>
+   </item>
+   <item>
    <title>n8n Workflow - Generating Blog Ideas and Social Posts</title>
    <link>https://bradystroud.dev/blogs/n8n-ai-content-generator</link>
    <guid>https://bradystroud.dev/blogs/n8n-ai-content-generator</guid>
@@ -20,11 +48,11 @@
    <description>UI bugs are hard for AI agents to reproduce directly, but you can still debug fast by logging user actions to a file and letting AI inspect the evidence.</description>
    </item>
    <item>
-   <title>Context Locality: Structuring Code for AI-Assisted Development</title>
+   <title>Context Locality: Vertical Architecture Matters More With AI</title>
    <link>https://bradystroud.dev/blogs/context-locality</link>
    <guid>https://bradystroud.dev/blogs/context-locality</guid>
    <pubDate>Tue, 17 Feb 2026 12:00:00 GMT</pubDate>
-   <description>Code structure impacts AI coding quality. Context locality keeps related intent close, making tools and humans faster, safer, and less reliant on scavenger hunts.</description>
+   <description>AI coding tools don&#39;t remove the need for good architecture - they amplify the cost of bad architecture. Vertical slices and clean boundaries matter more than ever.</description>
    </item>
    <item>
    <title>Tracking Copilot Usage Without an API (Raycast + Month Progress)</title>
