@@ -1,0 +1,140 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/private-docs-vault"
+title: Letting AI Publish My Docs - Without Leaking the Client Ones
+description: I get AI agents to write reports and plans and publish them to a URL with one command. Then I realised some were client docs sitting on public URLs - so I rebuilt it into a private-by-default vault with passkeys and expiring share links.
+date: 2026-06-17T12:00:00.000Z
+aiCollaboration: true
+tags:
+  - ai
+  - developer-tools
+  - cloudflare
+  - security
+  - passkeys
+  - productivity
+---
+
+Most of my docs aren't written by me anymore.
+
+Plans, investigation write-ups, status reports, little dashboards - I get an AI agent to produce them as a single self-contained HTML file, then publish it to a URL I can drop in a PR or send to someone. The "make it shareable" step is one command.
+
+That worked great. Right up until I noticed some of those docs were client work, sitting on a public URL.
+
+This is the whole story: how I get AI to create docs, and how I rebuilt the publishing side into something that's private by default.
+
+## One command to publish
+
+The starting point was a tiny CLI, `publish-plan`:
+
+```bash
+publish-plan ./q3-report.html
+# -> https://docs.stroud.dev/q3-report
+```
+
+It uploads the HTML to a Cloudflare R2 bucket and prints a clean URL. That's it.
+
+The reason it matters is that an agent can call it itself. I can end a task with "...and publish the report," and the agent hands me back a link. No copy-pasting markdown into a doc tool, no screenshots - a real rendered page at a real URL.
+
+HTML plus a URL beats a wall of markdown in a chat window every time. It renders properly, it sticks around, and I can send it to someone who never opens a terminal.
+
+## The problem: everything was public
+
+Under the hood it was the simplest thing that could work: an R2 bucket served on a custom domain. Upload an object, it's live at `docs.stroud.dev/<key>`.
+
+Two things bugged me:
+
+1. I wanted the root to list everything I'd published. But R2 can't list objects from the CLI, and a bucket on a custom domain won't serve an index page - so the root just 404'd.
+2. More importantly: **anything I published was reachable by anyone with the URL.** Not indexed by Google (I'd set `noindex`), but reachable. And some of those were client docs.
+
+"Reachable by URL" is fine for a plan I want to share. It is not fine for a client's work. I needed real access control, not security-by-obscurity.
+
+## A Worker as the gatekeeper
+
+The fix was to stop serving the bucket directly and put a small Cloudflare Worker in front of it. Now every request runs through code that asks one question: *is this person allowed to see this?*
+
+That one move turns dumb object storage into a real app:
+
+- the root can list the bucket and render a dashboard (the Worker can list, even though the CLI can't),
+- and nothing is served until it passes a visibility check.
+
+Default answer: **no**. Private unless something says otherwise.
+
+## Privacy as config, sitting next to the work
+
+I didn't want to think about privacy per file. I want to publish and have the right thing happen.
+
+So privacy is declared once, in the repo. Each project - or a whole client folder - carries a `docs.json`:
+
+```jsonc
+// docs.json
+{ "path": "client-work", "visibility": "private" }
+```
+
+When I publish, the CLI walks up from the current directory, finds the nearest `docs.json`, and uses it. A client folder is marked private; my personal stuff is public. The doc lands under that namespace with that visibility - automatically.
+
+```bash
+cd ~/dev/some-client-project
+publish-plan ./findings.html audits/2026/q3
+# -> https://docs.stroud.dev/client-work/audits/2026/q3   (private)
+```
+
+The first path segment is the namespace, and the namespace is the privacy boundary. Client work can't end up public by accident, because the folder it's published from already says private.
+
+## Three levels
+
+Every doc resolves to one of three:
+
+- **private** - only me
+- **public** - anyone
+- **link** - anyone holding a share link
+
+The Worker resolves it in order: a valid share link → a per-doc override → the namespace policy → otherwise deny. "Otherwise deny" is the important bit. A stray file with no policy is private, never public.
+
+## Signing in with a passkey
+
+I'm the only owner, and I really didn't want to type a password every time. So owner access is a passkey - Touch ID, basically.
+
+The fun part: there's no auth library in here. WebAuthn inside a Cloudflare Worker turns out to be very doable by hand. On registration the browser hands you the public key in a standard format; on login you verify the signature with the built-in WebCrypto API:
+
+```js
+const key = await crypto.subtle.importKey(
+  "spki", publicKey, { name: "ECDSA", namedCurve: "P-256" }, false, ["verify"]
+);
+const ok = await crypto.subtle.verify(
+  { name: "ECDSA", hash: "SHA-256" }, key, signature, signedData
+);
+```
+
+There's a little dance to convert the signature format and to keep a challenge around between the two steps, but that's the whole shape of it. No dependencies.
+
+The result: I open `docs.stroud.dev`, Touch ID, and I see a dashboard of everything - grouped by namespace, each tagged private / public / link.
+
+## Sharing one private doc
+
+Private-by-default is great until you actually want to send someone a private doc. For that I mint a **share link**: a signed, expiring token in the URL.
+
+```bash
+publish-plan share client-work/audits/2026/q3 7d
+# -> https://docs.stroud.dev/client-work/audits/2026/q3?k=<token>
+```
+
+It's stateless - there's no database of links. The token *is* the grant: it says "this doc, until this time," signed with a secret only the Worker and my CLI know. The Worker checks the signature and the expiry, drops a scoped cookie, and serves the doc. When it expires, it stops working.
+
+A nice little detail: if the doc is already public, sharing just gives you the plain URL - a token would be pointless.
+
+## A few things that bit me
+
+- **R2 can't list from the CLI.** I'd actually shipped a `--list` flag early on and had to rip it out - the API just isn't there. The Worker lists fine via its bucket binding, so the dashboard does the listing instead.
+- **DNS negative caching during the cutover.** Detaching the old custom domain and pointing it at the Worker left my Mac with a ~30-minute cached "this host doesn't exist." I was sure the deploy had failed; it was just my resolver. A `dig` against `1.1.1.1` showed the record was fine all along.
+- **Two languages, one signature.** The CLI signs share links in bash with `openssl`; the Worker verifies them with WebCrypto. They have to produce byte-identical HMACs, so the exact message format is now load-bearing in two places at once.
+
+## Where it landed
+
+Nothing changed about the day-to-day: an agent writes a doc, I run one command, I get a link.
+
+What changed is everything underneath:
+
+- client docs are **private by default**, gated by a passkey,
+- public is **opt-in**, per namespace, declared in the repo,
+- and sharing is a **deliberate act** that mints an expiring link - not the default state of the world.
+
+The lesson I keep relearning: privacy works best when it lives next to the work - a file in the repo, not a setting I have to remember - and a tiny Worker in front of a bucket is enough to turn "a pile of files on a URL" into something I'd actually trust with client work.
