@@ -85,23 +85,6 @@
     font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
   }
 
-  /* Headings inside long-form article prose use the display face. */
-  .prose :is(h1, h2, h3, h4) {
-    font-family: var(--font-display, ui-sans-serif, system-ui, sans-serif);
-    letter-spacing: -0.02em;
-  }
-
-  /* Prose links follow the accent token, which flips for dark mode — the
-     typography plugin's default link colour is too dark for the dark theme. */
-  .prose {
-    --tw-prose-links: var(--accent);
-    --tw-prose-invert-links: var(--accent);
-  }
-  .prose a {
-    color: var(--accent);
-    font-weight: 500;
-  }
-
   *,
   ::after,
   ::before,
@@ -115,6 +98,28 @@
     outline-offset: 3px;
     border-radius: 2px;
   }
+}
+
+/*
+  Prose overrides live OUTSIDE @layer base on purpose: the @tailwindcss/typography
+  plugin injects its .prose rules in the components layer, which outranks @layer
+  base regardless of specificity. Unlayered rules win the cascade, so these
+  actually take effect — otherwise dark-mode prose links fall back to the plugin's
+  (too-dark) default on pages that don't use dark:prose-dark (e.g. About).
+*/
+.prose :is(h1, h2, h3, h4) {
+  font-family: var(--font-display, ui-sans-serif, system-ui, sans-serif);
+  letter-spacing: -0.02em;
+}
+
+.prose {
+  --tw-prose-links: var(--accent);
+  --tw-prose-invert-links: var(--accent);
+}
+
+.prose a {
+  color: var(--accent);
+  font-weight: 500;
 }
 
 @utility rule-top {
