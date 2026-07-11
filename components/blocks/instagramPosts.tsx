@@ -26,8 +26,7 @@ export const InstagramPosts = ({ data, parentField = "" }) => {
         <div className="flex items-baseline justify-between gap-6 mb-10 pb-6 rule-bottom">
           <h2
             data-tinafield={`${parentField}.heading`}
-            className="title-font text-3xl sm:text-4xl leading-[1.05] text-ink"
-            style={{ fontVariationSettings: '"opsz" 144, "wght" 500' }}
+            className="title-font text-3xl sm:text-4xl leading-[1.1] tracking-[-0.03em] text-ink"
           >
             {heading}
           </h2>

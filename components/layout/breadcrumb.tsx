@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { FaHome } from "react-icons/fa";
@@ -17,10 +17,16 @@ function cleanUpLink(link: string) {
 
 const NextBreadcrumb = () => {
   const router = useRouter();
+  // Defer until mounted: the home page is served at "/" but rewritten to
+  // "/home", so router.asPath differs between SSR ("/home") and the client
+  // ("/"). Rendering only after mount keeps server and client markup in sync.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const path = router.asPath.split("?")[0].split("#")[0];
   const pathNames = path.split("/").filter((segment) => segment);
 
-  if (pathNames.length === 0) return null;
+  if (!mounted || pathNames.length === 0) return null;
 
   return (
     <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto px-6 sm:px-8">

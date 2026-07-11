@@ -110,16 +110,26 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
+            // Code blocks stay dark in light mode too — a signature of the
+            // "Cool & Precise" system.
             pre: {
-              color: theme("colors.gray.700"),
-              backgroundColor: theme("colors.gray.100"),
-              lineHeight: 1.5,
+              color: "#E4E8F0",
+              backgroundColor: "#111827",
+              lineHeight: 1.65,
+              borderRadius: "10px",
             },
+            "pre code": {
+              backgroundColor: "transparent",
+              color: "inherit",
+              padding: "0",
+            },
+            // Inline code reads as an accent chip.
             code: {
-              backgroundColor: theme("colors.gray.100"),
-              padding: "0.25rem",
-              borderRadius: "3px",
-              margin: "-0.25rem 1px",
+              color: "#3B5BDB",
+              backgroundColor: "#EEF1F7",
+              padding: "0.15rem 0.35rem",
+              borderRadius: "5px",
+              fontWeight: "500",
             },
             "code::before": {
               content: '""',

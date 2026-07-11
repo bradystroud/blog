@@ -36,13 +36,15 @@ export const Footer = ({ data }) => {
 
         <div className="mt-10 pt-6 rule-top flex flex-wrap items-center justify-between gap-4 mono text-xs uppercase tracking-[0.18em] text-ink-mute">
           <span>&copy; {year} Brady Stroud</span>
-          <span aria-hidden="true">{"//"}</span>
-          <a
-            href="/rss.xml"
-            className="hover:text-accent transition-colors"
-          >
-            RSS
-          </a>
+          <span className="flex items-center gap-4">
+            <a href="/design" className="hover:text-accent transition-colors">
+              Design
+            </a>
+            <span aria-hidden="true">{"//"}</span>
+            <a href="/rss.xml" className="hover:text-accent transition-colors">
+              RSS
+            </a>
+          </span>
         </div>
       </Container>
     </footer>

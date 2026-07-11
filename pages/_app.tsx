@@ -1,16 +1,17 @@
 import "../styles.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Fraunces, Instrument_Sans, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Schibsted_Grotesk, JetBrains_Mono } from "next/font/google";
 
-const fraunces = Fraunces({
+// Direction 1b — "Cool & Precise": Space Grotesk for display, Schibsted
+// Grotesk for reading, JetBrains Mono for code/labels. See /design.
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
-  axes: ["opsz", "SOFT"],
 });
 
-const instrumentSans = Instrument_Sans({
+const schibstedGrotesk = Schibsted_Grotesk({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
@@ -25,8 +26,8 @@ const jetbrainsMono = JetBrains_Mono({
 const App = ({ Component, pageProps }) => {
   return (
     <div
-      className={`${fraunces.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}
-      style={{ fontFamily: instrumentSans.style.fontFamily }}
+      className={`${spaceGrotesk.variable} ${schibstedGrotesk.variable} ${jetbrainsMono.variable}`}
+      style={{ fontFamily: schibstedGrotesk.style.fontFamily }}
     >
       <Component {...pageProps} />
       <Analytics />
