@@ -26,8 +26,7 @@ export const Hero = ({ data, parentField }) => {
           {data.headline && (
             <h1
               data-tinafield={`${parentField}.headline`}
-              className="title-font mb-8 text-5xl sm:text-6xl lg:text-7xl leading-[1.02] text-ink"
-              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
+              className="title-font mb-8 text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-[-0.03em] text-ink"
             >
               {data.headline}
             </h1>

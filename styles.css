@@ -2,46 +2,61 @@
 
 @config './tailwind.config.js';
 
+/*
+  Design tokens — Direction 1b "Cool and Precise".
+  The full, browsable reference lives at /design.
+  Values are duplicated into @theme (so Tailwind emits the colour utilities)
+  and into :root (so components can read the raw custom properties).
+  Keep the two lists in sync.
+*/
 @theme {
-  --color-paper: oklch(0.985 0.004 85);
-  --color-ink: oklch(0.22 0.012 270);
-  --color-ink-soft: oklch(0.42 0.01 270);
-  --color-ink-mute: oklch(0.62 0.008 270);
-  --color-accent: oklch(0.52 0.18 252);
-  --color-accent-ink: oklch(0.985 0.004 85);
-  --color-warm: oklch(0.72 0.13 55);
+  --color-paper: #FCFCFD;
+  --color-surface: #FFFFFF;
+  --color-ink: #14161C;
+  --color-ink-soft: #565D6B;
+  --color-ink-mute: #9AA0AB;
+  --color-accent: #3B5BDB;
+  --color-accent-ink: #FFFFFF;
+  --color-accent-weak: #EEF1F7;
+  --color-warm: #3B5BDB;
 }
 
 @layer base {
   :root {
-    --paper: oklch(0.985 0.004 85);
-    --ink: oklch(0.22 0.012 270);
-    --ink-soft: oklch(0.42 0.01 270);
-    --ink-mute: oklch(0.62 0.008 270);
-    --rule: oklch(0.22 0.012 270 / 0.1);
-    --rule-strong: oklch(0.22 0.012 270 / 0.22);
-    --accent: oklch(0.52 0.18 252);
-    --accent-ink: oklch(0.985 0.004 85);
-    --warm: oklch(0.72 0.13 55);
+    --paper: #FCFCFD;
+    --surface: #FFFFFF;
+    --ink: #14161C;
+    --ink-soft: #565D6B;
+    --ink-mute: #9AA0AB;
+    --rule: #EAEBEF;
+    --rule-strong: #D9DCE3;
+    --accent: #3B5BDB;
+    --accent-ink: #FFFFFF;
+    --accent-weak: #EEF1F7;
+    --warm: #3B5BDB;
   }
 
   html.dark {
-    --paper: oklch(0.18 0.012 270);
-    --ink: oklch(0.94 0.006 85);
-    --ink-soft: oklch(0.78 0.008 270);
-    --ink-mute: oklch(0.58 0.008 270);
-    --rule: oklch(0.94 0.006 85 / 0.12);
-    --rule-strong: oklch(0.94 0.006 85 / 0.24);
-    --accent: oklch(0.72 0.16 252);
-    --accent-ink: oklch(0.18 0.012 270);
-    --warm: oklch(0.76 0.14 55);
-    --color-paper: oklch(0.18 0.012 270);
-    --color-ink: oklch(0.94 0.006 85);
-    --color-ink-soft: oklch(0.78 0.008 270);
-    --color-ink-mute: oklch(0.58 0.008 270);
-    --color-accent: oklch(0.72 0.16 252);
-    --color-accent-ink: oklch(0.18 0.012 270);
-    --color-warm: oklch(0.76 0.14 55);
+    --paper: #0E1116;
+    --surface: #161A21;
+    --ink: #E6E9EF;
+    --ink-soft: #97A0B0;
+    --ink-mute: #626C7C;
+    --rule: #232A34;
+    --rule-strong: #2C333F;
+    --accent: #6E8BF5;
+    --accent-ink: #0E1116;
+    --accent-weak: #1A2233;
+    --warm: #6E8BF5;
+    --color-paper: #0E1116;
+    --color-surface: #161A21;
+    --color-ink: #E6E9EF;
+    --color-ink-soft: #97A0B0;
+    --color-ink-mute: #626C7C;
+    --color-accent: #6E8BF5;
+    --color-accent-ink: #0E1116;
+    --color-accent-weak: #1A2233;
+    --color-warm: #6E8BF5;
   }
 
   html {
@@ -51,13 +66,15 @@
 
   body {
     font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+    -webkit-font-smoothing: antialiased;
   }
 
+  /* Display face — Space Grotesk. Geometric grotesk, tight tracking, no
+     optical-sizing axis (unlike the old Fraunces face). */
   .title-font {
-    font-family: var(--font-display, ui-serif, Georgia, serif);
-    font-optical-sizing: auto;
-    font-variation-settings: "opsz" 96;
-    letter-spacing: -0.015em;
+    font-family: var(--font-display, ui-sans-serif, system-ui, sans-serif);
+    font-weight: 700;
+    letter-spacing: -0.025em;
   }
 
   .mono {
@@ -66,6 +83,23 @@
 
   code, pre, kbd, samp {
     font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  }
+
+  /* Headings inside long-form article prose use the display face. */
+  .prose :is(h1, h2, h3, h4) {
+    font-family: var(--font-display, ui-sans-serif, system-ui, sans-serif);
+    letter-spacing: -0.02em;
+  }
+
+  /* Prose links follow the accent token, which flips for dark mode — the
+     typography plugin's default link colour is too dark for the dark theme. */
+  .prose {
+    --tw-prose-links: var(--accent);
+    --tw-prose-invert-links: var(--accent);
+  }
+  .prose a {
+    color: var(--accent);
+    font-weight: 500;
   }
 
   *,

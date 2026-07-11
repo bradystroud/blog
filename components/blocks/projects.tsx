@@ -25,8 +25,7 @@ export const Project = ({ data, tinaField, index }) => {
         {data.title && (
           <h3
             data-tinafield={`${tinaField}.title`}
-            className="title-font text-2xl text-ink motion-safe:transition-colors group-hover/card:text-accent"
-            style={{ fontVariationSettings: '"opsz" 96, "wght" 500' }}
+            className="title-font text-2xl font-semibold text-ink motion-safe:transition-colors group-hover/card:text-accent"
           >
             {data.title}
           </h3>
@@ -60,8 +59,7 @@ export const Projects = ({ data, parentField }) => {
             Selected work
           </span>
           <h2
-            className="title-font text-3xl sm:text-4xl leading-[1.05] text-ink mt-2"
-            style={{ fontVariationSettings: '"opsz" 144, "wght" 500' }}
+            className="title-font text-3xl sm:text-4xl leading-[1.1] tracking-[-0.03em] text-ink mt-2"
           >
             Projects
           </h2>

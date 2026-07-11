@@ -247,8 +247,7 @@ export const Blogs: React.FC<BlogsProps> = ({ data }) => {
                     {String(idx + 1).padStart(2, "0")}
                   </span>
                   <h2
-                    className="title-font text-xl sm:text-3xl leading-tight text-ink motion-safe:transition-[color,transform] motion-safe:duration-300 group-hover/row:text-accent motion-safe:group-hover/row:translate-x-1"
-                    style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 480' }}
+                    className="title-font text-xl sm:text-3xl font-semibold leading-tight tracking-[-0.02em] text-ink motion-safe:transition-[color,transform] motion-safe:duration-300 group-hover/row:text-accent motion-safe:group-hover/row:translate-x-1"
                   >
                     {post.title}
                   </h2>

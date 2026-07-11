@@ -102,8 +102,7 @@ export default function Blog(
               </div>
               <div className="flex flex-col">
                 <span
-                  className="title-font text-base text-ink leading-tight"
-                  style={{ fontVariationSettings: '"opsz" 96, "wght" 520' }}
+                  className="title-font text-base font-semibold text-ink leading-tight"
                 >
                   Brady Stroud
                 </span>
@@ -125,8 +124,7 @@ export default function Blog(
 
             <h1
               data-tinafield="title"
-              className="title-font mb-10 text-4xl sm:text-5xl lg:text-6xl leading-[1.05] text-ink"
-              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
+              className="title-font mb-10 text-4xl sm:text-5xl lg:text-6xl leading-[1.08] tracking-[-0.03em] text-ink"
             >
               {data.blog.title}
             </h1>
@@ -148,12 +146,13 @@ export default function Blog(
               <aside
                 role="note"
                 aria-label="AI collaboration disclosure"
-                className="mb-12 border-y border-rule py-4 flex flex-wrap items-baseline gap-x-4 gap-y-1"
+                className="mb-12 rounded-xl border border-rule bg-accent-weak/70 px-5 py-4 flex flex-col gap-1.5"
               >
-                <span className="mono text-xs uppercase tracking-[0.18em] text-warm">
+                <span className="mono text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent flex items-center gap-2">
+                  <span aria-hidden="true">✦</span>
                   AI collaboration
                 </span>
-                <span className="text-sm text-ink-soft">
+                <span className="text-sm leading-relaxed text-ink-soft">
                   Drafted with AI support; ideas, experiences and opinions are mine.
                 </span>
               </aside>
@@ -194,8 +193,7 @@ export default function Blog(
             404
           </div>
           <h1
-            className="title-font text-5xl sm:text-6xl leading-[1.02] text-ink mb-6"
-            style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
+            className="title-font text-5xl sm:text-6xl leading-[1.05] tracking-[-0.03em] text-ink mb-6"
           >
             Blog not found
           </h1>

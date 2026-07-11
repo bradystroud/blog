@@ -57,14 +57,12 @@ export default function ReviewPage(
               Writing
             </div>
             <h1
-              className="title-font text-5xl sm:text-6xl lg:text-7xl leading-[1.02] text-ink mb-6"
-              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
+              className="title-font text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-[-0.03em] text-ink mb-6"
             >
               Blogs
             </h1>
             <p
-              className="title-font text-xl sm:text-2xl italic text-ink-soft max-w-xl"
-              style={{ fontVariationSettings: '"opsz" 96, "wght" 400' }}
+              className="text-xl sm:text-2xl leading-snug text-ink-soft max-w-xl"
             >
               Learning from your mistakes is cool. Learning from other people&apos;s is even cooler.
             </p>

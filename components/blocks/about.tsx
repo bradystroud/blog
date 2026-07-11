@@ -97,8 +97,7 @@ export const AboutShowcase = ({
           {data.heading && (
             <h1
               data-tinafield={`${parentField}.heading`}
-              className="title-font mb-6 text-5xl sm:text-6xl lg:text-7xl leading-[1.02] text-ink"
-              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50, "wght" 520' }}
+              className="title-font mb-6 text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-[-0.03em] text-ink"
             >
               {data.heading}
             </h1>
@@ -106,8 +105,7 @@ export const AboutShowcase = ({
           {data.subheading && (
             <p
               data-tinafield={`${parentField}.subheading`}
-              className="title-font text-xl sm:text-2xl italic text-ink-soft max-w-xl mb-10"
-              style={{ fontVariationSettings: '"opsz" 96, "wght" 400' }}
+              className="text-xl sm:text-2xl leading-snug text-ink-soft max-w-xl mb-10"
             >
               {data.subheading}
             </p>
@@ -140,8 +138,7 @@ export const AboutShowcase = ({
                       <div>
                         {item.title && (
                           <h2
-                            className="title-font text-2xl sm:text-3xl leading-tight text-ink"
-                            style={{ fontVariationSettings: '"opsz" 96, "wght" 480' }}
+                            className="title-font text-2xl sm:text-3xl font-semibold leading-tight tracking-[-0.02em] text-ink"
                           >
                             {item.title}
                           </h2>
