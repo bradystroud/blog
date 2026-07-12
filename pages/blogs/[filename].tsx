@@ -16,6 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Giscus from "@giscus/react";
 import { BsArrowLeft } from "react-icons/bs";
+import { useThemeMode } from "../../components/layout/useThemeMode";
 
 export default function Blog(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -25,6 +26,7 @@ export default function Blog(
     variables: props.variables,
     data: props.data,
   });
+  const themeMode = useThemeMode();
 
   let formattedDate = "";
   if (data?.blog?.date) {
@@ -174,7 +176,7 @@ export default function Blog(
                 reactionsEnabled="1"
                 emitMetadata="0"
                 inputPosition="top"
-                theme="light"
+                theme={themeMode}
                 lang="en"
                 loading="lazy"
               />
