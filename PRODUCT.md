@@ -10,7 +10,7 @@ Potential clients, employers, collaborators, and fellow developers who want to u
 
 ## Product Purpose
 
-Brady Stroud's personal website combines a technical blog with a working portfolio. It should make Brady's experience and interests tangible through useful writing, shipped projects, and a candid view of the person behind the code. Success means a visitor can quickly understand his strengths, find work relevant to them, and leave with confidence that he builds thoughtful software that solves real problems.
+Brady Stroud's personal website combines a technical blog with a working portfolio. It should make Brady's experience and interests tangible through useful writing, shipped projects, and a candid view of the person behind the code. Success means a visitor can quickly understand his strengths, find work relevant to them, and see how curiosity, play, and practical needs turn into thoughtful software.
 
 ## Brand Personality
 

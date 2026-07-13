@@ -171,7 +171,8 @@ export const projectsShowcaseBlockSchema: Template = {
   ui: {
     defaultItem: {
       eyebrow: "Selected work",
-      heading: "Useful things, built to solve real problems.",
+      heading:
+        "Useful things, built for fun (and sometimes to solve real problems).",
       introduction:
         "A selection of products, open-source projects, and small tools I use every day.",
       items: [],

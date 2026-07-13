@@ -4,7 +4,7 @@ title: Projects | Brady Stroud
 description: A selection of practical products, open-source projects, and personal tools built by software engineer Brady Stroud.
 blocks:
   - eyebrow: Selected work
-    heading: Useful things, built to solve real problems.
+    heading: Useful things, built for fun (and sometimes to solve real problems).
     introduction: >-
       A mix of products, open-source projects, and small tools I built because I
       wanted them to exist.
@@ -36,6 +36,9 @@ blocks:
           - Python
           - rumps
           - Modbus TCP
+        links:
+          - label: View source
+            url: 'https://github.com/bradystroud/solarbar'
       - category: Menu bar app
         title: AirTouchBar
         description: >-
@@ -50,6 +53,8 @@ blocks:
         links:
           - label: View source
             url: 'https://github.com/bradystroud/airtouch-mac'
+          - label: Read the story
+            url: 'https://bradystroud.dev/blogs/airtouch-homekit'
       - category: iPad app
         title: Glance
         description: >-
