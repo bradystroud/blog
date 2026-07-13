@@ -6,6 +6,7 @@ import { Hero } from "./blocks/hero";
 import { Projects } from "./blocks/projects";
 import { InstagramPosts } from "./blocks/instagramPosts";
 import { AboutShowcase } from "./blocks/about";
+import { ProjectsShowcase } from "./blocks/projects-showcase";
 
 type BlockComponent = React.FC<{
   // Each block has its own data shape from the Tina schema; we accept any here
@@ -22,6 +23,7 @@ const blockComponents: Record<string, BlockComponent> = {
   PageBlocksProjects: Projects,
   PageBlocksInstagramPosts: InstagramPosts,
   PageBlocksAboutShowcase: AboutShowcase,
+  PageBlocksProjectsShowcase: ProjectsShowcase,
 };
 
 export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {

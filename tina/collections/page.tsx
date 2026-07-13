@@ -5,6 +5,7 @@ import { heroBlockSchema } from "../../components/blocks/hero";
 import { instagramPostsBlockSchema } from "../../components/blocks/instagramPosts";
 import { projectBlockSchema } from "../../components/blocks/projects";
 import { aboutShowcaseBlockSchema } from "../../components/blocks/about";
+import { projectsShowcaseBlockSchema } from "../../components/blocks/projects-showcase";
 
 export const PageCollection: Collection = {
   label: "Pages",
@@ -17,6 +18,9 @@ export const PageCollection: Collection = {
       }
       if (document._sys.filename === "about") {
         return `/about`;
+      }
+      if (document._sys.filename === "projects") {
+        return `/projects`;
       }
       return undefined;
     },
@@ -62,6 +66,7 @@ export const PageCollection: Collection = {
         contentBlockSchema,
         instagramPostsBlockSchema,
         aboutShowcaseBlockSchema,
+        projectsShowcaseBlockSchema,
       ],
     },
   ],

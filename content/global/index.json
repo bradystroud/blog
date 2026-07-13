@@ -10,6 +10,10 @@
         "label": "About"
       },
       {
+        "href": "projects",
+        "label": "Projects"
+      },
+      {
         "href": "blogs",
         "label": "Blogs"
       }
