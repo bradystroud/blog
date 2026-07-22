@@ -53,15 +53,18 @@ blocks:
           running coding challenges to client spec reviews, developing a strong
           eye for great talent and project fit.
     mainImage:
-      src: /uploads/brady-presenting.jpg
-      alt: Brady presenting a live product demo at SSW
-      label: Presenting at SSW
+      src: /uploads/20250822_055503612_iOS.jpg
+      alt: Work on an awesome presentation at SSW Melbourne brainstorming day
+      label: SSW Melbourne - Brainstorming day
     accentImages:
       - src: /uploads/on-stage.jpg
         alt: SSW Melbourne brainstorming presentations
       - src: /uploads/copenhagen.jpeg
         alt: At NDC Copenhagen - The Tina and YakShaver booths
         label: At NDC Copenhagen 2025
+      - src: /uploads/brady-presenting.jpg
+        alt: AI coaching session with a client
+        label: AI coaching session with a client
     _template: aboutShowcase
 ---
 
