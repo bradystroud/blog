@@ -53,9 +53,9 @@ blocks:
           running coding challenges to client spec reviews, developing a strong
           eye for great talent and project fit.
     mainImage:
-      src: /uploads/20250822_055503612_iOS.jpg
-      alt: Work on an awesome presentation at SSW Melbourne brainstorming day
-      label: SSW Melbourne - Brainstorming day
+      src: /uploads/brady-presenting.jpg
+      alt: Brady presenting a live product demo at SSW
+      label: Presenting at SSW
     accentImages:
       - src: /uploads/on-stage.jpg
         alt: SSW Melbourne brainstorming presentations
