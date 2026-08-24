@@ -48,14 +48,19 @@ Which also explains why this is easy to miss: the environment where you do all y
 If I can't stop the rewrite, I can undo it. I wrapped the Tina client so every GraphQL result gets walked, and any `assets.tina.io` URL is rewritten back to the local path:
 
 ```ts
+// The staging segment is only present when the editing branch differs from the
+// media branch, so both shapes have to match.
+const TINA_ASSET =
+  /^https:\/\/assets\.tina\.io\/[^/]+(?:\/__staging\/[^/]+\/__file)?(\/.+)$/;
+
 function toLocalPath(url: string): string {
-  const match = url.match(/^https:\/\/assets\.tina\.io\/.*?(\/images\/.*)$/);
+  const match = TINA_ASSET.exec(url);
   if (!match) return url;
 
   // An image uploaded through the CMS but not yet pulled into the working tree
   // exists on the CDN and nowhere else. Pointing that one at a local path turns
   // a slow image into a missing image.
-  return existsSync(join("public", match[1])) ? match[1] : url;
+  return existsSync(join("public/images", match[1])) ? `/images${match[1]}` : url;
 }
 ```
 
