@@ -32,12 +32,40 @@ So a news listing page with about 100 thumbnails on it was revalidating nearly a
 
 Nothing was broken, which is why it survived so long. Every image loaded. They just loaded again, and again.
 
+## Why other Tina sites don't have this problem
+
+Someone reasonably asked me why every Tina site isn't slow, and pointed at one that isn't. So I checked its config against mine.
+
+It's identical. Same `media.tina`, same `publicFolder: "public"`, same `mediaRoot: "images"`. There was no wrong setting to find.
+
+The difference is the framework. That site is Next.js, and every image on it is requested like this:
+
+```
+/_next/image?url=https://assets.tina.io/<clientId>/...&w=640&q=75
+```
+
+`next/image` fetches the Tina URL server-side and re-serves the bytes from the site's own domain, under the site's own header - `max-age=14400` in that case. The browser never talks to `assets.tina.io` for a content image at all. The problem is invisible because it's already been solved, by a component nobody chose for that reason.
+
+Tina's own docs push you straight into this without saying why. The repo-based media page tells Next.js users to add `assets.tina.io` to `remotePatterns` - which is the line that makes `next/image` willing to proxy it. Follow the documented setup and you get the fix as a side effect. Caching is never mentioned.
+
+I'm on Astro with `imageService: 'passthrough'`, chosen deliberately because the deploy target has no free image optimiser. Passthrough means exactly what it says: the URL in your content is the URL the browser requests. Nothing stands between the CMS and the user.
+
+So this isn't really a Tina bug, and it isn't a config mistake. It's a gap that opens when your framework doesn't happen to proxy images for you.
+
 ## You can't turn the rewrite off from the config
 
 This was the part that took the longest to accept. The resolver skips the rewrite only when `useRelativeMedia` is true, and that flag doesn't belong to the schema - it belongs to the GraphQL server:
 
 - the **local CLI hardcodes it true**, which is exactly why local dev never shows you these URLs,
 - and the **cloud API sets it false** whenever `media.tina` is configured.
+
+You can see it in the published types - the flag isn't part of your schema, it's part of the server's own config, and turning it off means handing over a client id and an assets host:
+
+```ts
+export type GraphQLConfig =
+  | { useRelativeMedia: true }
+  | { useRelativeMedia: false; clientId: string; assetsHost: string };
+```
 
 So there's no line you can add to `tina/config.ts` to fix it. Dropping `media.tina` would give you relative paths back, but it also takes away the media manager the editors use to pick images. That's a bad trade to make for a cache header.
 
