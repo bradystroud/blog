@@ -1,0 +1,114 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/cms-undid-my-cache-headers"
+title: My CMS Quietly Undid My Cache Headers
+description: A static site set a seven-day cache header on its images and they were still slow. The CMS was rewriting every image URL to its own CDN, which answers with max-age=60.
+date: 2026-08-24T12:00:00.000Z
+aiCollaboration: true
+coverImage: null
+tags:
+  - astro
+  - performance
+  - images
+  - cms
+  - cloudflare
+  - web
+---
+
+I've been making the images fast on a client's marketing site - Astro 7 and TinaCMS, deployed to Cloudflare Workers. It should have been a boring job: compress the files, set a long cache header, move on.
+
+The cache header was already there. `public/_headers` gave `/images/*` a seven-day `Cache-Control`. The images were still slow.
+
+## The header was real. The images weren't ours.
+
+TinaCloud rewrites every field declared `type: 'image'` into an `https://assets.tina.io/<clientId>/...` URL before the value ever reaches a template. The file is sitting in `public/images`, and the CMS stores a repo-relative path - but the content API rewrites it on the way out.
+
+That host answers with:
+
+```
+cache-control: max-age=60
+```
+
+So a news listing page with about 100 thumbnails on it was revalidating nearly all of them on nearly every visit. Our seven-day header was applying to almost nothing on the page.
+
+Nothing was broken, which is why it survived so long. Every image loaded. They just loaded again, and again.
+
+## You can't turn the rewrite off from the config
+
+This was the part that took the longest to accept. The resolver skips the rewrite only when `useRelativeMedia` is true, and that flag doesn't belong to the schema - it belongs to the GraphQL server:
+
+- the **local CLI hardcodes it true**, which is exactly why local dev never shows you these URLs,
+- and the **cloud API sets it false** whenever `media.tina` is configured.
+
+So there's no line you can add to `tina/config.ts` to fix it. Dropping `media.tina` would give you relative paths back, but it also takes away the media manager the editors use to pick images. That's a bad trade to make for a cache header.
+
+Which also explains why this is easy to miss: the environment where you do all your work is the one environment that doesn't have the problem.
+
+## The fix: normalise on the way out of the client
+
+If I can't stop the rewrite, I can undo it. I wrapped the Tina client so every GraphQL result gets walked, and any `assets.tina.io` URL is rewritten back to the local path:
+
+```ts
+function toLocalPath(url: string): string {
+  const match = url.match(/^https:\/\/assets\.tina\.io\/.*?(\/images\/.*)$/);
+  if (!match) return url;
+
+  // An image uploaded through the CMS but not yet pulled into the working tree
+  // exists on the CDN and nowhere else. Pointing that one at a local path turns
+  // a slow image into a missing image.
+  return existsSync(join("public", match[1])) ? match[1] : url;
+}
+```
+
+The existence check is the whole safety story. Without it you trade a caching problem for broken images, which is a much worse bug and one that only shows up on the images an editor added most recently.
+
+Doing it on the client promise, rather than at each `<img src>`, matters more than it looks:
+
+```ts
+export async function request(...args) {
+  return rewriteTinaUrls(await client.request(...args));
+}
+```
+
+Image values don't only arrive in fields a template unpacks by hand. They turn up inside rich-text bodies, and inside list queries that get passed around whole. Fix it at the render site and you'll fix the images you happened to think of.
+
+## The bit I actually want to remember
+
+My first attempt at this "worked". I tested it, a request to `/images/...` came back with the seven-day header, and I moved on.
+
+That path was one image out of about eighty on the page. The other seventy-nine still resolved from the CDN.
+
+**Verifying a mechanism on a sample that isn't representative is worse than not verifying at all**, because you walk away with confidence. The header existing was never the question. Where the images actually resolve from was the question, and I'd checked the easy one.
+
+## The smaller half: format
+
+The image archive was mirrored from a decade-old WordPress install, so the JPEGs carried years of re-saves - each one a bit more compressed than the last, for no benefit. A conversion script took the referenced images from **22.2 MB to 10.5 MB**, a 53% cut.
+
+Three decisions in that script are worth stealing.
+
+**Never delete the originals.** Legacy redirect rules resolve to the exact file the old CMS served, and an editor can still reference an image the script skipped. The originals cost repo size and nothing else.
+
+**Skip conversions that save less than about 15%.** A near-identical duplicate costs repo size and adds one more file to keep in step, for no measurable gain. Thirteen photos got left alone on that rule.
+
+**Three files stay raster on purpose.** Two of them are the ones that bite: the `og:image`, because Facebook and LinkedIn reject WebP for link previews, and the `apple-touch-icon`, because iOS ignores a WebP one. Worth knowing *before* a blanket conversion quietly kills your link previews.
+
+On encoding: for a JPEG, re-encoding losslessly just preserves the compression artefacts it already has at great cost, so lossy is right. For a PNG - usually a logo, badge or diagram - lossless WebP often wins outright, but not for a photograph that happened to get saved as PNG. The script encodes both and keeps whichever is smaller.
+
+## A bonus CSS bug, same lesson
+
+A full-width hero band was styled with Tailwind's `aspect-[1920/620]` plus `max-h-[452px]`. The intent: *this ratio, but never taller than 452px*.
+
+`aspect-ratio` with a `max-height` doesn't just clamp the height. Once the cap binds, the browser derives the **width** from the ratio too. The band stopped growing at 1400px and left bare page either side of it on anything wider.
+
+A viewport-relative height fixes it, because nothing is being derived from the ratio any more:
+
+```html
+<div class="h-[min(32.3vw,452px)]">
+```
+
+And the verification lesson repeated itself, in the same week. The check I ran measured the band's height and confirmed there was no horizontal overflow. Both passed. Neither of them measured the band's **width**, which was the only thing that had broken.
+
+## The takeaway
+
+Two of these three bugs shipped past a check that passed. The check was real, the mechanism it measured was real, and it was pointed at the wrong thing.
+
+Before you trust a performance fix, ask what the browser actually requested, on the page that was actually slow - not whether the thing you configured is configured.
