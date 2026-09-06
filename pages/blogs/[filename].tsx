@@ -17,6 +17,7 @@ import Link from "next/link";
 import Giscus from "@giscus/react";
 import { BsArrowLeft } from "react-icons/bs";
 import { useThemeMode } from "../../components/layout/useThemeMode";
+import { markdownTableComponents } from "../../components/posts/markdown-table";
 
 export default function Blog(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -161,7 +162,10 @@ export default function Blog(
             ) : null}
 
             <article className="prose prose-lg dark:prose-dark max-w-none text-ink-soft">
-              <TinaMarkdown content={data.blog._body} />
+              <TinaMarkdown
+                content={data.blog._body}
+                components={markdownTableComponents}
+              />
             </article>
 
             <div className="mt-16 pt-8 rule-top">
