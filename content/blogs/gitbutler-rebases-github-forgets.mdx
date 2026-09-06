@@ -1,0 +1,159 @@
+---
+canonicalUrl: "https://bradystroud.dev/blogs/gitbutler-rebases-github-forgets"
+title: GitButler Rebases Everything, So GitHub Forgot My Reviews
+description: I love GitButler's lanes and hated that every pull rewrote my pushed branches and reset my PRs. The problem turned out to live in GitHub's data model, not GitButler. The fix was a 330-line wrapper that gives each lane an append-only published branch.
+date: 2026-09-06T12:00:00.000Z
+aiCollaboration: true
+coverImage: null
+tags:
+  - git
+  - gitbutler
+  - github
+  - developer-tools
+  - code-review
+  - productivity
+---
+
+I've been using GitButler for most of this year, and I'm not going back. Lanes - several branches sharing one working directory, with uncommitted hunks assigned to whichever branch they belong to - are the thing I didn't know I wanted from git.
+
+But every time I ran `but pull`, my pull requests got worse.
+
+## The symptom
+
+A reviewer leaves a comment on line 40 of a file. I pull to pick up main, push the lane again, and the comment is now floating on a commit that no longer exists in the branch. Worse, the "changes since your last review" filter - the single most useful button on a GitHub PR - stops working:
+
+> We went looking everywhere, but couldn't find those commits.
+
+The PR history looks like I rewrote the whole branch, because from GitHub's point of view I did.
+
+What I typed into an agent was: *I want a CLI that does everything GitButler does with lanes, but doesn't force push. It just rebases.*
+
+## The ask was a contradiction
+
+The first thing the investigation did was tell me my request was impossible, and it was right.
+
+Rebase rewrites commit hashes. A rewritten branch is no longer a fast-forward of what the remote has. Git therefore *requires* a force push. "Rebases but doesn't force push" is not a feature any tool can have.
+
+The second thing it did was read GitButler's source, and that was more embarrassing. I'd assumed the force push was the unsafe kind. It isn't:
+
+```rust
+if force {
+    if force_push_protection {
+        args.push("--force-with-lease");
+        if !is_deletion { args.push("--force-if-includes"); }
+    } else { args.push("--force"); }
+}
+```
+
+That's the default. `--force-if-includes` refuses the push unless the remote tip is already in your local history, so GitButler can't silently destroy a teammate's commit. Safety was never the problem.
+
+The problem was **frequency**. `but pull` rebases every applied lane onto the new base, with no merge option. Every lane I'd already pushed then needed a force push. That's the design, not a bug, and it's a design I like.
+
+## GitButler already solved the identity problem. GitHub ignores it.
+
+Look at the raw header of a GitButler commit:
+
+```
+gitbutler-headers-version 2
+change-id xosmyyxqysqmmpnwktlvuwpkolpmnrlo
+```
+
+That's a Gerrit-style stable identity that survives every rebase. GitButler knows exactly which new commit is the same logical change as which old one.
+
+GitHub doesn't read it. GitHub anchors review comments and the review-delta marker to raw SHAs and nothing else. GitButler also no longer ships its own review front end, so nothing on either side closes the gap.
+
+So the bug I was chasing lives in GitHub's data model. Which meant forking GitButler, patching GitButler, or replacing GitButler would all have fixed nothing.
+
+## What else is out there
+
+I had the agent scan the field anyway, because I wanted to know if someone had already solved this.
+
+| Tool | Lanes in one worktree | Force push? |
+|---|---|---|
+| Git Town | No | No, with a merge sync strategy |
+| git-machete | No | No, in merge mode |
+| Jujutsu | Workspaces are separate directories | Yes |
+| Graphite, git-spice, av, Sapling, stgit | No | Yes |
+| Gerrit | No | No, it uses `refs/for/main` |
+
+Nothing else does lanes. The only tools that avoid the force push do it by dropping rebase and merging instead, which brings back the merge-commit soup I left git for.
+
+Forking was off the table too. GitButler is FSL-1.1-MIT, which lets me modify it privately but not publish a competing version until the change date - 2028 for the current CLI. And building a lane engine from scratch to fix one push behaviour is a multi-year Rust project.
+
+## The fix: change only what the remote sees
+
+Keep GitButler exactly as it is. Rebase lanes as much as I like. Give each lane a second branch, `<lane>-pub`, that only ever fast-forwards, and point the PR at that one.
+
+Lanes are ordinary `refs/heads/*` refs, and `but branch list --json` describes the workspace, so a wrapper needs no GitButler internals at all. Every publish makes one of five decisions:
+
+| Situation | Action | The remote gets |
+|---|---|---|
+| Never published | `create` | the real lane commits |
+| Lane only gained commits | `fast-forward` | the real lane commits |
+| Lane gained commits since a past snapshot | `replay` | those commits, message and author preserved |
+| Lane was rebased, amended, squashed, reordered | `snapshot` | one commit carrying the lane's exact tree |
+| Lane holds `[conflict]` commits, or is behind the target | `blocked` | nothing |
+
+The `snapshot` case is the interesting one, and it's a single line of git plumbing:
+
+```sh
+git commit-tree "$LANE^{tree}" -p "$PUBLISHED_TIP" -p "$ORIGIN_MAIN"
+```
+
+Take the lane's current tree. Give it the published tip as its first parent, so the branch fast-forwards and every commit a reviewer already saw stays reachable. Give it `origin/main` as its *second* parent, so the merge base moves forward with the lane and the PR diff stays exactly the lane's own changes.
+
+Mapped back to my three symptoms:
+
+- **Comments losing their anchor.** Fixed. The commit they point at is still an ancestor.
+- **"Changes since your last review".** Fixed. GitHub's stored SHA is never orphaned, so the delta always resolves.
+- **History looking bad.** Mostly. You gain one sync commit per rebase, which reads like an ordinary merge-based branch rather than a broken one.
+
+The tool is called `butpub`. It's about 330 lines of Node with no dependencies, and it went from idea to installed in an afternoon.
+
+```
+butpub status              # what publishing would do, changes nothing
+butpub publish             # publish every applied lane
+butpub publish --pr        # publish, then open PRs with the right base
+```
+
+## The second parent bit me before I shipped it
+
+That `-p origin/main` is load-bearing in a way I didn't appreciate until it went wrong.
+
+Making the target the merge base means the PR diff is the full tree difference between the lane and main. If the lane is *behind* main, the lane's tree still holds the older copy of every file main has since changed. Each one shows up on the PR as a revert of work the lane never touched.
+
+Nothing local shows it. The lane's commits are clean, the build passes, `git show --name-status` on the lane lists none of the reverted paths. It's visible only in the PR's file list.
+
+I caught it in the wild on a lane 16 commits behind main. It published a deletion of a 73-line test file in another team's directory.
+
+So a stale lane is now refused, not warned about. `but pull` first, then publish. The check is against the target and not the lane's parent, because a stacked lane's parent is the lane below it, published as a snapshot the upper lane carries as content but never as a commit. Comparing against that would block every healthy stack.
+
+## Stacks, and the bug the test suite caught
+
+Stacked lanes publish bottom-up. Each head integrates onto the published tip of the head below it, so every PR in the stack shows only its own changes.
+
+The stack test - a real repository with a real remote, rebased under the tool mid-run - caught a bug before I did. The first version planned every head's action up front, then executed. An upper head therefore integrated onto its parent's *stale* tip and leaked main's files into its PR diff. Planning and publishing now interleave per stack.
+
+Both suites build real repos and assert the published branch is a fast-forward at every step. 27 assertions. It's not many, but each one is a scenario I'd have discovered on a real PR otherwise.
+
+## Two rules, and one of them fights my own tooling
+
+**Never `but push` a lane you publish with butpub.** It would force push over the append-only branch and destroy the exact history the tool exists to protect. The `-pub` suffix makes a collision unlikely, not impossible.
+
+That rule has a wrinkle. My agents follow a `gitbutler` skill that tells them how to push, and that skill is regenerated by `but skill install`, so it will never know butpub exists. The override lives one level up, in the shared agent rules, keyed on `git config --get butpub.enabled`. Where that's `true`, publishing goes through `butpub`, and everything else about GitButler is unchanged.
+
+**Squash-merge the PRs.** A snapshot commit is bookkeeping. Squash merging keeps it out of main. Merge-commit or rebase-merge and the sync commits leak into history, which is the one outcome that would make this worse than the problem.
+
+## What I'd take from it
+
+Three things, in the order I learned them.
+
+**Read the source before you file the complaint.** Ten minutes in `gitbutler-git` turned "GitButler force pushes dangerously" into "GitButler force pushes correctly, often, by design". That's a different problem with a different fix.
+
+**Find which system actually owns the bug.** GitButler had the stable identity. GitHub refused to read it. Every fix aimed at GitButler would have been wasted.
+
+**Wrap before you fork.** The wrapper touches no internals, survives upgrades, and took an afternoon. The fork would have been illegal to publish until 2028 and would have needed re-patching every release.
+
+I haven't put butpub on GitHub yet. If that's something you'd use, tell me and I'll tidy it up.
+
+And I'm still looking for a better answer to this. A wrapper that appends snapshot commits is a workaround, not a fix. If GitHub ever reads a change-id, or if you know a tool that keeps lanes *and* keeps review state across a rebase, I'd genuinely like to hear about it.
