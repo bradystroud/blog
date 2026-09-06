@@ -5,7 +5,14 @@ import { Footer } from "./footer";
 import layoutData from "../../content/global/index.json";
 import NextBreadcrumb from "./breadcrumb";
 
-export const Layout = ({ data = layoutData, children }) => {
+type LayoutProps = {
+  data?: typeof layoutData;
+  /** Title of the current page, shown as the last breadcrumb. */
+  pageTitle?: string;
+  children: React.ReactNode;
+};
+
+export const Layout = ({ data = layoutData, pageTitle, children }: LayoutProps) => {
   return (
     <>
       <Head>
@@ -24,13 +31,10 @@ export const Layout = ({ data = layoutData, children }) => {
         </a>
         <Header data={data?.header} />
         <main id="main-content" className="flex-1 text-ink flex flex-col">
-          <NextBreadcrumb />
+          <NextBreadcrumb pageTitle={pageTitle} />
           {children}
         </main>
-        <Footer
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          data={data?.footer}
-        />
+        <Footer data={data?.footer} />
       </div>
     </>
   );

@@ -67,7 +67,7 @@ export default function Blog(
       data.blog.tags?.filter((t): t is string => typeof t === "string") ?? [];
 
     return (
-      <Layout data={data.global as any}>
+      <Layout data={data.global as any} pageTitle={data.blog.title}>
         <Seo
           title={`${data.blog.title} | ${SITE.name}`}
           description={description}
