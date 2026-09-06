@@ -41,7 +41,7 @@ export default function ReviewPage(
     });
 
   return (
-    <Layout>
+    <Layout pageTitle="Blog">
       <Seo
         title={pageTitle}
         description={PAGE_DESCRIPTION}

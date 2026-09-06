@@ -61,7 +61,7 @@ export default function HomePage(
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    <Layout data={data.global as any}>
+    <Layout data={data.global as any} pageTitle={title}>
       <Seo
         title={title}
         description={description}
