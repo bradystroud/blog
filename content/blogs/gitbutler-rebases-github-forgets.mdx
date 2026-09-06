@@ -78,7 +78,7 @@ I had the agent scan the field anyway, because I wanted to know if someone had a
 
 Nothing else does lanes. The only tools that avoid the force push do it by dropping rebase and merging instead, which brings back the merge-commit soup I left git for.
 
-Forking was off the table too. GitButler is FSL-1.1-MIT, which lets me modify it privately but not publish a competing version until the change date - 2028 for the current CLI. And building a lane engine from scratch to fix one push behaviour is a multi-year Rust project.
+Forking was off the table too. GitButler is FSL-1.1-MIT, which lets me modify it privately but not publish a competing version until the change date - 2028 for the current CLI. And building a lane engine from scratch means reimplementing hunk ownership, the workspace merge commit, a rebase engine that carries conflicts forward, and the oplog. That's a lot of work to fix one push behaviour.
 
 ## The fix: change only what the remote sees
 
