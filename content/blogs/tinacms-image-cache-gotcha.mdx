@@ -1,7 +1,7 @@
 ---
-canonicalUrl: "https://bradystroud.dev/blogs/cms-undid-my-cache-headers"
-title: My CMS Quietly Undid My Cache Headers
-description: A static site set a seven-day cache header on its images and they were still slow. The CMS was rewriting every image URL to its own CDN, which answers with max-age=60.
+canonicalUrl: "https://bradystroud.dev/blogs/tinacms-image-cache-gotcha"
+title: A Little TinaCMS Gotcha - Why My Image Cache Headers Did Nothing
+description: A seven-day cache header on my images did nothing, because TinaCloud serves image fields from its CDN. Next.js hides this. Astro doesn't.
 date: 2026-08-24T12:00:00.000Z
 aiCollaboration: true
 coverImage: null
@@ -18,17 +18,19 @@ I've been making the images fast on a client's marketing site - Astro 7 and Tina
 
 The cache header was already there. `public/_headers` gave `/images/*` a seven-day `Cache-Control`. The images were still slow.
 
-## The header was real. The images weren't ours.
+It turned out to be a small TinaCMS gotcha. Nothing was wrong with Tina - it was doing exactly what it's designed to do. I just hadn't known about it, and my framework wasn't hiding it from me the way Next.js would.
 
-TinaCloud rewrites every field declared `type: 'image'` into an `https://assets.tina.io/<clientId>/...` URL before the value ever reaches a template. The file is sitting in `public/images`, and the CMS stores a repo-relative path - but the content API rewrites it on the way out.
+## The header was real. The images came from somewhere else.
 
-That host answers with:
+TinaCloud serves every field declared `type: 'image'` from its own CDN, as an `https://assets.tina.io/<clientId>/...` URL. The file is sitting in `public/images`, and the CMS stores a repo-relative path - but the content API hands back the CDN URL. That's a sensible default: an image an editor just uploaded works straight away, even before it's in your repo.
+
+That host answers with a short cache, which also makes sense for files editors can replace at any time:
 
 ```
 cache-control: max-age=60
 ```
 
-So a news listing page with about 100 thumbnails on it was revalidating nearly all of them on nearly every visit. Our seven-day header was applying to almost nothing on the page.
+So a news listing page with about 100 thumbnails on it was revalidating nearly all of them on nearly every visit. My seven-day header was applying to almost nothing on the page.
 
 Nothing was broken, which is why it survived so long. Every image loaded. They just loaded again, and again.
 
@@ -46,15 +48,15 @@ The difference is the framework. That site is Next.js, and every image on it is 
 
 `next/image` fetches the Tina URL server-side and re-serves the bytes from the site's own domain, under the site's own header - `max-age=14400` in that case. The browser never talks to `assets.tina.io` for a content image at all. The problem is invisible because it's already been solved, by a component nobody chose for that reason.
 
-Tina's own docs push you straight into this without saying why. The repo-based media page tells Next.js users to add `assets.tina.io` to `remotePatterns` - which is the line that makes `next/image` willing to proxy it. Follow the documented setup and you get the fix as a side effect. Caching is never mentioned.
+Tina's docs set Next.js users up well here. The repo-based media page has you add `assets.tina.io` to `remotePatterns`, which is the line that lets `next/image` proxy it. Follow the documented setup and caching is handled for you.
 
 I'm on Astro with `imageService: 'passthrough'`, chosen deliberately because the deploy target has no free image optimiser. Passthrough means exactly what it says: the URL in your content is the URL the browser requests. Nothing stands between the CMS and the user.
 
-So this isn't really a Tina bug, and it isn't a config mistake. It's a gap that opens when your framework doesn't happen to proxy images for you.
+So this isn't a Tina bug, and it isn't a config mistake. It's a gotcha that only shows up when your framework doesn't proxy images for you.
 
-## You can't turn the rewrite off from the config
+## The URL choice lives on the server, not in your config
 
-This was the part that took the longest to accept. The resolver skips the rewrite only when `useRelativeMedia` is true, and that flag doesn't belong to the schema - it belongs to the GraphQL server:
+This was the part that took me longest to work out. The resolver skips the rewrite only when `useRelativeMedia` is true, and that flag doesn't belong to the schema - it belongs to the GraphQL server:
 
 - the **local CLI hardcodes it true**, which is exactly why local dev never shows you these URLs,
 - and the **cloud API sets it false** whenever `media.tina` is configured.
